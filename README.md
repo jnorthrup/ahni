@@ -10,19 +10,19 @@ YAHNI is based on AHNI which can be found at https://github.com/OliverColeman/ah
 A runnable JAR file can be built from the source files with:
 
 ```sh
-mvn compile
+mvn compile package
 ```
 
 Then to run an experiment:
 
 ```sh
-java -jar ahni.jar <properties file containing parameters for experiment>
+mvn exec:java -Dexec.args="<properties file containing parameters for experiment>"
 ```
 
 For example:
 
 ```sh
-java -jar ahni.jar properties/or3.properties
+mvn exec:java -Dexec.args="properties/retina-problem-hyperneat.properties"
 ```
 
 See `properties/bain-test-pass-through-flip.properties` for an example properties file describing the function of each parameter and setting.
