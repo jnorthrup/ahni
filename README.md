@@ -1,8 +1,8 @@
-# AHNI - Another HyperNEAT Implementation
+# YAHNI - Yet Another HyperNEAT Implementation
 
-AHNI implements the HyperNEAT neuroevolution algorithm, see http://eplex.cs.ucf.edu/hyperNEATpage/HyperNEAT.html.
+YAHNI implements the HyperNEAT neuroevolution algorithm, see http://eplex.cs.ucf.edu/hyperNEATpage/HyperNEAT.html.
 
-The latest version is available at, and issues should be posted at, https://github.com/OliverColeman/ahni.
+YAHNI is based on AHNI which can be found at https://github.com/OliverColeman/ahni.
 
 
 ## Building and Running
@@ -10,7 +10,7 @@ The latest version is available at, and issues should be posted at, https://gith
 A runnable JAR file can be built from the source files with:
 
 ```sh
-ant runjar
+mvn compile
 ```
 
 Then to run an experiment:
