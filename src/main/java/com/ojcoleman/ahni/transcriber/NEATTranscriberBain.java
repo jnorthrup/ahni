@@ -26,7 +26,7 @@ import org.apache.log4j.Logger;
 import org.jgapcustomised.BulkFitnessFunction;
 import org.jgapcustomised.Chromosome;
 
-import com.amd.aparapi.Kernel;
+import com.aparapi.Kernel;
 import com.anji.integration.Activator;
 import com.anji.integration.Transcriber;
 import com.anji.integration.TranscriberException;

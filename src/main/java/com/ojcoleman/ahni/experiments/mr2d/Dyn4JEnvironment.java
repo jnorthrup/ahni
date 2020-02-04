@@ -33,6 +33,7 @@ import com.ojcoleman.ahni.hyperneat.Properties;
 import com.ojcoleman.ahni.nn.NNAdaptor;
 import com.ojcoleman.ahni.util.ArrayUtil;
 import com.ojcoleman.ahni.util.Range;
+import org.dyn4j.geometry.MassType;
 
 class Dyn4JEnvironment extends Environment implements ContactListener {
 	private static final NumberFormat nf = new DecimalFormat("0.00");
@@ -92,7 +93,7 @@ class Dyn4JEnvironment extends Environment implements ContactListener {
 			body.getTransform().setTranslation(object.description.initialPosition.x, object.description.initialPosition.y);
 			body.getTransform().setRotation(object.description.initialRotation);
 			if (object.description.type.mass <= 0) {
-				body.setMass(Mass.Type.INFINITE);
+				body.setMass(MassType.INFINITE);
 			}
 			else {
 				body.setMass();
@@ -110,7 +111,7 @@ class Dyn4JEnvironment extends Environment implements ContactListener {
 		Body body = new Body(1);
 		Rectangle w = new Rectangle(Math.abs(x2-x1), Math.abs(y2-y1));
 		BodyFixture fixture = body.addFixture(w);
-		body.setMass(Mass.Type.INFINITE);
+		body.setMass(MassType.INFINITE);
 		body.translate((x2+x1)/2, (y2+y1)/2);
 		return body;
 	}
@@ -121,7 +122,7 @@ class Dyn4JEnvironment extends Environment implements ContactListener {
 		assert objectBodies.get(0).description.type.isAgent;
 		Body agent = objectBodies.get(0).body;
 		objectBodies.get(0).body.setAsleep(false);
-		double agentRotation = objectBodies.get(0).body.getTransform().getRotation() + Math.PI/2;;
+		double agentRotation = objectBodies.get(0).body.getTransform().getRotationAngle() + Math.PI/2;;
 		objectBodies.get(0).body.setLinearVelocity(distance * Math.cos(agentRotation), distance * Math.sin(agentRotation));
 		objectBodies.get(0).body.setAngularVelocity(rotation);
 		
@@ -132,7 +133,7 @@ class Dyn4JEnvironment extends Environment implements ContactListener {
 		for (ObjectBody object : objectBodies) {
 			object.currentPosition.x = object.body.getTransform().getTranslationX();
 			object.currentPosition.y = object.body.getTransform().getTranslationY();
-			object.currentRotation = object.body.getTransform().getRotation();
+			object.currentRotation = object.body.getTransform().getRotationAngle();
 		}
 		
 		sensorDataStale = true;
@@ -144,7 +145,7 @@ class Dyn4JEnvironment extends Environment implements ContactListener {
 		if (sensorDataStale) {
 			Body agentBody = objectBodies.get(0).body;
 			assert ((ObjectInstance) agentBody.getUserData()).description.type.isAgent;
-			double rotation = agentBody.getTransform().getRotation();
+			double rotation = agentBody.getTransform().getRotationAngle();
 			Vector2 location = agentBody.getTransform().getTranslation();
 			
 			int sensorCount = mobileRobot2D.getAgentSensorCount();

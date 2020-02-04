@@ -24,7 +24,7 @@ import com.ojcoleman.bain.neuron.rate.NeuronCollectionWithBias;
 import org.apache.log4j.Logger;
 import org.jgapcustomised.Chromosome;
 
-import com.amd.aparapi.Kernel;
+import com.aparapi.Kernel;
 import com.anji.integration.Transcriber;
 import com.anji.integration.TranscriberException;
 import com.ojcoleman.ahni.event.*;

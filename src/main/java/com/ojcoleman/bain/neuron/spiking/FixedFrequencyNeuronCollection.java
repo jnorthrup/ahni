@@ -1,7 +1,7 @@
 package com.ojcoleman.bain.neuron.spiking;
 
 
-import com.amd.aparapi.Kernel;
+import com.aparapi.Kernel;
 import com.ojcoleman.bain.base.*;
 
 /**

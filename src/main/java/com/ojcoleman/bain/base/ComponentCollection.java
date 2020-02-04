@@ -4,9 +4,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import com.amd.aparapi.Kernel;
-import com.amd.aparapi.Range;
-import com.amd.aparapi.Kernel.EXECUTION_MODE;
+import com.aparapi.Kernel;
+import com.aparapi.Range;
+import com.aparapi.Kernel.EXECUTION_MODE;
 import com.ojcoleman.bain.NeuralNetwork;
 import com.ojcoleman.bain.misc.*;
 

@@ -71,6 +71,18 @@
             <artifactId>xstream</artifactId>
             <version>1.4.11.1</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/commons-primitives/commons-primitives -->
+        <dependency>
+            <groupId>commons-primitives</groupId>
+            <artifactId>commons-primitives</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jfree/jcommon -->
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jcommon</artifactId>
+            <version>1.0.24</version>
+        </dependency>
 
     </dependencies>
 </project>

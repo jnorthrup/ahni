@@ -21,7 +21,7 @@ import com.ojcoleman.bain.base.SynapseConfiguration;
 import org.apache.log4j.Logger;
 import org.jgapcustomised.*;
 
-import com.amd.aparapi.Kernel;
+import com.aparapi.Kernel;
 import com.anji.integration.Transcriber;
 import com.anji.integration.TranscriberException;
 import com.ojcoleman.ahni.hyperneat.HyperNEATConfiguration;

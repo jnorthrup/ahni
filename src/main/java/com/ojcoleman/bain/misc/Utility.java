@@ -1,6 +1,6 @@
 package com.ojcoleman.bain.misc;
 
-import com.amd.aparapi.Kernel;
+import com.aparapi.Kernel;
 
 /**
  * Miscellaneous collection of functions and utilities.

@@ -25,7 +25,7 @@ import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.log4j.Logger;
 import org.jgapcustomised.Chromosome;
 
-import com.amd.aparapi.Kernel;
+import com.aparapi.Kernel;
 import com.anji.integration.Activator;
 import com.ojcoleman.ahni.evaluation.BulkFitnessFunctionMT;
 import com.ojcoleman.ahni.evaluation.novelty.Behaviour;

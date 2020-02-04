@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 import java.text.Format;
 
 
-import com.amd.aparapi.Kernel;
+import com.aparapi.Kernel;
 import com.ojcoleman.bain.NeuralNetwork;
 import com.ojcoleman.bain.neuron.spiking.FixedFrequencyNeuronCollection;
 import com.ojcoleman.bain.neuron.spiking.FixedFrequencyNeuronConfiguration;

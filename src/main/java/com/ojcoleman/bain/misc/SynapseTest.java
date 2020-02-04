@@ -27,7 +27,7 @@ import org.jfree.chart.title.PaintScaleLegend;
 import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.data.xy.DefaultXYZDataset;
 import org.jfree.data.xy.XYBarDataset;
-import org.jfree.ui.RectangleEdge;
+import org.jfree.chart.ui.RectangleEdge;
 
 import com.ojcoleman.bain.NeuralNetwork;
 import com.ojcoleman.bain.base.ComponentConfiguration;
@@ -478,7 +478,7 @@ public class SynapseTest {
 					efficacyData.addSeries(efficacyLabel, result.getResult("Time", "Efficacy"));
 				}
 				xyRenderer = new XYLineAndShapeRenderer(true, false);
-				xyRenderer.setBaseToolTipGenerator(tooltipGen);
+				xyRenderer.setDefaultToolTipGenerator(tooltipGen);
 				combinedPlot.add(new XYPlot(efficacyData, null, new NumberAxis("Efficacy"), xyRenderer), 4);
 			} else { // Plot each result set separately.
 				for (TestResults result : results) {
@@ -486,7 +486,7 @@ public class SynapseTest {
 					String efficacyLabel = (resultsCount == 1) ? "Efficacy" : "" + result.getProperty("label");
 					efficacyData.addSeries(efficacyLabel, result.getResult("Time", "Efficacy"));
 					xyRenderer = new XYLineAndShapeRenderer(true, false);
-					xyRenderer.setBaseToolTipGenerator(tooltipGen);
+					xyRenderer.setDefaultToolTipGenerator(tooltipGen);
 					combinedPlot.add(new XYPlot(efficacyData, null, new NumberAxis("Efficacy"), xyRenderer), 4);
 				}
 			}
@@ -500,14 +500,14 @@ public class SynapseTest {
 					}
 				}
 				xyRenderer = new XYLineAndShapeRenderer(true, false);
-				xyRenderer.setBaseToolTipGenerator(tooltipGen);
+				xyRenderer.setDefaultToolTipGenerator(tooltipGen);
 				combinedPlot.add(new XYPlot(traceData, null, new NumberAxis("State"), xyRenderer), 3);
 
 				DefaultXYDataset spikeData = new DefaultXYDataset();
 				spikeData.addSeries("Pre-synaptic spikes", results[0].getResult("Time", "Pre-synaptic spikes"));
 				spikeData.addSeries("Post-synaptic spikes", results[0].getResult("Time", "Post-synaptic spikes"));
 				xyRenderer = new XYLineAndShapeRenderer(true, false);
-				xyRenderer.setBaseToolTipGenerator(tooltipGen);
+				xyRenderer.setDefaultToolTipGenerator(tooltipGen);
 				combinedPlot.add(new XYPlot(spikeData, null, new NumberAxis("Pre/post potential"), xyRenderer), 3);
 			}
 
@@ -533,7 +533,7 @@ public class SynapseTest {
 					efficacyData.addSeries(efficacyLabel, result.getResult("Time delta", "Efficacy"));
 				}
 				xyRenderer = new XYLineAndShapeRenderer(true, false);
-				xyRenderer.setBaseToolTipGenerator(tooltipGen);
+				xyRenderer.setDefaultToolTipGenerator(tooltipGen);
 				combinedPlot.add(new XYPlot(efficacyData, null, new NumberAxis("Efficacy"), xyRenderer), 4);
 			} else { // Plot each result set separately.
 				for (TestResults result : results) {
@@ -541,7 +541,7 @@ public class SynapseTest {
 					String efficacyLabel = (resultsCount == 1) ? "Efficacy" : "" + result.getProperty("label");
 					efficacyData.addSeries(efficacyLabel, result.getResult("Time delta", "Efficacy"));
 					xyRenderer = new XYLineAndShapeRenderer(true, false);
-					xyRenderer.setBaseToolTipGenerator(tooltipGen);
+					xyRenderer.setDefaultToolTipGenerator(tooltipGen);
 					combinedPlot.add(new XYPlot(efficacyData, null, new NumberAxis("Efficacy"), xyRenderer), 4);
 				}
 			}

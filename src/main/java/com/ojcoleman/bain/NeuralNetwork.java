@@ -3,7 +3,7 @@ package com.ojcoleman.bain;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import com.amd.aparapi.Kernel;
+import com.aparapi.Kernel;
 import com.ojcoleman.bain.base.*;
 import com.ojcoleman.bain.neuron.spiking.FixedFrequencyNeuronCollection;
 import com.ojcoleman.bain.neuron.spiking.FixedFrequencyNeuronConfiguration;
