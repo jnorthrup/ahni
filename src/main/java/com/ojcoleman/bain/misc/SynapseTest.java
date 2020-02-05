@@ -2,14 +2,11 @@ package com.ojcoleman.bain.misc;
 
 import java.awt.Color;
 import java.text.DecimalFormat;
-import java.util.Arrays;
 
 import javax.swing.JFrame;
-import javax.swing.JProgressBar;
 import javax.swing.ProgressMonitor;
 
 
-import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
@@ -17,26 +14,21 @@ import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.labels.StandardXYZToolTipGenerator;
 import org.jfree.chart.labels.XYToolTipGenerator;
 import org.jfree.chart.plot.CombinedDomainXYPlot;
-import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.LookupPaintScale;
-import org.jfree.chart.renderer.xy.XYBarRenderer;
 import org.jfree.chart.renderer.xy.XYBlockRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.chart.title.PaintScaleLegend;
 import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.data.xy.DefaultXYZDataset;
-import org.jfree.data.xy.XYBarDataset;
 import org.jfree.chart.ui.RectangleEdge;
 
 import com.ojcoleman.bain.NeuralNetwork;
 import com.ojcoleman.bain.base.ComponentConfiguration;
 import com.ojcoleman.bain.base.SynapseCollection;
 import com.ojcoleman.bain.misc.*;
-import com.ojcoleman.bain.neuron.*;
 import com.ojcoleman.bain.neuron.spiking.FixedProtocolNeuronCollection;
 import com.ojcoleman.bain.neuron.spiking.FixedProtocolNeuronConfiguration;
-import com.ojcoleman.bain.synapse.*;
 
 /**
  * Class to test the behaviour of synapse models on given spiking protocols.

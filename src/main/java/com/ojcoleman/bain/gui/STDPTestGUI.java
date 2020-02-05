@@ -4,8 +4,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.text.DecimalFormat;
 import java.text.Format;
-import java.util.Arrays;
-import java.util.concurrent.ExecutionException;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -18,8 +16,6 @@ import org.jfree.chart.*;
 
 import com.ojcoleman.bain.base.*;
 import com.ojcoleman.bain.misc.*;
-import com.ojcoleman.bain.neuron.*;
-import com.ojcoleman.bain.synapse.*;
 
 /**
  * GUI for experimenting with synaptic plasticity models.

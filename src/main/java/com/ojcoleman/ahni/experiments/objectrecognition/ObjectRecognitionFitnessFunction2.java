@@ -1,18 +1,12 @@
 package com.ojcoleman.ahni.experiments.objectrecognition;
 
-import java.awt.geom.AffineTransform;
-import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 import org.jgapcustomised.*;
 
 import com.anji.integration.*;
-import com.anji.nn.*;
-import com.ojcoleman.ahni.*;
 import com.ojcoleman.ahni.evaluation.HyperNEATFitnessFunction;
-import com.ojcoleman.ahni.hyperneat.HyperNEATEvolver;
 import com.ojcoleman.ahni.hyperneat.Properties;
-import com.ojcoleman.ahni.nn.GridNet;
 import com.ojcoleman.ahni.transcriber.HyperNEATTranscriber;
 
 /**

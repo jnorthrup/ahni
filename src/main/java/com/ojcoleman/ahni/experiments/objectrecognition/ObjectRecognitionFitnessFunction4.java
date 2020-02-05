@@ -4,10 +4,8 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
-import java.awt.RenderingHints;
 import java.io.File;
 import java.io.IOException;
-import java.util.Vector;
 
 import javax.imageio.ImageIO;
 
@@ -16,11 +14,7 @@ import org.jgapcustomised.*;
 
 import com.anji.integration.Activator;
 import com.anji.integration.ActivatorTranscriber;
-import com.anji.integration.Transcriber;
-import com.anji.neat.Evolver;
-import com.ojcoleman.ahni.*;
 import com.ojcoleman.ahni.evaluation.HyperNEATFitnessFunction;
-import com.ojcoleman.ahni.hyperneat.HyperNEATEvolver;
 import com.ojcoleman.ahni.hyperneat.Properties;
 import com.ojcoleman.ahni.nn.GridNet;
 import com.ojcoleman.ahni.transcriber.HyperNEATTranscriber;
