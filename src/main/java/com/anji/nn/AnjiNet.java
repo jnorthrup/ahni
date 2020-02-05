@@ -17,283 +17,288 @@
  * 
  * created by Philip Tucker on Jun 9, 2004
  */
-
 package com.anji.nn;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 /**
  * Aggregates all pieces for a full neural network.
- * 
+ *
  * @author Philip Tucker
  */
 public class AnjiNet {
 
-	/**
-	 * base XML tag
-	 */
-	public final static String XML_TAG = "network";
+    /**
+     * base XML tag
+     */
+    public final static String XML_TAG = "network";
 
-	private ArrayList<Neuron> allNeurons;
+    private ArrayList<Neuron> allNeurons;
 
-	private List<Neuron> inNeurons;
+    private List<Neuron> inNeurons;
 
-	private List<Neuron> outNeurons;
+    private List<Neuron> outNeurons;
 
-	private List<CacheNeuronConnection> recurrentConns;
+    private List<CacheNeuronConnection> recurrentConns;
 
-	private String name;
+    private String name;
 
-	/**
-	 * @param allNeurons
-	 * @param inputNeurons
-	 * @param outputNeurons
-	 * @param recurrentConns
-	 * @param aName
-	 */
-	public AnjiNet(Collection<Neuron> allNeurons, List<Neuron> inputNeurons, List<Neuron> outputNeurons, List<CacheNeuronConnection> recurrentConns, String aName) {
-		init(allNeurons, inputNeurons, outputNeurons, recurrentConns, aName);
-	}
+    /**
+     * @param allNeurons
+     * @param inputNeurons
+     * @param outputNeurons
+     * @param recurrentConns
+     * @param aName
+     */
+    public AnjiNet(Collection<Neuron> allNeurons, List<Neuron> inputNeurons, List<Neuron> outputNeurons, List<CacheNeuronConnection> recurrentConns, String aName) {
+        init(allNeurons, inputNeurons, outputNeurons, recurrentConns, aName);
+    }
 
-	/**
-	 * for testing only
-	 */
-	protected AnjiNet() {
-		// no-op
-	}
+    /**
+     * for testing only
+     */
+    protected AnjiNet() {
+        // no-op
+    }
 
-	/**
-	 * @return number corresponding to cost of network activation in resources
-	 */
-	public long cost() {
-		long result = 0;
+    /**
+     * @return number corresponding to cost of network activation in resources
+     */
+    public long cost() {
+        long result = 0;
 
-		Iterator it = allNeurons.iterator();
-		while (it.hasNext()) {
-			Neuron n = (Neuron) it.next();
-			result += n.cost();
-		}
+        for (Neuron n : allNeurons) {
+            result += n.cost();
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	/**
-	 * @param someNeurons all neurons
-	 * @param someInNeurons input neurons (also included in someNeurons)
-	 * @param someOutNeurons output neurons (also included in someNeurons)
-	 * @param someRecurrentConns recurrent connections
-	 * @param aName
-	 */
-	protected void init(Collection<Neuron> someNeurons, List<Neuron> someInNeurons, List<Neuron> someOutNeurons, List<CacheNeuronConnection> someRecurrentConns, String aName) {
-		allNeurons = new ArrayList<Neuron>(someNeurons);
+    /**
+     * @param someNeurons all neurons
+     * @param someInNeurons input neurons (also included in someNeurons)
+     * @param someOutNeurons output neurons (also included in someNeurons)
+     * @param someRecurrentConns recurrent connections
+     * @param aName
+     */
+    protected void init(Collection<Neuron> someNeurons, List<Neuron> someInNeurons, List<Neuron> someOutNeurons, List<CacheNeuronConnection> someRecurrentConns, String aName) {
+        allNeurons = new ArrayList<>(someNeurons);
 
-		inNeurons = someInNeurons;
-		outNeurons = someOutNeurons;
-		recurrentConns = someRecurrentConns;
-		name = aName;
-	}
+        inNeurons = someInNeurons;
+        outNeurons = someOutNeurons;
+        recurrentConns = someRecurrentConns;
+        name = aName;
+    }
 
-	/**
-	 * @param idx
-	 * @return input neuron at position <code>idx</code>
-	 */
-	public Neuron getInputNeuron(int idx) {
-		return inNeurons.get(idx);
-	}
+    /**
+     * @param idx
+     * @return input neuron at position <code>idx</code>
+     */
+    public Neuron getInputNeuron(int idx) {
+        return inNeurons.get(idx);
+    }
 
-	/**
-	 * @return number input neurons
-	 */
-	public int getInputDimension() {
-		return inNeurons.size();
-	}
+    /**
+     * @return number input neurons
+     */
+    public int getInputDimension() {
+        return inNeurons.size();
+    }
 
-	// /**
-	// * @return <code>Collection</code> contains all <code>Neuron</code> objects
-	// */
-	// public Collection getAllNeurons() {
-	// return allNeurons;
-	// }
+    // /**
+    // * @return <code>Collection</code> contains all <code>Neuron</code> objects
+    // */
+    // public Collection getAllNeurons() {
+    // return allNeurons;
+    // }
+    /**
+     * @param idx
+     * @return output neuron at position <code>idx</code>
+     */
+    public Neuron getOutputNeuron(int idx) {
+        return outNeurons.get(idx);
+    }
 
-	/**
-	 * @param idx
-	 * @return output neuron at position <code>idx</code>
-	 */
-	public Neuron getOutputNeuron(int idx) {
-		return outNeurons.get(idx);
-	}
+    /**
+     * @param fromIdx
+     * @param toIdx
+     * @return output neurons from position <code>toIdx</code> (inclusive) to
+     * <code>fromIdx</code> (exclusive)
+     */
+    public List<Neuron> getOutputNeurons(int fromIdx, int toIdx) {
+        return outNeurons.subList(fromIdx, toIdx);
+    }
 
-	/**
-	 * @param fromIdx
-	 * @param toIdx
-	 * @return output neurons from position <code>toIdx</code> (inclusive) to <code>fromIdx</code> (exclusive)
-	 */
-	public List<Neuron> getOutputNeurons(int fromIdx, int toIdx) {
-		return outNeurons.subList(fromIdx, toIdx);
-	}
+    /**
+     * @param fromIdx
+     * @param toIdx
+     * @return input neurons from position <code>toIdx</code> (inclusive) to
+     * <code>fromIdx</code> (exclusive)
+     */
+    public List<Neuron> getInputNeurons(int fromIdx, int toIdx) {
+        return inNeurons.subList(fromIdx, toIdx);
+    }
 
-	/**
-	 * @param fromIdx
-	 * @param toIdx
-	 * @return input neurons from position <code>toIdx</code> (inclusive) to <code>fromIdx</code> (exclusive)
-	 */
-	public List<Neuron> getInputNeurons(int fromIdx, int toIdx) {
-		return inNeurons.subList(fromIdx, toIdx);
-	}
+    /**
+     * @return number output neurons
+     */
+    public int getOutputDimension() {
+        return outNeurons.size();
+    }
 
-	/**
-	 * @return number output neurons
-	 */
-	public int getOutputDimension() {
-		return outNeurons.size();
-	}
+    /**
+     * @return <code>Collection</code> contains recurrent
+     * <code>Connection</code> objects
+     */
+    public Collection<CacheNeuronConnection> getRecurrentConns() {
+        return recurrentConns;
+    }
 
-	/**
-	 * @return <code>Collection</code> contains recurrent <code>Connection</code> objects
-	 */
-	public Collection<CacheNeuronConnection> getRecurrentConns() {
-		return recurrentConns;
-	}
+    /**
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        HashMap<Neuron, Integer> neuronIndexMap = new HashMap<>();
+        int connCount = 0;
+        for (int n = 0; n < allNeurons.size(); n++) {
+            neuronIndexMap.put(allNeurons.get(n), n);
+            if (!inNeurons.contains(allNeurons.get(n))) {
+                connCount += allNeurons.get(n).getIncomingConns().size();
+            }
+        }
 
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString() {
-		HashMap<Neuron, Integer> neuronIndexMap = new HashMap<Neuron, Integer>();
-		int connCount = 0;
-		for (int n = 0; n < allNeurons.size(); n++) {
-			neuronIndexMap.put(allNeurons.get(n), n);
-			if (!inNeurons.contains(allNeurons.get(n))) {
-				connCount += allNeurons.get(n).getIncomingConns().size();
-			}
-		}
-		
-		DecimalFormat nf = new DecimalFormat(" 0.00;-0.00");
-		StringBuilder out = new StringBuilder();
-		if (getName() != null) out.append(getName());
-		out.append("\nNeuron count: " + allNeurons.size());
-		out.append("\nSynapse count: " + connCount);
-		out.append("\nTopology type: " + (isRecurrent() ? "Reccurent" : "Feed-forward"));
-		
-		out.append("\n\nNeurons:\n\t\ttype\tfunc\tbias");
-		for (int n = 0; n < allNeurons.size(); n++) {
-			out.append("\n\t" + n + "\t" + getType(allNeurons.get(n)) + "\t" + allNeurons.get(n).getFunc() + "\t" + allNeurons.get(n).getBias());
-		}
+        DecimalFormat nf = new DecimalFormat(" 0.00;-0.00");
+        StringBuilder out = new StringBuilder();
+        if (getName() != null) {
+            out.append(getName());
+        }
+        out.append("\nNeuron count: " + allNeurons.size());
+        out.append("\nSynapse count: " + connCount);
+        out.append("\nTopology type: " + (isRecurrent() ? "Reccurent" : "Feed-forward"));
 
-		out.append("\n\nConnections:");
-		out.append("\n\tpre > post\tweight");
-		
-		for (int ni = 0; ni < allNeurons.size(); ni++) {
-			Neuron n = allNeurons.get(ni);
-			for (Connection c : n.getIncomingConns()) {
-				if (c instanceof NeuronConnection) {
-					NeuronConnection nc = (NeuronConnection) c;
-					Neuron src = nc.getIncomingNode();
-					int pre = src != null ? neuronIndexMap.get(src) : -1;
-					int post = ni;
-					String preType = src != null ? getType(src) : "-";
-					String postType = getType(n);
-					out.append("\n\t" + preType + ":" + pre + " > " + postType + ":" + post + "\t" + nc.getWeight());
-				}
-			}
-		}
+        out.append("\n\nNeurons:\n\t\ttype\tfunc\tbias");
+        for (int n = 0; n < allNeurons.size(); n++) {
+            out.append("\n\t" + n + "\t" + getType(allNeurons.get(n)) + "\t" + allNeurons.get(n).getFunc() + "\t" + allNeurons.get(n).getBias());
+        }
 
-		return out.toString();
-	}
-	
-	private String getType(Neuron n) {
-		if (inNeurons.contains(n)) return "i";
-		if (outNeurons.contains(n)) return "o";
-		return "h";
-	}
+        out.append("\n\nConnections:");
+        out.append("\n\tpre > post\tweight");
 
-	/**
-	 * @return the name.
-	 */
-	public String getName() {
-		return name;
-	}
+        for (int ni = 0; ni < allNeurons.size(); ni++) {
+            Neuron n = allNeurons.get(ni);
+            for (Connection c : n.getIncomingConns()) {
+                if (c instanceof NeuronConnection) {
+                    NeuronConnection nc = (NeuronConnection) c;
+                    Neuron src = nc.getIncomingNode();
+                    int pre = src != null ? neuronIndexMap.get(src) : -1;
+                    int post = ni;
+                    String preType = src != null ? getType(src) : "-";
+                    String postType = getType(n);
+                    out.append("\n\t" + preType + ":" + pre + " > " + postType + ":" + post + "\t" + nc.getWeight());
+                }
+            }
+        }
 
-	/**
-	 * indicates a time step has passed
-	 */
-	public void step() {
-		try {
-			// populate cache connections with values from previous step
-			// We don't use the Collections iterator functionality because it's slower for small collections.
-			for (int i = 0 ; i < recurrentConns.size(); i++) {
-				recurrentConns.get(i).step();
-				//System.out.println("recurrent! " + name);
-			}
-			for (int i = 0 ; i < allNeurons.size(); i++) {
-				allNeurons.get(i).step();
-			}
-		}
-		catch (StackOverflowError e) {
-			System.err.println(e.getMessage());
-			e.printStackTrace();
-			System.err.println("step() AnjiNet:\n" + toXml());
-		}
-	}
+        return out.toString();
+    }
 
-	/**
-	 * make sure all neurons have been activated for the current cycle; this is to catch neurons with no forward outputs
-	 */
-	public void fullyActivate() {
-		try {
-			// We don't use the Collections iterator functionality because it's slower for small collections.
-			for (int i = 0 ; i < allNeurons.size(); i++) {
-				allNeurons.get(i).getValue();
-			}
-		}
-		catch (StackOverflowError e) {
-			System.err.println(e.getMessage());
-			e.printStackTrace();
-			System.err.println("fA() AnjiNet:\n" + toXml());
-		}
-	}
+    private String getType(Neuron n) {
+        if (inNeurons.contains(n)) {
+            return "i";
+        }
+        if (outNeurons.contains(n)) {
+            return "o";
+        }
+        return "h";
+    }
 
-	/**
-	 * clear all memory in network, including neurons and recurrent connections
-	 */
-	public void reset() {
-		// We don't use the Collections iterator functionality because it's slower for small collections.
-		for (int i = 0 ; i < allNeurons.size(); i++) {
-			allNeurons.get(i).reset();
-		}
-		for (int i = 0 ; i < recurrentConns.size(); i++) {
-			recurrentConns.get(i).reset();
-		}
-	}
+    /**
+     * @return the name.
+     */
+    public String getName() {
+        return name;
+    }
 
-	/**
-	 * @return <code>String</code> XML representation
-	 */
-	public String toXml() {
-		StringBuffer result = new StringBuffer();
-		result.append("<").append(XML_TAG).append(">\n");
-		result.append("<title>").append(getName()).append("</title>\n");
-		Neuron.appendToXml(allNeurons, outNeurons, result);
-		NeuronConnection.appendToXml(allNeurons, result);
-		result.append("</").append(XML_TAG).append(">\n");
+    /**
+     * indicates a time step has passed
+     */
+    public void step() {
+        try {
+            // populate cache connections with values from previous step
+            // We don't use the Collections iterator functionality because it's slower for small collections.
+            for (int i = 0; i < recurrentConns.size(); i++) {
+                recurrentConns.get(i).step();
+                //System.out.println("recurrent! " + name);
+            }
+            for (int i = 0; i < allNeurons.size(); i++) {
+                allNeurons.get(i).step();
+            }
+        } catch (StackOverflowError e) {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+            System.err.println("step() AnjiNet:\n" + toXml());
+        }
+    }
 
-		return result.toString();
-	}
+    /**
+     * make sure all neurons have been activated for the current cycle; this is
+     * to catch neurons with no forward outputs
+     */
+    public void fullyActivate() {
+        try {
+            // We don't use the Collections iterator functionality because it's slower for small collections.
+            for (int i = 0; i < allNeurons.size(); i++) {
+                allNeurons.get(i).getValue();
+            }
+        } catch (StackOverflowError e) {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+            System.err.println("fA() AnjiNet:\n" + toXml());
+        }
+    }
 
-	/**
-	 * @return true if network contains any recurrent connections, false otherwise
-	 */
-	public boolean isRecurrent() {
-		return !recurrentConns.isEmpty();
-	}
+    /**
+     * clear all memory in network, including neurons and recurrent connections
+     */
+    public void reset() {
+        // We don't use the Collections iterator functionality because it's slower for small collections.
+        for (int i = 0; i < allNeurons.size(); i++) {
+            allNeurons.get(i).reset();
+        }
+        for (int i = 0; i < recurrentConns.size(); i++) {
+            recurrentConns.get(i).reset();
+        }
+    }
 
-	public void setName(String string) {
-		name = string;
-	}
+    /**
+     * @return <code>String</code> XML representation
+     */
+    public String toXml() {
+        StringBuffer result = new StringBuffer();
+        result.append("<").append(XML_TAG).append(">\n");
+        result.append("<title>").append(getName()).append("</title>\n");
+        Neuron.appendToXml(allNeurons, outNeurons, result);
+        NeuronConnection.appendToXml(allNeurons, result);
+        result.append("</").append(XML_TAG).append(">\n");
+
+        return result.toString();
+    }
+
+    /**
+     * @return true if network contains any recurrent connections, false
+     * otherwise
+     */
+    public boolean isRecurrent() {
+        return !recurrentConns.isEmpty();
+    }
+
+    public void setName(String string) {
+        name = string;
+    }
 
 }

@@ -69,7 +69,7 @@ public class OWASClassifierFitnessFunction extends BulkFitnessFunction implement
         for (var trainingFile : trainingFiles) {
             try {
                 Reader in = new FileReader(trainingFile);
-                Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(in);
+                Iterable<CSVRecord> records = CSVFormat.EXCEL.withHeader().parse(in);
                 for (CSVRecord record : records) {
                     var input = new double[inputCols.length];
                     for (var n = 0; n < input.length; n++) {
@@ -87,6 +87,7 @@ public class OWASClassifierFitnessFunction extends BulkFitnessFunction implement
                 LOGGER.warn("Error reading training data", ex);
             }
         }
+        LOGGER.info("OWASClassifierFitnessFunction initialized.");
     }
     
     /**
@@ -104,10 +105,32 @@ public class OWASClassifierFitnessFunction extends BulkFitnessFunction implement
         for(Chromosome genotype : subjects) {
             try {
                 Activator activator = activatorFactory.newActivator(genotype);
+                
+                double avgerr = 0;
+                
+                for(var n = 0; n < inputData.size(); n++) {
+                    double[] result = activator.next(inputData.get(n));
+                    double[] reference = outputData.get(n);
+                    avgerr += aggSquaredDiff(result, reference);
+                }
+                
+                avgerr = avgerr / inputData.size();
+                genotype.setFitnessValue(avgerr);
             } catch(TranscriberException ex) {
                 LOGGER.warn("TranscriberException", ex);
             }
         }
+    }
+    
+    private double aggSquaredDiff(double[] a, double[] b) {
+        assert a.length == b.length;
+        
+        double err = 0;
+        for(var n = 0; n < a.length; n++) {
+            double diff = a[n] - b[n];
+            err = err + Math.sqrt(diff * diff);
+        }
+        return err / a.length;
     }
 
     @Override
