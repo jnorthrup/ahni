@@ -20,7 +20,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.ojcoleman.ahni.hyperneat.Run</mainClass>
+                            <mainClass>com.anji.neat.Evolver</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -37,7 +37,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>com.ojcoleman.ahni.hyperneat.Run</mainClass>
+                    <mainClass>com.anji.neat.Evolver</mainClass>
                 </configuration>
             </plugin>
             <plugin>
