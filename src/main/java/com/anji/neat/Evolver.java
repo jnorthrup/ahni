@@ -241,8 +241,8 @@ public class Evolver implements Configurable {
         int generationOfFirstSolution = -1;
         fittest = genotype.getFittestChromosome();
 
-        props.setProperty("output.dir", 
-                props.getProperty("output.dir") + "/" + new Date().toString());
+        //props.setProperty("output.dir", 
+        //        props.getProperty("output.dir") + "/" + new Date().toString());
         File dirFile = new File(props.getProperty("output.dir"));
         if (!dirFile.exists()) {
             dirFile.mkdirs();
