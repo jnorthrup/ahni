@@ -181,11 +181,7 @@ public class Genotype implements Serializable {
      * @param chromosomes A collection of Chromosome objects.
      */
     protected void addChromosomes(Collection<Chromosome> chromosomes) {
-        Iterator<Chromosome> iter = chromosomes.iterator();
-        while (iter.hasNext()) {
-            Chromosome c = iter.next();
-            m_chromosomes.add(c);
-        }
+        m_chromosomes.addAll(chromosomes);
     }
 
     /**
@@ -272,12 +268,12 @@ public class Genotype implements Serializable {
 
     /**
      * Performs one generation cycle, evaluating fitness, selecting survivors,
-     * repopulting with offspring, and mutating new population. This is a
-     * modified version of original JGAP method which changes order of
-     * operations and splits <code>GeneticOperator</code> into
-     * <code>ReproductionOperator</code> and <code>MutationOperator</code>. New
-     * order of operations (this is probably out of date now):
-     * <ol>
+     * repopulting with offspring, and mutating new population.This is a
+ modified version of original JGAP method which changes order of
+ operations and splits <code>GeneticOperator</code> into
+    <code>ReproductionOperator</code> and <code>MutationOperator</code>. New
+ order of operations (this is probably out of date now):
+ <ol>
      * <li>assign <b>fitness </b> to all members of population with
      * <code>BulkFitnessFunction</code> or <code>FitnessFunction</code></li>
      * <li><b>select </b> survivors and remove casualties from population</li>
@@ -289,6 +285,7 @@ public class Genotype implements Serializable {
      * Genetic event <code>GeneticEvent.GENOTYPE_EVALUATED_EVENT</code> is fired
      * between steps 2 and 3. Genetic event
      * <code>GeneticEvent.GENOTYPE_EVOLVED_EVENT</code> is fired after step 4.
+     * @return 
      */
     public synchronized Chromosome evolve() {
         try {

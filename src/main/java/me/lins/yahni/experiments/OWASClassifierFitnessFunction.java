@@ -102,9 +102,9 @@ public class OWASClassifierFitnessFunction extends BulkFitnessFunction implement
     public void evaluate(List<Chromosome> subjects) {
         endRun = false;
         
-        for(Chromosome genotype : subjects) {
+        for(Chromosome chrome : subjects) {
             try {
-                Activator activator = activatorFactory.newActivator(genotype);
+                Activator activator = activatorFactory.newActivator(chrome);
                 
                 double avgerr = 0;
                 
@@ -114,8 +114,11 @@ public class OWASClassifierFitnessFunction extends BulkFitnessFunction implement
                     avgerr += aggSquaredDiff(result, reference);
                 }
                 
-                avgerr = avgerr / inputData.size();
-                genotype.setFitnessValue(avgerr);
+                double fitness = 1 - avgerr / inputData.size();
+                // TODO Which one is correct?
+                chrome.setFitnessValue(fitness);
+                chrome.setFitnessValue(fitness, 0);
+                chrome.setPerformanceValue(fitness);
             } catch(TranscriberException ex) {
                 LOGGER.warn("TranscriberException", ex);
             }

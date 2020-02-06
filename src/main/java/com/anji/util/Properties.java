@@ -69,12 +69,12 @@ public class Properties extends java.util.Properties {
      * property values will be enabled. Substitutions have the format $([key]),
      * where [key] is the key of another property present in the set of
      * properties, for example:      <code>
-	 * myProp1=foo
+     * myProp1=foo
      * myProp2=$(myProp2)
      * </code> will replace "$(myProp2)" with "foo". Multiple substitutions may
      * be used for the same property, and other characters may surround a
      * substitution:      <code>
-	 * myProp1=foo
+     * myProp1=foo
      * myProp2=bar$(myProp1)baz
      * myProp3=$(myProp2)$(myProp3)
      * </code>
@@ -582,16 +582,16 @@ public class Properties extends java.util.Properties {
      * @return Set contains String objects
      */
     public Set<String> getKeysForPattern(String pattern) {
-        throw new NotImplementedError();
-        /*RE regex = new RE(pattern);
-		Set<String> result = new HashSet<String>();
-		Iterator it = super.keySet().iterator();
-		while (it.hasNext()) {
-			String key = (String) it.next();
-			if (regex.match(key))
-				result.add(key);
-		}
-		return result;*/
+        Pattern regex = Pattern.compile(pattern);
+        Set<String> result = new HashSet<>();
+        Iterator it = super.keySet().iterator();
+        while (it.hasNext()) {
+            String key = (String) it.next();
+            if (regex.matcher(key).matches()) {
+                result.add(key);
+            }
+        }
+        return result;
     }
 
     /**
@@ -601,16 +601,16 @@ public class Properties extends java.util.Properties {
      * @return Set contains String objects
      */
     public Set<String> getPropertiesForPattern(String pattern) {
-        throw new NotImplementedError();
-        /*RE regex = new RE(pattern);
-		Set<String> result = new HashSet<String>();
-		Iterator it = super.keySet().iterator();
-		while (it.hasNext()) {
-			String key = (String) it.next();
-			if (regex.match(key))
-				result.add(getProperty(key));
-		}
-		return result;*/
+        Pattern regex = Pattern.compile(pattern);
+        Set<String> result = new HashSet<>();
+        Iterator it = super.keySet().iterator();
+        while (it.hasNext()) {
+            String key = (String) it.next();
+            if (regex.matcher(key).matches()) {
+                result.add(getProperty(key));
+            }
+        }
+        return result;
     }
 
     /**
