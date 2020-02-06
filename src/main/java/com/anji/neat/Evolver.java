@@ -22,15 +22,11 @@ package com.anji.neat;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.text.DateFormat;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.TreeMap;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.jgapcustomised.BulkFitnessFunction;
@@ -43,7 +39,6 @@ import com.anji.integration.*;
 import com.anji.persistence.Persistence;
 import com.anji.run.Run;
 import com.anji.util.*;
-import com.anji.nn.*;
 
 /**
  * Configures and performs an ANJI evolutionary run.
@@ -246,144 +241,145 @@ public class Evolver implements Configurable {
         int generationOfFirstSolution = -1;
         fittest = genotype.getFittestChromosome();
 
+        props.setProperty("output.dir", 
+                props.getProperty("output.dir") + "/" + new Date().toString());
         File dirFile = new File(props.getProperty("output.dir"));
         if (!dirFile.exists()) {
             dirFile.mkdirs();
         }
-        BufferedWriter speciesInfoWriter = new BufferedWriter(new FileWriter(props.getProperty("output.dir") + "/species-history-size.csv"));
-        StringBuffer output = new StringBuffer();
-        output.append("Gen,\tTSE,\tTS,\tNew,\tExt");
-        for (int i = 0; i < 100; i++) {
-            output.append(",\t" + i);
-        }
-        output.append("\n");
-        speciesInfoWriter.write(output.toString());
-        speciesInfoWriter.flush();
-
-        double avgGenTime = 0;
-        int previousSpeciesCount = 0;
         int generation;
-        TreeMap<Long, Species> allSpeciesEver = new TreeMap<Long, Species>();
-        long start = System.currentTimeMillis();
-
-        // for (generation = 0; (generation < numEvolutions && (adjustedFitness < targetFitness ||
-        // genotype.preventRunEnd())); ++generation) {
-        for (generation = 0; generation < numEvolutions && !bulkFitnessFunc.endRun(); ++generation) {
-            previousSpeciesCount = genotype.getSpecies().size();
-
-            // generation start time
-            //Date generationStartDate = Calendar.getInstance().getTime();
-            logger.info( "Generation " + generation + ": start" );
-            // nextSequence generation
-            fittest = genotype.evolve();
-
-            bestPerforming = genotype.getBestPerforming();
-
-            // result data
-            // if (bestPerforming.getPerformanceValue() >= targetPerformance && generationOfFirstSolution == -1)
-            if (bulkFitnessFunc.endRun()) {
-                generationOfFirstSolution = generation;
-            }
-
-            // champFitnesses[generation] = adjustedFitness;
-            bestPerformance[generation] = bestPerforming.getPerformanceValue();
-            bestFitness[generation] = fittest.getFitnessValue();
-
-            int numSpecies = genotype.getSpecies().size();
-            int minSpeciesSize = Integer.MAX_VALUE;
-            int maxSpeciesSize = 0;
-            int numSpeciesWithNewBestPerforming = 0;
-            int numNewSpecies = 0;
-            int maxSpeciesAge = 0;
-            int minSpeciesAge = Integer.MAX_VALUE;
-            double avgBestSpeciesPerformance = 0;
-            Iterator<Species> speciesIter = genotype.getSpecies().iterator();
-            while (speciesIter.hasNext()) {
-                Species species = speciesIter.next();
-
-                if (species.originalSize > maxSpeciesSize) {
-                    maxSpeciesSize = species.originalSize;
-                }
-                if (species.originalSize < minSpeciesSize) {
-                    minSpeciesSize = species.originalSize;
-                }
-
-                if (species.getAge() > maxSpeciesAge) {
-                    maxSpeciesAge = species.getAge();
-                }
-                if (species.getAge() < minSpeciesAge) {
-                    minSpeciesAge = species.getAge();
-                }
-
-                if (species.getBestPerforming() != null) {
-                    avgBestSpeciesPerformance += species.getBestPerforming().getPerformanceValue();
-                }
-
-                Long speciesKey = new Long(species.getID());
-                if (allSpeciesEver.containsKey(speciesKey)) { // if existing species
-                    if (species.getBestPerforming() != species.getPreviousBestPerforming()) {
-                        numSpeciesWithNewBestPerforming++;
-                    }
-                } else {
-                    numNewSpecies++;
-                    allSpeciesEver.put(speciesKey, species);
-                }
-            }
-            avgBestSpeciesPerformance /= numSpecies;
-            int numExtinctSpecies = previousSpeciesCount - numSpecies + numNewSpecies;
-
-            // write out some info about species history
-            speciesIter = allSpeciesEver.values().iterator();
-            output = new StringBuffer(generation + ",\t" + allSpeciesEver.size() + ",\t" + numSpecies + ",\t" + numNewSpecies + ",\t" + numExtinctSpecies);
-            while (speciesIter.hasNext()) {
-                Species species = speciesIter.next();
-                // output += ",\t" + species.getID() + ":" + species.size();
-                output.append(",\t");
-                output.append(species.originalSize);
-            }
-            output.append("\n");
+        try (BufferedWriter speciesInfoWriter = new BufferedWriter(
+                new FileWriter(
+                        props.getProperty("output.dir") + "/species-history-size.csv"))) 
+        {
+            StringBuffer output = new StringBuffer();
+            output.append("Gen,\tTSE,\tTS,\tNew,\tExt");
+            for (int i = 0; i < 100; i++) {
+                output.append(",\t").append(i);
+            }   output.append("\n");
             speciesInfoWriter.write(output.toString());
             speciesInfoWriter.flush();
-
-            if (generation % logPerGenerations == 0) {
-                double speciationCompatThreshold = genotype.getParameters().getSpeciationThreshold();
-
-                long memTotal = Math.round(runtime.totalMemory() / 1048576);
-                long memFree = Math.round(runtime.freeMemory() / 1048576);
-                long memUsed = memTotal - memFree;
-
-                long duration = (System.currentTimeMillis() - start) / 1000;
-                if (avgGenTime == 0) {
-                    avgGenTime = duration;
-                } else {
-                    avgGenTime = avgGenTime * 0.9 + duration * 0.1;
+            
+            double avgGenTime = 0;
+            int previousSpeciesCount;
+            TreeMap<Long, Species> allSpeciesEver = new TreeMap<>();
+            long start = System.currentTimeMillis();
+            // for (generation = 0; (generation < numEvolutions && (adjustedFitness < targetFitness ||
+            // genotype.preventRunEnd())); ++generation) {
+            for (generation = 0; generation < numEvolutions && !bulkFitnessFunc.endRun(); ++generation) {
+                previousSpeciesCount = genotype.getSpecies().size();
+                
+                // generation start time
+                //Date generationStartDate = Calendar.getInstance().getTime();
+                logger.info( "Generation " + generation + ": start" );
+                // nextSequence generation
+                fittest = genotype.evolve();
+                
+                bestPerforming = genotype.getBestPerforming();
+                
+                // result data
+                // if (bestPerforming.getPerformanceValue() >= targetPerformance && generationOfFirstSolution == -1)
+                if (bulkFitnessFunc.endRun()) {
+                    generationOfFirstSolution = generation;
                 }
-                int eta = (int) Math.round(avgGenTime * (numEvolutions - generation));
-
-                // System.out.print(generation+"(" + (int)(adjustedFitness*100) + "," + genotype.getSpecies().size() +
-                // "), ");
-                // System.out.println(generation + "(" + nf.format((double)fittest.getFitnessValue() /
-                // bulkFitnessFunc.getMaxFitnessValue()) + ", " + nf.format(bestPerformance[generation]) + ", " +
-                // duration + "s, " + memUsed + "M), ");
-                // System.out.print((int)(adjustedFitness*100)+",");
-                // System.out.println(generation+"(" + (int)(adjustedFitness*100) + " : " + champ.getFitnessValue() +
-                // "), ");
-                logger.info("Gen: " + generation + "  Fittest: " + fittest.getId() + "  (F: " + nf4.format(fittest.getFitnessValue()) + "  P: " + nf4.format(fittest.getPerformanceValue()) + ")" + "  Best perf: " + bestPerforming.getId() + "  (F: " + nf4.format(bestPerforming.getFitnessValue()) + "  P: " + nf4.format(bestPerforming.getPerformanceValue()) + ")" + "  ABSP: " + nf4.format(avgBestSpeciesPerformance) + "  S: " + numSpecies + "  NS/ES: " + numNewSpecies + "/" + numExtinctSpecies + "  SCT: " + nf1.format(speciationCompatThreshold) + "  Min/Max SS: " + minSpeciesSize + "/" + maxSpeciesSize + "  Min/Max SA: " + minSpeciesAge + "/" + maxSpeciesAge + "  SNB: " + numSpeciesWithNewBestPerforming + "  Time: " + duration + "s  ETA: " + Misc.formatTimeInterval(eta) + "  Mem: " + memUsed + "MB");
-
-                start = System.currentTimeMillis();
-            }
-
-            // generation finish
-            // Date generationEndDate = Calendar.getInstance().getTime();
-            // long durationMillis = generationEndDate.getTime() -
-            // generationStartDate.getTime();
-            // logger.info( "Generation " + generation + ": end [" + fmt.format(
-            // generationStartDate ) + " - " + fmt.format( generationEndDate ) +
-            // "] [" + durationMillis + "]" );
+                
+                // champFitnesses[generation] = adjustedFitness;
+                bestPerformance[generation] = bestPerforming.getPerformanceValue();
+                bestFitness[generation] = fittest.getFitnessValue();
+                
+                int numSpecies = genotype.getSpecies().size();
+                int minSpeciesSize = Integer.MAX_VALUE;
+                int maxSpeciesSize = 0;
+                int numSpeciesWithNewBestPerforming = 0;
+                int numNewSpecies = 0;
+                int maxSpeciesAge = 0;
+                int minSpeciesAge = Integer.MAX_VALUE;
+                double avgBestSpeciesPerformance = 0;
+                Iterator<Species> speciesIter = genotype.getSpecies().iterator();
+                while (speciesIter.hasNext()) {
+                    Species species = speciesIter.next();
+                    
+                    if (species.originalSize > maxSpeciesSize) {
+                        maxSpeciesSize = species.originalSize;
+                    }
+                    if (species.originalSize < minSpeciesSize) {
+                        minSpeciesSize = species.originalSize;
+                    }
+                    
+                    if (species.getAge() > maxSpeciesAge) {
+                        maxSpeciesAge = species.getAge();
+                    }
+                    if (species.getAge() < minSpeciesAge) {
+                        minSpeciesAge = species.getAge();
+                    }
+                    
+                    if (species.getBestPerforming() != null) {
+                        avgBestSpeciesPerformance += species.getBestPerforming().getPerformanceValue();
+                    }
+                    
+                    Long speciesKey = species.getID();
+                    if (allSpeciesEver.containsKey(speciesKey)) { // if existing species
+                        if (species.getBestPerforming() != species.getPreviousBestPerforming()) {
+                            numSpeciesWithNewBestPerforming++;
+                        }
+                    } else {
+                        numNewSpecies++;
+                        allSpeciesEver.put(speciesKey, species);
+                    }
+                }
+                avgBestSpeciesPerformance /= numSpecies;
+                int numExtinctSpecies = previousSpeciesCount - numSpecies + numNewSpecies;
+                
+                // write out some info about species history
+                speciesIter = allSpeciesEver.values().iterator();
+                output = new StringBuffer(generation + ",\t" + allSpeciesEver.size() + ",\t" + numSpecies + ",\t" + numNewSpecies + ",\t" + numExtinctSpecies);
+                while (speciesIter.hasNext()) {
+                    Species species = speciesIter.next();
+                    // output += ",\t" + species.getID() + ":" + species.size();
+                    output.append(",\t");
+                    output.append(species.originalSize);
+                }
+                output.append("\n");
+                speciesInfoWriter.write(output.toString());
+                speciesInfoWriter.flush();
+                
+                if (generation % logPerGenerations == 0) {
+                    double speciationCompatThreshold = genotype.getParameters().getSpeciationThreshold();
+                    
+                    long memTotal = Math.round(runtime.totalMemory() / 1048576);
+                    long memFree = Math.round(runtime.freeMemory() / 1048576);
+                    long memUsed = memTotal - memFree;
+                    
+                    long duration = (System.currentTimeMillis() - start) / 1000;
+                    if (avgGenTime == 0) {
+                        avgGenTime = duration;
+                    } else {
+                        avgGenTime = avgGenTime * 0.9 + duration * 0.1;
+                    }
+                    int eta = (int) Math.round(avgGenTime * (numEvolutions - generation));
+                    
+                    // System.out.print(generation+"(" + (int)(adjustedFitness*100) + "," + genotype.getSpecies().size() +
+                    // "), ");
+                    // System.out.println(generation + "(" + nf.format((double)fittest.getFitnessValue() /
+                    // bulkFitnessFunc.getMaxFitnessValue()) + ", " + nf.format(bestPerformance[generation]) + ", " +
+                    // duration + "s, " + memUsed + "M), ");
+                    // System.out.print((int)(adjustedFitness*100)+",");
+                    // System.out.println(generation+"(" + (int)(adjustedFitness*100) + " : " + champ.getFitnessValue() +
+                    // "), ");
+                    logger.info("Gen: " + generation + "  Fittest: " + fittest.getId() + "  (F: " + nf4.format(fittest.getFitnessValue()) + "  P: " + nf4.format(fittest.getPerformanceValue()) + ")" + "  Best perf: " + bestPerforming.getId() + "  (F: " + nf4.format(bestPerforming.getFitnessValue()) + "  P: " + nf4.format(bestPerforming.getPerformanceValue()) + ")" + "  ABSP: " + nf4.format(avgBestSpeciesPerformance) + "  S: " + numSpecies + "  NS/ES: " + numNewSpecies + "/" + numExtinctSpecies + "  SCT: " + nf1.format(speciationCompatThreshold) + "  Min/Max SS: " + minSpeciesSize + "/" + maxSpeciesSize + "  Min/Max SA: " + minSpeciesAge + "/" + maxSpeciesAge + "  SNB: " + numSpeciesWithNewBestPerforming + "  Time: " + duration + "s  ETA: " + Misc.formatTimeInterval(eta) + "  Mem: " + memUsed + "MB");
+                    
+                    start = System.currentTimeMillis();
+                }
+                
+                // generation finish
+                // Date generationEndDate = Calendar.getInstance().getTime();
+                // long durationMillis = generationEndDate.getTime() -
+                // generationStartDate.getTime();
+                // logger.info( "Generation " + generation + ": end [" + fmt.format(
+                // generationStartDate ) + " - " + fmt.format( generationEndDate ) +
+                // "] [" + durationMillis + "]" );
+            }   System.out.println();
         }
-        System.out.println();
-
-        speciesInfoWriter.close();
 
         // if evolution was terminated before the max number of gens was
         // performed (eg because solution was found sooner)
