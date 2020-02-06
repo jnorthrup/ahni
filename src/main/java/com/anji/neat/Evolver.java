@@ -250,7 +250,7 @@ public class Evolver implements Configurable {
         if (!dirFile.exists()) {
             dirFile.mkdirs();
         }
-        BufferedWriter speciesInfoWriter = new BufferedWriter(new FileWriter(props.getProperty("output.dir") + "species-history-size.csv"));
+        BufferedWriter speciesInfoWriter = new BufferedWriter(new FileWriter(props.getProperty("output.dir") + "/species-history-size.csv"));
         StringBuffer output = new StringBuffer();
         output.append("Gen,\tTSE,\tTS,\tNew,\tExt");
         for (int i = 0; i < 100; i++) {
