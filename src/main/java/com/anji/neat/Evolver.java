@@ -36,6 +36,8 @@ import org.jgapcustomised.Species;
 import org.jgapcustomised.event.GeneticEvent;
 
 import com.anji.integration.*;
+import com.anji.persistence.EvolverStatistics;
+import com.anji.persistence.GenerationStatistics;
 import com.anji.persistence.Persistence;
 import com.anji.run.Run;
 import com.anji.util.*;
@@ -260,13 +262,16 @@ public class Evolver implements Configurable {
             speciesInfoWriter.write(output.toString());
             speciesInfoWriter.flush();
             
+            EvolverStatistics evoStat = new EvolverStatistics();
+            
             double avgGenTime = 0;
             int previousSpeciesCount;
             TreeMap<Long, Species> allSpeciesEver = new TreeMap<>();
             long start = System.currentTimeMillis();
-            // for (generation = 0; (generation < numEvolutions && (adjustedFitness < targetFitness ||
-            // genotype.preventRunEnd())); ++generation) {
-            for (generation = 0; generation < numEvolutions && !bulkFitnessFunc.endRun(); ++generation) {
+            
+            for (generation = 0; generation < numEvolutions && 
+                    !bulkFitnessFunc.endRun(); ++generation) 
+            {
                 previousSpeciesCount = genotype.getSpecies().size();
                 
                 // generation start time
@@ -274,8 +279,14 @@ public class Evolver implements Configurable {
                 logger.info( "Generation " + generation + ": start" );
                 // nextSequence generation
                 fittest = genotype.evolve();
-                
                 bestPerforming = genotype.getBestPerforming();
+                
+                GenerationStatistics genStat = evoStat.newGeneration();
+                genStat.setFittest(fittest.getId(), fittest.getFitnessValue());
+                genStat.setBestPerforming(bestPerforming.getId(), 
+                        bestPerforming.getPerformanceValue());
+                genStat.setSpecies(genotype.getSpecies());
+                //genStat.setNumIndividuals(genotype., generation);
                 
                 // result data
                 // if (bestPerforming.getPerformanceValue() >= targetPerformance && generationOfFirstSolution == -1)
