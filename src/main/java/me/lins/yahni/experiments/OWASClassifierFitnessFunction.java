@@ -102,7 +102,7 @@ public class OWASClassifierFitnessFunction extends BulkFitnessFunction implement
     public void evaluate(List<Chromosome> subjects) {
         endRun = false;
         
-        for(Chromosome chrome : subjects) {
+        subjects.parallelStream().forEach((chrome) -> {
             try {
                 Activator activator = activatorFactory.newActivator(chrome);
                 
@@ -122,7 +122,7 @@ public class OWASClassifierFitnessFunction extends BulkFitnessFunction implement
             } catch(TranscriberException ex) {
                 LOGGER.warn("TranscriberException", ex);
             }
-        }
+        });
     }
     
     private double aggSquaredDiff(double[] a, double[] b) {
