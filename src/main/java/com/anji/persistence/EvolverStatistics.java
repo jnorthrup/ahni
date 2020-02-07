@@ -5,6 +5,7 @@
  */
 package com.anji.persistence;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,11 +16,17 @@ import java.util.List;
  */
 public class EvolverStatistics {
     
-    private List<GenerationStatistics> generations = new ArrayList<>();
+    private final List<GenerationStatistics> generations = new ArrayList<>();
             
     public GenerationStatistics newGeneration() {
         GenerationStatistics gen = new GenerationStatistics(generations.size());
         generations.add(gen);
         return gen;
+    }
+    
+    public void print(PrintWriter out) {
+        for (var gen : generations) {
+            out.println(gen.toString());
+        }
     }
 }

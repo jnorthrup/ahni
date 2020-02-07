@@ -41,6 +41,8 @@ import com.anji.persistence.GenerationStatistics;
 import com.anji.persistence.Persistence;
 import com.anji.run.Run;
 import com.anji.util.*;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 
 /**
  * Configures and performs an ANJI evolutionary run.
@@ -125,6 +127,7 @@ public class Evolver implements Configurable {
      *
      * @see com.anji.util.Configurable#init(com.anji.util.Properties)
      */
+    @Override
     public void init(Properties props) throws Exception {
         boolean doReset = props.getBooleanProperty(RESET_KEY, false);
         if (doReset) {
@@ -172,7 +175,6 @@ public class Evolver implements Configurable {
 
         // persistence
         if (props.getBooleanProperty(PERSIST_ENABLE_KEY, false)) {
-            System.out.println("\n\nhere2\n");
             PersistenceEventListener dbListener = new PersistenceEventListener(config, run);
             dbListener.init(props);
             config.getEventManager().addEventListener(GeneticEvent.GENOTYPE_START_GENETIC_OPERATORS_EVENT, dbListener);
@@ -286,7 +288,8 @@ public class Evolver implements Configurable {
                 genStat.setBestPerforming(bestPerforming.getId(), 
                         bestPerforming.getPerformanceValue());
                 genStat.setSpecies(genotype.getSpecies());
-                //genStat.setNumIndividuals(genotype., generation);
+                System.out.println(genStat.toString());
+                
                 
                 // result data
                 // if (bestPerforming.getPerformanceValue() >= targetPerformance && generationOfFirstSolution == -1)
@@ -390,6 +393,11 @@ public class Evolver implements Configurable {
                 // generationStartDate ) + " - " + fmt.format( generationEndDate ) +
                 // "] [" + durationMillis + "]" );
             }   System.out.println();
+            
+            try (PrintWriter statOut = new PrintWriter(new FileOutputStream(
+                    props.getProperty("output.dir") + "/evostat.csv"))) {
+                evoStat.print(statOut);
+            }
         }
 
         // if evolution was terminated before the max number of gens was

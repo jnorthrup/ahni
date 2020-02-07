@@ -19,7 +19,7 @@ public class GenerationStatistics {
     protected long bestPerformingId = -1;
     protected double fitness = Double.NaN;
     protected double performance = Double.NaN;
-    protected List<Species> species = null;
+    protected String species = null;
     
     public GenerationStatistics(int gn) {
         this.generationNumber = gn;
@@ -35,11 +35,31 @@ public class GenerationStatistics {
         this.performance = performance;
     }
     
-    public void setNumIndividuals(int overall, int newly) {
+    public void setSpecies(List<Species> species) {
+        var speciesStr = new StringBuilder();
+        for(var specie : species) {
+            speciesStr.append(specie.getID()).append(":");
+            speciesStr.append(specie.getChromosomes().size()).append(";");
+        }
         
+        this.species = speciesStr.toString();
     }
     
-    public void setSpecies(List<Species> species) {
-        this.species = species;
+    public String toStringHeader() {
+        return "Generation, FittestID, Fitness, BestPerformingID, Performance, Species";
+    }
+    
+    @Override
+    public String toString() {
+        var buf = new StringBuilder();
+        
+        buf.append(generationNumber).append(", ");
+        buf.append(fittestId).append(", ");
+        buf.append(fitness).append(", ");
+        buf.append(bestPerformingId).append(", ");
+        buf.append(performance).append(", ");
+        buf.append(species);
+        
+        return buf.toString();
     }
 }
