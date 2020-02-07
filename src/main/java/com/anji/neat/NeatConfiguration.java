@@ -394,10 +394,13 @@ public class NeatConfiguration extends Configuration implements Configurable {
 
         // population
         setPopulationSize(props.getIntProperty(POPUL_SIZE_KEY, DEFAULT_POPUL_SIZE));
-        hiddenActivationType = props.getProperty(INITIAL_TOPOLOGY_ACTIVATION_KEY, "sigmoid");
+        hiddenActivationType = props.getProperty(
+                INITIAL_TOPOLOGY_ACTIVATION_KEY, "sigmoid");
 
         if (hiddenActivationType.equals("random")) {
-            hiddenActivationTypeRandomAllowed = props.getProperty(INITIAL_TOPOLOGY_ACTIVATION_RANDOM_ALLOWED_KEY, "sigmoid, gaussian, absolute, sine").split(",");
+            hiddenActivationTypeRandomAllowed = props.getProperty(
+                    INITIAL_TOPOLOGY_ACTIVATION_RANDOM_ALLOWED_KEY, 
+                    "sigmoid, gaussian, absolute, sine, relu").split(",");
             int count = hiddenActivationTypeRandomAllowed.length;
             double[] probs = props.getDoubleArrayProperty(INITIAL_TOPOLOGY_ACTIVATION_RANDOM_PROBABILITIES_KEY, null);
             if (probs == null) {
@@ -484,12 +487,18 @@ public class NeatConfiguration extends Configuration implements Configurable {
      */
     public NeuronAllele newNeuronAllele(NeuronType type) {
         String funcType;
-        if (NeuronType.INPUT.equals(type)) {
-            funcType = inputActivationType;
-        } else if (NeuronType.OUTPUT.equals(type)) {
-            funcType = outputActivationType;
-        } else {
+        if (null == type) {
             funcType = hiddenActivationType;
+        } else switch (type) {
+            case INPUT:
+                funcType = inputActivationType;
+                break;
+            case OUTPUT:
+                funcType = outputActivationType;
+                break;
+            default:
+                funcType = hiddenActivationType;
+                break;
         }
         return newNeuronAllele(type, nextInnovationId(), funcType, 0);
     }

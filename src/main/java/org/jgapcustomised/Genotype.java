@@ -268,12 +268,12 @@ public class Genotype implements Serializable {
 
     /**
      * Performs one generation cycle, evaluating fitness, selecting survivors,
-     * repopulting with offspring, and mutating new population.This is a
- modified version of original JGAP method which changes order of
- operations and splits <code>GeneticOperator</code> into
-    <code>ReproductionOperator</code> and <code>MutationOperator</code>. New
- order of operations (this is probably out of date now):
- <ol>
+     * repopulting with offspring, and mutating new population. This is a
+     * modified version of original JGAP method which changes order of
+     * operations and splits <code>GeneticOperator</code> into
+     * <code>ReproductionOperator</code> and <code>MutationOperator</code>. New
+     * order of operations (this is probably out of date now):
+     * <ol>
      * <li>assign <b>fitness </b> to all members of population with
      * <code>BulkFitnessFunction</code> or <code>FitnessFunction</code></li>
      * <li><b>select </b> survivors and remove casualties from population</li>

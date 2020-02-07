@@ -43,82 +43,84 @@ import com.anji.util.Properties;
  */
 public class SingleTopologicalMutationOperator extends MutationOperator implements Configurable {
 
-	private final static double DEFAULT_MUTATION_RATE = calculateMutationRate(AddConnectionMutationOperator.DEFAULT_MUTATE_RATE, AddNeuronMutationOperator.DEFAULT_MUTATE_RATE);
+    private final static double DEFAULT_MUTATION_RATE = calculateMutationRate(AddConnectionMutationOperator.DEFAULT_MUTATE_RATE, AddNeuronMutationOperator.DEFAULT_MUTATE_RATE);
 
-	private AddConnectionMutationOperator addConnOp;
+    private AddConnectionMutationOperator addConnOp;
 
-	private AddNeuronMutationOperator addNeuronOp;
+    private AddNeuronMutationOperator addNeuronOp;
 
-	private double addConnRatio = calculateAddConnRatio(AddConnectionMutationOperator.DEFAULT_MUTATE_RATE, AddNeuronMutationOperator.DEFAULT_MUTATE_RATE);
+    private double addConnRatio = calculateAddConnRatio(AddConnectionMutationOperator.DEFAULT_MUTATE_RATE, AddNeuronMutationOperator.DEFAULT_MUTATE_RATE);
 
-	/**
-	 * @see com.anji.util.Configurable#init(com.anji.util.Properties)
-	 */
-	public void init(Properties props) throws Exception {
-		addConnOp = (AddConnectionMutationOperator) props.singletonObjectProperty(AddConnectionMutationOperator.class);
-		addNeuronOp = (AddNeuronMutationOperator) props.singletonObjectProperty(AddNeuronMutationOperator.class);
-		double addConnRate = addConnOp.getMutationRate();
-		double addNeuronRate = addNeuronOp.getMutationRate();
-		addConnRatio = calculateAddConnRatio(addConnRate, addNeuronRate);
-		setMutationRate(calculateMutationRate(addConnRate, addNeuronRate));
-	}
+    /**
+     * @see com.anji.util.Configurable#init(com.anji.util.Properties)
+     */
+    public void init(Properties props) throws Exception {
+        addConnOp = (AddConnectionMutationOperator) props.singletonObjectProperty(AddConnectionMutationOperator.class);
+        addNeuronOp = (AddNeuronMutationOperator) props.singletonObjectProperty(AddNeuronMutationOperator.class);
+        double addConnRate = addConnOp.getMutationRate();
+        double addNeuronRate = addNeuronOp.getMutationRate();
+        addConnRatio = calculateAddConnRatio(addConnRate, addNeuronRate);
+        setMutationRate(calculateMutationRate(addConnRate, addNeuronRate));
+    }
 
-	private static double calculateAddConnRatio(double addConnMutationRate, double addNeuronMutationRate) {
-		return (addConnMutationRate - (addConnMutationRate * addNeuronMutationRate * 0.5f)) / (addConnMutationRate + addNeuronMutationRate);
-	}
+    private static double calculateAddConnRatio(double addConnMutationRate, double addNeuronMutationRate) {
+        return (addConnMutationRate - (addConnMutationRate * addNeuronMutationRate * 0.5f)) / (addConnMutationRate + addNeuronMutationRate);
+    }
 
-	private static double calculateMutationRate(double addConnMutationRate, double addNeuronMutationRate) {
-		return addConnMutationRate + addNeuronMutationRate - (addConnMutationRate * addNeuronMutationRate);
-	}
+    private static double calculateMutationRate(double addConnMutationRate, double addNeuronMutationRate) {
+        return addConnMutationRate + addNeuronMutationRate - (addConnMutationRate * addNeuronMutationRate);
+    }
 
-	/**
-	 * should call <code>init()</code> after this constructor
-	 */
-	public SingleTopologicalMutationOperator() {
-		super(DEFAULT_MUTATION_RATE);
-	}
+    /**
+     * should call <code>init()</code> after this constructor
+     */
+    public SingleTopologicalMutationOperator() {
+        super(DEFAULT_MUTATION_RATE);
+    }
 
-	/**
-	 * ctor
-	 * 
-	 * @param addConnMutationRate
-	 * @param addNeuronMutationRate
-	 * @param aPolicy
-	 */
-	public SingleTopologicalMutationOperator(double addConnMutationRate, double addNeuronMutationRate, RecurrencyPolicy aPolicy) {
-		super(calculateMutationRate(addConnMutationRate, addNeuronMutationRate));
-		addConnRatio = calculateAddConnRatio(addConnMutationRate, addNeuronMutationRate);
-		addConnOp = new AddConnectionMutationOperator(addConnMutationRate, aPolicy);
-		addNeuronOp = new AddNeuronMutationOperator(addNeuronMutationRate);
-	}
+    /**
+     * ctor
+     *
+     * @param addConnMutationRate
+     * @param addNeuronMutationRate
+     * @param aPolicy
+     */
+    public SingleTopologicalMutationOperator(double addConnMutationRate, double addNeuronMutationRate, RecurrencyPolicy aPolicy) {
+        super(calculateMutationRate(addConnMutationRate, addNeuronMutationRate));
+        addConnRatio = calculateAddConnRatio(addConnMutationRate, addNeuronMutationRate);
+        addConnOp = new AddConnectionMutationOperator(addConnMutationRate, aPolicy);
+        addNeuronOp = new AddNeuronMutationOperator(addNeuronMutationRate);
+    }
 
-	/**
-	 * @see org.jgapcustomised.MutationOperator#mutate(org.jgapcustomised.Configuration,
-	 *      org.jgapcustomised.ChromosomeMaterial, java.util.Set, java.util.Set)
-	 */
-	protected void mutate(final Configuration jgapConfig, final ChromosomeMaterial target, Set<Allele> allelesToAdd, Set<Allele> allelesToRemove) throws InvalidConfigurationException {
-		if ((jgapConfig instanceof NeatConfiguration) == false)
-			throw new AnjiRequiredException("com.anji.neat.NeatConfiguration");
+    /**
+     * @see
+     * org.jgapcustomised.MutationOperator#mutate(org.jgapcustomised.Configuration,
+     * org.jgapcustomised.ChromosomeMaterial, java.util.Set, java.util.Set)
+     */
+    protected void mutate(final Configuration jgapConfig, final ChromosomeMaterial target, Set<Allele> allelesToAdd, Set<Allele> allelesToRemove) throws InvalidConfigurationException {
+        if ((jgapConfig instanceof NeatConfiguration) == false) {
+            throw new AnjiRequiredException("com.anji.neat.NeatConfiguration");
+        }
 
-		NeatConfiguration config = (NeatConfiguration) jgapConfig;
+        NeatConfiguration config = (NeatConfiguration) jgapConfig;
 
-		Random rand = config.getRandomGenerator();
-		if (doesMutationOccur(rand)) {
-			SortedSet<Allele> alleles = target.getAlleles();
-			if (rand.nextDouble() < addConnRatio) {
-				List<NeuronAllele> neuronList = NeatChromosomeUtility.getNeuronList(alleles);
-				SortedMap<Long, ConnectionAllele> conns = NeatChromosomeUtility.getConnectionMap(alleles);
-				addConnOp.addConnections(1, config, neuronList, conns, allelesToAdd, allelesToRemove);
-			} else {
-				List connList = NeatChromosomeUtility.getConnectionList(alleles);
-				Collections.shuffle(connList, rand);
-				Iterator iter = connList.iterator();
-				boolean isAdded = false;
-				while (iter.hasNext() && !isAdded) {
-					ConnectionAllele oldConnectAllele = (ConnectionAllele) iter.next();
-					isAdded = addNeuronOp.addNeuronAtConnection(config, NeatChromosomeUtility.getNeuronMap(alleles), oldConnectAllele, allelesToAdd, allelesToRemove);
-				}
-			}
-		}
-	}
+        Random rand = config.getRandomGenerator();
+        if (doesMutationOccur(rand)) {
+            SortedSet<Allele> alleles = target.getAlleles();
+            if (rand.nextDouble() < addConnRatio) {
+                List<NeuronAllele> neuronList = NeatChromosomeUtility.getNeuronList(alleles);
+                SortedMap<Long, ConnectionAllele> conns = NeatChromosomeUtility.getConnectionMap(alleles);
+                addConnOp.addConnections(1, config, neuronList, conns, allelesToAdd, allelesToRemove);
+            } else {
+                List connList = NeatChromosomeUtility.getConnectionList(alleles);
+                Collections.shuffle(connList, rand);
+                Iterator iter = connList.iterator();
+                boolean isAdded = false;
+                while (iter.hasNext() && !isAdded) {
+                    ConnectionAllele oldConnectAllele = (ConnectionAllele) iter.next();
+                    isAdded = addNeuronOp.addNeuronAtConnection(config, NeatChromosomeUtility.getNeuronMap(alleles), oldConnectAllele, allelesToAdd, allelesToRemove);
+                }
+            }
+        }
+    }
 }

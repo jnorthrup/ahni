@@ -27,132 +27,143 @@ import java.util.Random;
 import java.util.Set;
 
 /**
- * Allele contains gene data that can be different for multiple chromosomes with the same gene.
- * 
+ * Allele contains gene data that can be different for multiple chromosomes with
+ * the same gene.
+ *
  * @author Philip Tucker
  */
 public abstract class Allele implements Comparable, Serializable {
-	private Gene gene;
 
-	/**
-	 * ctor
-	 * 
-	 * @param aGene
-	 */
-	protected Allele(Gene aGene) {
-		gene = aGene;
-	}
+    private Gene gene;
 
-	/**
-	 * @param target should be same implementation class and same innovation ID as this gene
-	 * @return positive distance between genes, where a value closer to 0 represents more similar genes; used in
-	 *         computing distance between chromosomes, which in turn is used to compute speciation compatibility.
-	 * @see Chromosome#distance(Chromosome, SpeciationParms)
-	 */
-	public double distance(Allele target) {
-		assert target.getInnovationId().equals(getInnovationId()) : "Should not compute distance for alleles of different gene.";
-		return Math.abs(getValue() - target.getValue());
-	}
+    /**
+     * ctor
+     *
+     * @param aGene
+     */
+    protected Allele(Gene aGene) {
+        gene = aGene;
+    }
 
-	/**
-	 * Sets the value of this Gene to a random legal value for the implementation. This method exists for the benefit of
-	 * mutation and other operations that simply desire to randomize the value of a gene.
-	 * 
-	 * @param a_numberGenerator The random number generator that should be used to create any random values. It's
-	 *            important to use this generator to maintain the user's flexibility to configure the genetic engine to
-	 *            use the random number generator of their choice.
-	 * @param onlyPerturbFromCurrentValue If true then the value should only be perturbed some small amount from the
-	 *            current value. If false then the value should be set to a completely new value irrespective of the
-	 *            current value.
-	 */
-	public abstract void setToRandomValue(Random a_numberGenerator, boolean onlyPerturbFromCurrentValue);
+    /**
+     * @param target should be same implementation class and same innovation ID
+     * as this gene
+     * @return positive distance between genes, where a value closer to 0
+     * represents more similar genes; used in computing distance between
+     * chromosomes, which in turn is used to compute speciation compatibility.
+     * @see Chromosome#distance(Chromosome, SpeciationParms)
+     */
+    public double distance(Allele target) {
+        assert target.getInnovationId().equals(getInnovationId()) : "Should not compute distance for alleles of different gene.";
+        return Math.abs(getValue() - target.getValue());
+    }
 
-	/**
-	 * @return Gene clone of this object
-	 */
-	public abstract Allele cloneAllele();
+    /**
+     * Sets the value of this Gene to a random legal value for the
+     * implementation. This method exists for the benefit of mutation and other
+     * operations that simply desire to randomize the value of a gene.
+     *
+     * @param a_numberGenerator The random number generator that should be used
+     * to create any random values. It's important to use this generator to
+     * maintain the user's flexibility to configure the genetic engine to use
+     * the random number generator of their choice.
+     * @param onlyPerturbFromCurrentValue If true then the value should only be
+     * perturbed some small amount from the current value. If false then the
+     * value should be set to a completely new value irrespective of the current
+     * value.
+     */
+    public abstract void setToRandomValue(Random a_numberGenerator, boolean onlyPerturbFromCurrentValue);
 
-	/**
-	 * @return gene
-	 */
-	protected Gene getGene() {
-		return gene;
-	}
+    /**
+     * @return Gene clone of this object
+     */
+    public abstract Allele cloneAllele();
 
-	/**
-	 * for hibernate
-	 * 
-	 * @param aGene
-	 */
-	private void setGene(Gene aGene) {
-		gene = aGene;
-	}
+    /**
+     * @return gene
+     */
+    protected Gene getGene() {
+        return gene;
+    }
 
-	/**
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
-	 */
-	public int compareTo(Object o) {
-		Allele other = (Allele) o;
-		return gene.compareTo(other.gene);
-	}
+    /**
+     * for hibernate
+     *
+     * @param aGene
+     */
+    private void setGene(Gene aGene) {
+        gene = aGene;
+    }
 
-	/**
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	public boolean equals(Object o) {
-		return (compareTo(o) == 0);
-	}
+    /**
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    public int compareTo(Object o) {
+        Allele other = (Allele) o;
+        return gene.compareTo(other.gene);
+    }
 
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
-	public int hashCode() {
-		return gene.hashCode();
-	}
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals(Object o) {
+        return (compareTo(o) == 0);
+    }
 
-	/**
-	 * @see Object#toString()
-	 */
-	public String toString() {
-		StringBuffer result = new StringBuffer();
-		result.append(gene.toString());
-		return result.toString();
-	}
-	
-	/**
-	 * @param alleles <code>Collection</code> contains <code>Allele</code> objects
-	 * @return <code>Set</code> contains <code>Gene</code> objects
-	 */
-	public static Set getGenes(Collection alleles) {
-		HashSet result = new HashSet();
-		Iterator it = alleles.iterator();
-		while (it.hasNext()) {
-			Allele allele = (Allele) it.next();
-			result.add(allele.getGene());
-		}
-		return result;
-	}
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode() {
+        return gene.hashCode();
+    }
 
-	/**
-	 * @return innovation ID
-	 * @see Gene#getInnovationId()
-	 */
-	public Long getInnovationId() {
-		return gene.getInnovationId();
-	}
+    /**
+     * @see Object#toString()
+     */
+    public String toString() {
+        StringBuffer result = new StringBuffer();
+        result.append(gene.toString());
+        return result.toString();
+    }
 
-	/**
-	 * Return true iff all the parameters of this allele match those of the given allele.
-	 */
-	public abstract boolean isEquivalent(Allele otherAllele);
+    /**
+     * @param alleles <code>Collection</code> contains <code>Allele</code>
+     * objects
+     * @return <code>Set</code> contains <code>Gene</code> objects
+     */
+    public static Set getGenes(Collection alleles) {
+        HashSet result = new HashSet();
+        Iterator it = alleles.iterator();
+        while (it.hasNext()) {
+            Allele allele = (Allele) it.next();
+            result.add(allele.getGene());
+        }
+        return result;
+    }
 
-	/**
-	 * Generic method for setting the value of an allele. If not required then this method should be overridden with a method returning 0.
-	 */
-	public abstract double getValue();
+    /**
+     * @return innovation ID
+     * @see Gene#getInnovationId()
+     */
+    public Long getInnovationId() {
+        return gene.getInnovationId();
+    }
 
-	/**
-	 * Generic method for setting the value of an allele. If not required then this method should be overridden with an empty method.
-	 */
-	public abstract void setValue(double aValue);
+    /**
+     * Return true iff all the parameters of this allele match those of the
+     * given allele.
+     */
+    public abstract boolean isEquivalent(Allele otherAllele);
+
+    /**
+     * Generic method for setting the value of an allele. If not required then
+     * this method should be overridden with a method returning 0.
+     */
+    public abstract double getValue();
+
+    /**
+     * Generic method for setting the value of an allele. If not required then
+     * this method should be overridden with an empty method.
+     */
+    public abstract void setValue(double aValue);
 }

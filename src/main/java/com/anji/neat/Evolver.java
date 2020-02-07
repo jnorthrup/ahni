@@ -204,6 +204,7 @@ public class Evolver implements Configurable {
     /**
      * Perform a single run.
      *
+     * @return 
      * @throws Exception
      */
     public double[] run() throws Exception {
@@ -230,17 +231,6 @@ public class Evolver implements Configurable {
             // logger.info( "random genotype" );
         }
 
-        // run start time
-        Date runStartDate = Calendar.getInstance().getTime();
-        // logger.info( "----- Run start -----  (RAM: total: " +
-        // (runtime.totalMemory() / (1024*1024)) + "  free: " +
-        // (runtime.freeMemory() / (1024*1024)) + "  used: " +
-        // ((runtime.totalMemory() - runtime.freeMemory()) / (1024*1024)) +
-        // ")");
-        //DateFormat fmt = new SimpleDateFormat("HH:mm:ss");
-
-        // System.out.println("targetFitness = " + targetFitness);
-        // System.out.println("maxFitness = " + maxFitness);
         // initialize result data
         int generationOfFirstSolution = -1;
         fittest = genotype.getFittestChromosome();

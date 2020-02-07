@@ -26,122 +26,125 @@ import java.util.Random;
 
 import org.jgapcustomised.Allele;
 
-import com.anji.nn.activationfunction.ActivationFunction;
-
 /**
  * Gene corresponding to NEAT node gene according to <a
- * href="http://nn.cs.utexas.edu/downloads/papers/stanley.ec02.pdf"> Evolving Neural Networks through Augmenting
- * Topologies </a>
- * 
+ * href="http://nn.cs.utexas.edu/downloads/papers/stanley.ec02.pdf"> Evolving
+ * Neural Networks through Augmenting Topologies </a>
+ *
  * @author Philip Tucker
  */
 public class NeuronAllele extends Allele {
-	private static final DecimalFormat nf = new DecimalFormat(" 0.0000;-0.0000");
 
-	private NeuronGene neuronGene;
-	
-	private double bias = ConnectionAllele.DEFAULT_WEIGHT;
+    private static final DecimalFormat nf = new DecimalFormat(" 0.0000;-0.0000");
 
-	/**
-	 * @param aNeuronGene
-	 */
-	public NeuronAllele(NeuronGene aNeuronGene, double bias) {
-		super(aNeuronGene);
-		
-		neuronGene = aNeuronGene;
-		this.bias = bias;
-	}
+    private NeuronGene neuronGene;
 
-	/**
-	 * @see org.jgapcustomised.Allele#cloneAllele()
-	 */
-	public Allele cloneAllele() {
-		NeuronAllele allele = new NeuronAllele(neuronGene, bias);
-		return allele;
-	}
+    private double bias = ConnectionAllele.DEFAULT_WEIGHT;
 
-	/**
-	 * Set bias to random value from a Gaussian distribution determined by {@link ConnectionAllele#RANDOM_STD_DEV}
-	 * 
-	 * @param a_numberGenerator
-	 * @param onlyPerturbFromCurrentValue if true then the bias is perturbed from its current value.
-	 */
-	public void setToRandomValue(Random a_numberGenerator, boolean onlyPerturbFromCurrentValue) {
-		if (onlyPerturbFromCurrentValue)
-			bias += a_numberGenerator.nextGaussian() * ConnectionAllele.RANDOM_STD_DEV;
-			//bias += (a_numberGenerator.nextBoolean() ? 1 : -1) * a_numberGenerator.nextDouble() * ConnectionAllele.RANDOM_STD_DEV;
-		else
-			bias = a_numberGenerator.nextGaussian() * ConnectionAllele.RANDOM_STD_DEV;
-			//bias = (a_numberGenerator.nextBoolean() ? 1 : -1) * a_numberGenerator.nextDouble() * ConnectionAllele.RANDOM_STD_DEV;
-	}
+    /**
+     * @param aNeuronGene
+     */
+    public NeuronAllele(NeuronGene aNeuronGene, double bias) {
+        super(aNeuronGene);
 
-	/**
-	 * @return neuron type
-	 * @see NeuronGene#getType()
-	 */
-	public NeuronType getType() {
-		return neuronGene.getType();
-	}
+        neuronGene = aNeuronGene;
+        this.bias = bias;
+    }
 
-	/**
-	 * @param aType
-	 * @return true if <code>aType</code> matches
-	 * @see NeuronGene#isType(NeuronType)
-	 */
-	public boolean isType(NeuronType aType) {
-		return neuronGene.isType(aType);
-	}
+    /**
+     * @see org.jgapcustomised.Allele#cloneAllele()
+     */
+    public Allele cloneAllele() {
+        NeuronAllele allele = new NeuronAllele(neuronGene, bias);
+        return allele;
+    }
 
-	/**
-	 * @return activation type
-	 * @see NeuronGene#getActivationType()
-	 */
-	public String getActivationType() {
-		return neuronGene.getActivationType();
-	}
-	
-	/**
-	 * @return connection bias
-	 */
-	public double getBias() {
-		return bias;
-	}
+    /**
+     * Set bias to random value from a Gaussian distribution determined by
+     * {@link ConnectionAllele#RANDOM_STD_DEV}
+     *
+     * @param a_numberGenerator
+     * @param onlyPerturbFromCurrentValue if true then the bias is perturbed
+     * from its current value.
+     */
+    public void setToRandomValue(Random a_numberGenerator, boolean onlyPerturbFromCurrentValue) {
+        if (onlyPerturbFromCurrentValue) {
+            bias += a_numberGenerator.nextGaussian() * ConnectionAllele.RANDOM_STD_DEV;
+        } //bias += (a_numberGenerator.nextBoolean() ? 1 : -1) * a_numberGenerator.nextDouble() * ConnectionAllele.RANDOM_STD_DEV;
+        else {
+            bias = a_numberGenerator.nextGaussian() * ConnectionAllele.RANDOM_STD_DEV;
+        }
+        //bias = (a_numberGenerator.nextBoolean() ? 1 : -1) * a_numberGenerator.nextDouble() * ConnectionAllele.RANDOM_STD_DEV;
+    }
 
-	/**
-	 * @param aBias new connection bias
-	 */
-	public void setBias(double aBias) {
-		bias = aBias;
-	}
+    /**
+     * @return neuron type
+     * @see NeuronGene#getType()
+     */
+    public NeuronType getType() {
+        return neuronGene.getType();
+    }
 
-	/**
-	 * @see Object#toString()
-	 */
-	public String toString() {
-		return "N-" + neuronGene.toString() + " [" + nf.format(bias) + "]";
-	}
-	
-	@Override
-	public boolean isEquivalent(Allele otherAllele) {
-		if (!(otherAllele instanceof NeuronAllele))
-			return false;
-		NeuronAllele other = (NeuronAllele) otherAllele;
-		return getType().equals(other.getType()) && getActivationType().equals(other.getActivationType()) && bias == other.bias;
-	}
+    /**
+     * @param aType
+     * @return true if <code>aType</code> matches
+     * @see NeuronGene#isType(NeuronType)
+     */
+    public boolean isType(NeuronType aType) {
+        return neuronGene.isType(aType);
+    }
 
-	/**
-	 * Gets the bias value.
-	 */
-	@Override
-	public double getValue() {
-		return bias;
-	}
+    /**
+     * @return activation type
+     * @see NeuronGene#getActivationType()
+     */
+    public String getActivationType() {
+        return neuronGene.getActivationType();
+    }
 
-	/**
-	 * Sets the bias value.
-	 */
-	@Override
-	public void setValue(double aValue) {
-		this.bias = aValue;
-	}
+    /**
+     * @return connection bias
+     */
+    public double getBias() {
+        return bias;
+    }
+
+    /**
+     * @param aBias new connection bias
+     */
+    public void setBias(double aBias) {
+        bias = aBias;
+    }
+
+    /**
+     * @see Object#toString()
+     */
+    public String toString() {
+        return "N-" + neuronGene.toString() + " [" + nf.format(bias) + "]";
+    }
+
+    @Override
+    public boolean isEquivalent(Allele otherAllele) {
+        if (!(otherAllele instanceof NeuronAllele)) {
+            return false;
+        }
+        NeuronAllele other = (NeuronAllele) otherAllele;
+        return getType().equals(other.getType()) && getActivationType().equals(other.getActivationType()) && bias == other.bias;
+    }
+
+    /**
+     * Gets the bias value.
+     */
+    @Override
+    public double getValue() {
+        return bias;
+    }
+
+    /**
+     * Sets the bias value.
+     */
+    @Override
+    public void setValue(double aValue) {
+        this.bias = aValue;
+    }
 }

@@ -24,49 +24,53 @@ package com.anji.nn.activationfunction;
  */
 public class ClampedLinearActivationFunction implements ActivationFunction {
 
-	/**
-	 * unique ID string
-	 */
-	public final static String NAME = "clamped-linear";
+    /**
+     * unique ID string
+     */
+    public final static String NAME = "clamped-linear";
 
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString() {
-		return NAME;
-	}
+    /**
+     * @return 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return NAME;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#apply(double)
-	 */
-	public double apply(double input) {
-		if (input <= 0)
-			return 0;
-		else if (input >= 1)
-			return 1;
-		else
-			return input;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#apply(double)
+     */
+    @Override
+    public double apply(double input) {
+        if (input <= 0) {
+            return 0;
+        } else if (input >= 1) {
+            return 1;
+        } else {
+            return input;
+        }
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
-	 */
-	public double getMaxValue() {
-		return 1;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
+     */
+    public double getMaxValue() {
+        return 1;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
-	 */
-	public double getMinValue() {
-		return 0;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
+     */
+    public double getMinValue() {
+        return 0;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#cost()
-	 */
-	public long cost() {
-		return 42;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#cost()
+     */
+    public long cost() {
+        return 42;
+    }
 
 }
