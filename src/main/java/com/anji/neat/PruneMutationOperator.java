@@ -65,6 +65,7 @@ public class PruneMutationOperator extends MutationOperator implements Configura
     /**
      * @see com.anji.util.Configurable#init(com.anji.util.Properties)
      */
+    @Override
     public void init(Properties props) throws Exception {
         setMutationRate(1);
     }
@@ -92,10 +93,10 @@ public class PruneMutationOperator extends MutationOperator implements Configura
 
     public static Set<Allele> getAllelesToRemove(ChromosomeMaterial target) {
         target.pruned = true;
-        List<Allele> candidatesToRemove = new ArrayList<Allele>();
+        List<Allele> candidatesToRemove = new ArrayList<>();
         findUnvisitedAlleles(target, candidatesToRemove, true);
         findUnvisitedAlleles(target, candidatesToRemove, false);
-        return new HashSet<Allele>(candidatesToRemove);
+        return new HashSet<>(candidatesToRemove);
     }
 
     /**

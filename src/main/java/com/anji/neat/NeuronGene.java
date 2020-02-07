@@ -21,72 +21,76 @@ package com.anji.neat;
 
 import org.jgapcustomised.Gene;
 
-import com.anji.nn.activationfunction.ActivationFunction;
 
 /**
  * Gene corresponding to NEAT node gene according to <a
- * href="http://nn.cs.utexas.edu/downloads/papers/stanley.ec02.pdf"> Evolving Neural Networks through Augmenting
- * Topologies </a>
- * 
+ * href="http://nn.cs.utexas.edu/downloads/papers/stanley.ec02.pdf"> Evolving
+ * Neural Networks through Augmenting Topologies </a>
+ *
  * @author Philip Tucker
  */
 public class NeuronGene extends Gene {
-	private NeuronType type = NeuronType.HIDDEN;
 
-	private String activationType;
+    private NeuronType type = NeuronType.HIDDEN;
 
-	/**
-	 * @see Object#toString()
-	 */
-	public String toString() {
-		return getInnovationId().toString() + " (" + type.toString().substring(0, 1) + ")";
-	}
+    private String activationType;
 
-	/**
-	 * for hibernate
-	 */
-	private NeuronGene() {
-		super();
-	}
+    /**
+     * @see Object#toString()
+     */
+    public String toString() {
+        return getInnovationId().toString() + " (" + type.toString().substring(0, 1) + ")";
+    }
 
-	/**
-	 * Construct new NeuronGene with given type and ID. Protected since this should only be constructed via factory
-	 * methods in <code>NeuronGene</code> and <code>NeatChromosomeUtility</code>, and persistence objects.
-	 * 
-	 * @param newType
-	 * @param newInnovationId
-	 * @param anActivationType
-	 */
-	public NeuronGene(NeuronType newType, Long newInnovationId, String anActivationType) {
-		super(newInnovationId);
+    /**
+     * for hibernate
+     */
+    private NeuronGene() {
+        super();
+    }
 
-		// if (anActivationType.equals(ActivationFunction.RANDOM))
-		// throw new IllegalArgumentException( "activation function can not be random for NeuronGene" );
+    /**
+     * Construct new NeuronGene with given type and ID. Protected since this
+     * should only be constructed via factory methods in <code>NeuronGene</code>
+     * and <code>NeatChromosomeUtility</code>, and persistence objects.
+     *
+     * @param newType
+     * @param newInnovationId
+     * @param anActivationType
+     */
+    public NeuronGene(NeuronType newType, Long newInnovationId, String anActivationType) {
+        super(newInnovationId);
 
-		type = newType;
-		activationType = anActivationType;
-	}
+        // if (anActivationType.equals(ActivationFunction.RANDOM))
+        // throw new IllegalArgumentException( "activation function can not be random for NeuronGene" );
+        type = newType;
+        activationType = anActivationType;
+    }
 
-	/**
-	 * @return type of neuron
-	 * @see NeuronType
-	 */
-	NeuronType getType() {
-		return type;
-	}
+    /**
+     * @return type of neuron
+     * @see NeuronType
+     */
+    NeuronType getType() {
+        return type;
+    }
 
-	/**
-	 * @param aType
-	 * @return true iff neuron is of type <code>aType</code>
-	 */
-	boolean isType(NeuronType aType) {
-		return type.equals(aType);
-	}
+    /**
+     * @param aType
+     * @return true iff neuron is of type <code>aType</code>
+     */
+    boolean isType(NeuronType aType) {
+        return type.equals(aType);
+    }
 
-	/**
-	 * @return gets activation function type
-	 */
-	String getActivationType() {
-		return activationType;
-	}
+    /**
+     * @return gets activation function type
+     */
+    String getActivationType() {
+        return activationType;
+    }
+    
+    void setActivationType(String activationType) {
+        this.activationType = activationType;
+    }
 }

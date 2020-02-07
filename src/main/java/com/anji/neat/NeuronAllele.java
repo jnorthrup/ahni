@@ -101,6 +101,10 @@ public class NeuronAllele extends Allele {
     public String getActivationType() {
         return neuronGene.getActivationType();
     }
+    
+    public void setActivationType(String activationType) {
+        neuronGene.setActivationType(activationType);
+    }
 
     /**
      * @return connection bias
