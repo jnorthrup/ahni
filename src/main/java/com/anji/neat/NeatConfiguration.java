@@ -400,7 +400,7 @@ public class NeatConfiguration extends Configuration implements Configurable {
         if (hiddenActivationType.equals("random")) {
             hiddenActivationTypeRandomAllowed = props.getProperty(
                     INITIAL_TOPOLOGY_ACTIVATION_RANDOM_ALLOWED_KEY, 
-                    "sigmoid, gaussian, absolute, sine, relu").split(",");
+                    "sigmoid, gaussian, step, relu").split(",");
             int count = hiddenActivationTypeRandomAllowed.length;
             double[] probs = props.getDoubleArrayProperty(INITIAL_TOPOLOGY_ACTIVATION_RANDOM_PROBABILITIES_KEY, null);
             if (probs == null) {

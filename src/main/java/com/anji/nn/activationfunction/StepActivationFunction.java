@@ -21,56 +21,56 @@ package com.anji.nn.activationfunction;
 
 /**
  * Step activation function.
- * 
+ *
  * @author Philip Tucker
  */
 public class StepActivationFunction implements ActivationFunction {
 
-	/**
-	 * identifying string
-	 */
-	public final static String NAME = "step";
+    /**
+     * identifying string
+     */
+    public final static String NAME = "step";
 
-	/**
-	 * @see Object#toString()
-	 */
-	public String toString() {
-		return NAME;
-	}
+    /**
+     * @see Object#toString()
+     */
+    public String toString() {
+        return NAME;
+    }
 
-	/**
-	 * This class should only be accessd via ActivationFunctionFactory.
-	 */
-	StepActivationFunction() {
-		// no-op
-	}
+    /**
+     * This class should only be accessd via ActivationFunctionFactory.
+     */
+    StepActivationFunction() {
+        // no-op
+    }
 
-	/**
-	 * @return 0 if <code>input</code>< 0, 1 otherwise
-	 * @see com.anji.nn.activationfunction.ActivationFunction#apply(double)
-	 */
-	public double apply(double input) {
-		return (input <= 0) ? 0 : 1;
-	}
+    /**
+     * @return 0 if <code>input</code>< 0, 1 otherwise @see com.an
+     * ji.nn.activationfunction.ActivationFunction#apply(double)
+     */
+    public double apply(double input) {
+        return (input <= 0) ? 0 : 1;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
-	 */
-	public double getMaxValue() {
-		return 1;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
+     */
+    public double getMaxValue() {
+        return 1;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
-	 */
-	public double getMinValue() {
-		return 0;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
+     */
+    public double getMinValue() {
+        return 0;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#cost()
-	 */
-	public long cost() {
-		return 40;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#cost()
+     */
+    public long cost() {
+        return 40;
+    }
 }
