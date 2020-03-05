@@ -1,0 +1,18 @@
+<!--network.dtd-->
+<!--The containing element of the document-->
+<!ELEMENT network  (title,layer+,neuron+,connection+) >
+
+<!--title-->
+<!ELEMENT title  (#PCDATA) >
+
+<!--layer-->
+<!ELEMENT layer  (neuron+) >
+
+<!--neuron-->
+<!ELEMENT neuron  (#PCDATA) >
+
+<!--connection-->
+<!ELEMENT connection  (#PCDATA) >
+
+
+

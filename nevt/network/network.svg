@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE svg SYSTEM "svg-19991203.dtd">
+<svg xmlns:svg="http://www.w3.org/2000/svg" viewBox="0 0 900 1875" height="1875" width="1200">
+<text y="10" x="10" style="font-size:12">10577</text>
+<defs>
+<marker orient="auto" markerHeight="6" markerWidth="8" markerUnits="strokeWidth" refY="10" refX="0" viewBox="0 0 20 20" id="triangle_black">
+<path fill-opacity="0.8" fill="black" d="M 0 0 L 20 10 L 0 20 z"/>
+</marker>
+<marker orient="auto" markerHeight="6" markerWidth="8" markerUnits="strokeWidth" refY="10" refX="0" viewBox="0 0 20 20" id="triangle_red">
+<path fill-opacity="0.8" fill="red" d="M 0 0 L 20 10 L 0 20 z"/>
+</marker>
+</defs>
+
+  
+                                                --&gt;
+  
+
+
+ 
+       <circle stroke-width="1" stroke="black" fill="paleturquoise" r="10" cy="50" cx="75"/>
+<text style="font-size:5pt" y="53" x="67">0</text>
+<circle stroke-width="1" stroke="black" fill="paleturquoise" r="10" cy="100" cx="75"/>
+<text style="font-size:5pt" y="103" x="67">1</text>
+<circle stroke-width="1" stroke="black" fill="paleturquoise" r="10" cy="150" cx="75"/>
+<text style="font-size:5pt" y="153" x="67">2</text>
+<circle stroke-width="1" stroke="black" fill="palegreen" r="10" cy="75" cx="150"/>
+<text style="font-size:5pt" y="78" x="142">5415</text>
+<path marker-end="url(#triangle_red)&#10;                           " stroke-opacity="1.0" stroke-width="1.0" stroke="red" fill="none" d="M 85 150 L 138 75" id=""/>
+<circle stroke-width="1" stroke="black" fill="palegreen" r="10" cy="50" cx="225"/>
+<text style="font-size:5pt" y="53" x="217">1030</text>
+<path marker-end="url(#triangle_black)&#10;                           " stroke-opacity="1.0" stroke-width="1.0" stroke="black" fill="none" d="M 85 52 L 213 50" id=""/>
+<path marker-end="url(#triangle_black)&#10;                           " stroke-opacity="0.8" stroke-width="0.3" stroke="black" fill="none" d="M 160 77 L 213 50" id=""/>
+<circle stroke-width="1" stroke="black" fill="palegreen" r="10" cy="100" cx="225"/>
+<text style="font-size:5pt" y="103" x="217">594</text>
+<path marker-end="url(#triangle_black)&#10;                           " stroke-opacity="1.0" stroke-width="1.0" stroke="black" fill="none" d="M 85 102 L 213 100" id=""/>
+<path marker-end="url(#triangle_red)&#10;                           " stroke-opacity="1.0" stroke-width="1.0" stroke="red" fill="none" d="M 85 52 L 213 100" id=""/>
+<path marker-end="url(#triangle_red)&#10;                           " stroke-opacity="1.0" stroke-width="1.0" stroke="red" fill="none" d="M 160 77 L 213 100" id=""/>
+<circle stroke-width="1" stroke="black" fill="palegreen" r="10" cy="75" cx="300"/>
+<text style="font-size:5pt" y="78" x="292">1331</text>
+<path marker-end="url(#triangle_red)&#10;                           " stroke-opacity="1.0" stroke-width="1.0" stroke="red" fill="none" d="M 235 50 L 288 75" id=""/>
+<circle stroke-width="1" stroke="black" fill="palegreen" r="10" cy="50" cx="375"/>
+<text style="font-size:5pt" y="53" x="367">449</text>
+<path marker-end="url(#triangle_red)&#10;                           " stroke-opacity="1.0" stroke-width="1.0" stroke="red" fill="none" d="M 85 102 L 363 50" id=""/>
+<path marker-end="url(#triangle_red)&#10;                           " stroke-opacity="0.8" stroke-width="0.3" stroke="red" fill="none" d="M 85 152 L 363 50" id=""/>
+<path marker-end="url(#triangle_black)&#10;                           " stroke-opacity="1.0" stroke-width="1.0" stroke="black" fill="none" d="M 235 102 L 363 50" id=""/>
+<path marker-end="url(#triangle_red)&#10;                           " stroke-opacity="0.8" stroke-width="0.3" stroke="red" fill="none" d="M 310 77 L 363 50" id=""/>
+<circle stroke-width="1" stroke="black" fill="palegreen" r="10" cy="75" cx="450"/>
+<text style="font-size:5pt" y="78" x="442">170</text>
+<path marker-end="url(#triangle_red)&#10;                           " stroke-opacity="1.0" stroke-width="1.0" stroke="red" fill="none" d="M 85 50 L 438 75" id=""/>
+<path marker-end="url(#triangle_black)&#10;                           " stroke-opacity="1.0" stroke-width="1.0" stroke="black" fill="none" d="M 85 100 L 438 75" id=""/>
+<path marker-end="url(#triangle_red)&#10;                           " stroke-opacity="1.0" stroke-width="1.0" stroke="red" fill="none" d="M 385 50 L 438 75" id=""/>
+<path marker-end="url(#triangle_red)&#10;                           " stroke-opacity="1.0" stroke-width="1.0" stroke="red" fill="none" d="M 235 100 L 438 75" id=""/>
+<circle stroke-width="1" stroke="black" fill="palegreen" r="10" cy="50" cx="525"/>
+<text style="font-size:5pt" y="53" x="517">1033</text>
+<path marker-end="url(#triangle_red)&#10;                           " stroke-opacity="1.0" stroke-width="1.0" stroke="red" fill="none" d="M 460 77 L 513 50" id=""/>
+<path marker-end="url(#triangle_red)&#10;                           " stroke-opacity="1.0" stroke-width="1.0" stroke="red" fill="none" d="M 385 52 L 513 50" id=""/>
+<circle stroke-width="1" stroke="black" fill="palegreen" r="10" cy="75" cx="600"/>
+<text style="font-size:5pt" y="78" x="592">9529</text>
+<path marker-end="url(#triangle_black)&#10;                           " stroke-opacity="1.0" stroke-width="1.0" stroke="black" fill="none" d="M 535 50 L 588 75" id=""/>
+<circle stroke-width="1" stroke="black" fill="palegreen" r="10" cy="50" cx="675"/>
+<text style="font-size:5pt" y="53" x="667">2376</text>
+<path marker-end="url(#triangle_black)&#10;                           " stroke-opacity="0.5" stroke-width="0.3" stroke="black" fill="none" d="M 85 102 L 663 50" id=""/>
+<path marker-end="url(#triangle_red)&#10;                           " stroke-opacity="0.8" stroke-width="0.3" stroke="red" fill="none" d="M 610 77 L 663 50" id=""/>
+<circle stroke-width="1" stroke="black" fill="palegreen" r="10" cy="75" cx="750"/>
+<text style="font-size:5pt" y="78" x="742">446</text>
+<path marker-end="url(#triangle_black)&#10;                           " stroke-opacity="0.5" stroke-width="0.3" stroke="black" fill="none" d="M 460 75 L 738 75" id=""/>
+<path marker-end="url(#triangle_black)&#10;                           " stroke-opacity="1.0" stroke-width="1.0" stroke="black" fill="none" d="M 685 50 L 738 75" id=""/>
+<path marker-end="url(#triangle_black)&#10;                           " stroke-opacity="1.0" stroke-width="1.0" stroke="black" fill="none" d="M 385 50 L 738 75" id=""/>
+<path marker-end="url(#triangle_black)&#10;                           " stroke-opacity="1.0" stroke-width="1.0" stroke="black" fill="none" d="M 535 50 L 738 75" id=""/>
+<circle stroke-width="1" stroke="black" fill="palegreen" r="10" cy="50" cx="825"/>
+<text style="font-size:5pt" y="53" x="817">176</text>
+<path marker-end="url(#triangle_red)&#10;                           " stroke-opacity="0.8" stroke-width="0.3" stroke="red" fill="none" d="M 85 102 L 813 50" id=""/>
+<path marker-end="url(#triangle_red)&#10;                           " stroke-opacity="1.0" stroke-width="1.0" stroke="red" fill="none" d="M 85 152 L 813 50" id=""/>
+<path marker-end="url(#triangle_red)&#10;                           " stroke-opacity="1.0" stroke-width="1.0" stroke="red" fill="none" d="M 760 77 L 813 50" id=""/>
+<path marker-end="url(#triangle_red)&#10;                           " stroke-opacity="1.0" stroke-width="1.0" stroke="red" fill="none" d="M 235 102 L 813 50" id=""/>
+<path marker-end="url(#triangle_black)&#10;                           " stroke-opacity="1.0" stroke-width="1.0" stroke="black" fill="none" d="M 310 77 L 813 50" id=""/>
+<circle stroke-width="1" stroke="black" fill="thistle" r="10" cy="75" cx="900"/>
+<text style="font-size:5pt" y="78" x="892">3</text>
+<path marker-end="url(#triangle_black)&#10;                           " stroke-opacity="0.8" stroke-width="0.3" stroke="black" fill="none" d="M 85 100 L 888 75" id=""/>
+<path marker-end="url(#triangle_red)&#10;                           " stroke-opacity="1.0" stroke-width="1.0" stroke="red" fill="none" d="M 85 150 L 888 75" id=""/>
+<path marker-end="url(#triangle_red)&#10;                           " stroke-opacity="1.0" stroke-width="1.0" stroke="red" fill="none" d="M 835 50 L 888 75" id=""/>
+<path marker-end="url(#triangle_black)&#10;                           " stroke-opacity="1.0" stroke-width="1.0" stroke="black" fill="none" d="M 235 100 L 888 75" id=""/>
+<path marker-end="url(#triangle_black)&#10;                           " stroke-opacity="1.0" stroke-width="1.0" stroke="black" fill="none" d="M 385 50 L 888 75" id=""/>
+<path marker-end="url(#triangle_black)&#10;                           " stroke-opacity="1.0" stroke-width="1.0" stroke="black" fill="none" d="M 535 50 L 888 75" id=""/>
+</svg>

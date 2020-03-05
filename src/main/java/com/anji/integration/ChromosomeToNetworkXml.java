@@ -29,77 +29,80 @@ import com.anji.util.DummyConfiguration;
 import com.anji.util.Properties;
 
 /**
- * Converts chromosome to activator, which it then uses to write network XML according to <a
+ * Converts chromosome to activator, which it then uses to write network XML
+ * according to <a
  * href="http://nevt.sourceforge.net/">NEVT </a> data model.
- * 
+ *
  * @author Philip Tucker
  */
 public class ChromosomeToNetworkXml implements Configurable {
 
-	private static Logger logger = Logger.getLogger(ChromosomeToNetworkXml.class);
+    private static Logger logger = Logger.getLogger(ChromosomeToNetworkXml.class);
 
-	private FilePersistence db = new FilePersistence();
+    private FilePersistence db = new FilePersistence();
 
-	private AnjiNetTranscriber transcriber;
+    private AnjiNetTranscriber transcriber;
 
-	/**
-	 * See <a href=" {@docRoot} /params.htm" target="anji_params">Parameter Details </a> for specific property settings.
-	 * 
-	 * @param props configuration parameters
-	 */
-	public void init(Properties props) {
-		try {
-			db.init(props);
-			transcriber = (AnjiNetTranscriber) props.singletonObjectProperty(AnjiNetTranscriber.class);
-		} catch (Exception e) {
-			throw new IllegalArgumentException("invalid properties: " + e.getClass() + ": " + e.getMessage());
-		}
-	}
+    /**
+     * See <a href=" {@docRoot} /params.htm" target="anji_params">Parameter
+     * Details </a> for specific property settings.
+     *
+     * @param props configuration parameters
+     */
+    public void init(Properties props) {
+        try {
+            db.init(props);
+            transcriber = (AnjiNetTranscriber) props.singletonObjectProperty(AnjiNetTranscriber.class);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("invalid properties: " + e.getClass() + ": " + e.getMessage());
+        }
+    }
 
-	/**
-	 * Transcribes chromosome to network and generates XML.
-	 * 
-	 * @param chromId persistence ID of chromosome
-	 * @return XML representation of network
-	 * @throws Exception
-	 */
-	public String toNetworkXml(String chromId) throws Exception {
-		Chromosome chrom = db.loadChromosome(chromId, new DummyConfiguration());
-		AnjiActivator activator = new AnjiActivator(transcriber.newAnjiNet(chrom), 1);
+    /**
+     * Transcribes chromosome to network and generates XML.
+     *
+     * @param chromId persistence ID of chromosome
+     * @return XML representation of network
+     * @throws Exception
+     */
+    public String toNetworkXml(String chromId) throws Exception {
+        Chromosome chrom = db.loadChromosome(chromId, new DummyConfiguration());
+        AnjiActivator activator = new AnjiActivator(transcriber.newAnjiNet(chrom), 1);
 
-		String result = activator.toXml();
-		db.store(activator);
-		return result;
-	}
+        String result = activator.toXml();
+        db.store(activator);
+        return result;
+    }
 
-	/**
-	 * Saves to persistence network XML representation of chromosomes.
-	 * 
-	 * @param args list of chromosome IDs
-	 * @throws Exception
-	 */
-	public static void main(String[] args) throws Exception {
-		System.out.println(Copyright.STRING);
-		if (args.length < 2) {
-			printUsage();
-			System.exit(-1);
-		}
+    /**
+     * Saves to persistence network XML representation of chromosomes.
+     *
+     * @param args list of chromosome IDs
+     * @throws Exception
+     */
+    public static void main(String[] args) throws Exception {
+        System.out.println(Copyright.STRING);
+        if (args.length < 2) {
+            printUsage();
+            System.exit(-1);
+        }
 
-		ChromosomeToNetworkXml ctnx = new ChromosomeToNetworkXml();
-		Properties props = new Properties(args[0]);
-		ctnx.init(props);
+        ChromosomeToNetworkXml ctnx = new ChromosomeToNetworkXml();
+        Properties props = new Properties(args[0]);
+        ctnx.init(props);
 
-		for (int i = 1; i < args.length; ++i) {
-			String result = ctnx.toNetworkXml(args[i]);
-			logger.info(result);
-		}
-	}
+        for (int i = 1; i < args.length; ++i) {
+            String result = ctnx.toNetworkXml(args[i]);
+            logger.info(result);
+            System.out.println(result);
+        }
+    }
 
-	/**
-	 * command line usage
-	 */
-	private static void printUsage() {
-		System.err.println("<cmd> properties-file-name chromosome-id");
-	}
+    /**
+     * command line usage
+     */
+    private static void printUsage() {
+        System.err.println("<cmd> properties-file-name chromosome-id");
+    }
 
 }
