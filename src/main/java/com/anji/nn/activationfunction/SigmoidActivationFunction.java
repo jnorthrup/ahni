@@ -21,50 +21,61 @@ package com.anji.nn.activationfunction;
 
 /**
  * Classic Sigmoid.
- * 
+ *
  * @author Philip Tucker
  */
-public class SigmoidActivationFunction implements ActivationFunction {
-	/**
-	 * identifying string
-	 */
-	public final static String NAME = "sigmoid";
+public class SigmoidActivationFunction implements ActivationFunction, DifferentiableFunction {
 
-	/**
-	 * @see Object#toString()
-	 */
-	public String toString() {
-		return NAME;
-	}
+    /**
+     * identifying string
+     */
+    public final static String NAME = "sigmoid";
 
-	/**
-	 * This class should only be accessed via ActivationFunctionFactory.
-	 */
-	SigmoidActivationFunction() {
-	}
+    /**
+     * @see Object#toString()
+     */
+    @Override
+    public String toString() {
+        return NAME;
+    }
 
-	public double apply(double input) {
-		return 1.0 / (1.0 + Math.exp(-input));
-	}
+    /**
+     * This class should only be accessed via ActivationFunctionFactory.
+     */
+    SigmoidActivationFunction() {
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
-	 */
-	public double getMaxValue() {
-		return 1;
-	}
+    @Override
+    public double apply(double input) {
+        return 1.0 / (1.0 + Math.exp(-input));
+    }
+    
+    @Override
+    public double applyDiff(double input) {
+        return 1 - apply(input);
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
-	 */
-	public double getMinValue() {
-		return 0;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
+     */
+    @Override
+    public double getMaxValue() {
+        return 1;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#cost()
-	 */
-	public long cost() {
-		return 497;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
+     */
+    @Override
+    public double getMinValue() {
+        return 0;
+    }
+
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#cost()
+     */
+    @Override
+    public long cost() {
+        return 497;
+    }
 }

@@ -34,7 +34,7 @@ public interface ActivationFunction {
 	 * @param input
 	 * @return double result of applying activation function to <code>input</code>
 	 */
-	public abstract double apply(double input);
+	public double apply(double input);
 
 	/**
 	 * @return ceiling value for this function

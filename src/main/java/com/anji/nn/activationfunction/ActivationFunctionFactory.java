@@ -39,6 +39,7 @@ public class ActivationFunctionFactory {
      */
     private ActivationFunctionFactory() {
         super();
+        activationFunctions.put(ExponentialLinearFunction.NAME, new ExponentialLinearFunction());
         activationFunctions.put(LinearActivationFunction.NAME, new LinearActivationFunction());
         activationFunctions.put(NegatedLinearActivationFunction.NAME, new NegatedLinearActivationFunction());
         activationFunctions.put(SigmoidActivationFunction.NAME, new SigmoidActivationFunction());
