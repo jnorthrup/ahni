@@ -73,6 +73,8 @@ public class Chromosome extends EvaluationData implements Comparable, Serializab
 
     /**
      * ctor for hibernate
+     * @param objectiveCount
+     * @param behaviourCount
      */
     public Chromosome(int objectiveCount, int behaviourCount) {
         super(objectiveCount, behaviourCount);

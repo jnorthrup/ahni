@@ -380,9 +380,9 @@ public class Genotype implements Serializable {
 
             previousBestPerforming = bestPerforming;
             // Set which species contains the best performing individual.
-            for (Species s : m_species) {
+            m_species.forEach((s) -> {
                 s.containsBestPerforming = false;
-            }
+            });
             bestPerforming.getSpecie().containsBestPerforming = true;
 
             // Determine zero performance count.
@@ -412,8 +412,12 @@ public class Genotype implements Serializable {
             } else {
                 fittest = null;
             }
+            
             for (Chromosome c : m_chromosomes) {
-                if (fittest == null || fittest.getFitnessValue() < c.getFitnessValue() || (fittest.getFitnessValue() == c.getFitnessValue() && fittest.getPerformanceValue() < c.getPerformanceValue())) {
+                if (fittest == null || 
+                    fittest.getFitnessValue() < c.getFitnessValue() || 
+                   (fittest.getFitnessValue() == c.getFitnessValue() && fittest.getPerformanceValue() < c.getPerformanceValue())) 
+                {
                     fittest = c;
                 }
             }
@@ -446,7 +450,7 @@ public class Genotype implements Serializable {
 
             // Execute Reproduction Operators.
             // -------------------------------------
-            List<ChromosomeMaterial> offspring = new ArrayList<ChromosomeMaterial>();
+            List<ChromosomeMaterial> offspring = new ArrayList<>();
             for (ReproductionOperator operator : m_activeConfiguration.getReproductionOperators()) {
                 operator.reproduce(m_activeConfiguration, m_species, offspring);
             }

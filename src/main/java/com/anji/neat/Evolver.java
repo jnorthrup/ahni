@@ -269,8 +269,10 @@ public class Evolver implements Configurable {
                 // generation start time
                 //Date generationStartDate = Calendar.getInstance().getTime();
                 logger.info( "Generation " + generation + ": start" );
-                // nextSequence generation
+                
+                // EVOLUTION
                 fittest = genotype.evolve();
+                
                 bestPerforming = genotype.getBestPerforming();
                 
                 GenerationStatistics genStat = evoStat.newGeneration();

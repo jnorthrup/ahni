@@ -26,127 +26,133 @@ import org.jgapcustomised.Allele;
 
 /**
  * Gene corresponding to NEAT connection gene according to <a
- * href="http://nn.cs.utexas.edu/downloads/papers/stanley.ec02.pdf"> Evolving Neural Networks through Augmenting
- * Topologies </a>
- * 
+ * href="http://nn.cs.utexas.edu/downloads/papers/stanley.ec02.pdf"> Evolving
+ * Neural Networks through Augmenting Topologies </a>
+ *
  * @author Philip Tucker
  */
 public class ConnectionAllele extends Allele {
-	private static final DecimalFormat nf = new DecimalFormat(" 0.0000;-0.0000");
-	
-	private ConnectionGene connectionGene;
 
-	/**
-	 * default connection weight
-	 */
-	public final static double DEFAULT_WEIGHT = 0;
-	/**
-	 * Standard deviation of perturbations to weight values. This is generally set by WeightMutationOperator according to the loaded properties file.
-	 * TODO This really shouldn't be a static class member.
-	 */
-	public static double RANDOM_STD_DEV = 1;
+    private static final DecimalFormat nf = new DecimalFormat(" 0.0000;-0.0000");
 
-	/**
-	 * Initial standard deviation of perturbations to weight values when creating initial population or adding neurons. 
-	 * This is generally set by WeightMutationOperator according to the loaded properties file.
-	 * TODO This really shouldn't be a static class member.
-	 */
-	public static double RANDOM_STD_DEV_INITIAL = 0.1;
-	
-	private double weight = DEFAULT_WEIGHT;
+    private ConnectionGene connectionGene;
 
-	/**
-	 * @see Object#toString()
-	 */
-	public String toString() {
-		return "C-" + connectionGene.toString() + " [" + nf.format(weight) + "]";
-	}
+    /**
+     * default connection weight
+     */
+    public final static double DEFAULT_WEIGHT = 0;
+    /**
+     * Standard deviation of perturbations to weight values. This is generally
+     * set by WeightMutationOperator according to the loaded properties file.
+     * TODO This really shouldn't be a static class member.
+     */
+    public static double RANDOM_STD_DEV = 1;
 
-	/**
-	 * @param aConnectionGene
-	 */
-	public ConnectionAllele(ConnectionGene aConnectionGene) {
-		super(aConnectionGene);
-		connectionGene = aConnectionGene;
-	}
+    /**
+     * Initial standard deviation of perturbations to weight values when
+     * creating initial population or adding neurons. This is generally set by
+     * WeightMutationOperator according to the loaded properties file. TODO This
+     * really shouldn't be a static class member.
+     */
+    public static double RANDOM_STD_DEV_INITIAL = 0.1;
 
-	/**
-	 * @see org.jgapcustomised.Allele#cloneAllele()
-	 */
-	public Allele cloneAllele() {
-		ConnectionAllele allele = new ConnectionAllele(connectionGene);
-		allele.setWeight(weight);
-		return allele;
-	}
+    private double weight = DEFAULT_WEIGHT;
 
+    /**
+     * @see Object#toString()
+     */
+    public String toString() {
+        return "C-" + connectionGene.toString() + " [" + nf.format(weight) + "]";
+    }
 
-	/**
-	 * Set weight to random value from a Gaussian distribution determined by {@link #RANDOM_STD_DEV}
-	 * 
-	 * @param a_numberGenerator
-	 * @param onlyPerturbFromCurrentValue if true then the weight is perturbed from its current value.
-	 */
-	public void setToRandomValue(Random a_numberGenerator, boolean onlyPerturbFromCurrentValue) {
-		if (onlyPerturbFromCurrentValue)
-			weight += a_numberGenerator.nextGaussian() * RANDOM_STD_DEV;
-			//weight += (a_numberGenerator.nextBoolean() ? 1 : -1) * a_numberGenerator.nextDouble() * RANDOM_STD_DEV;
-		else
-			weight = a_numberGenerator.nextGaussian() * RANDOM_STD_DEV;
-			//weight = (a_numberGenerator.nextBoolean() ? 1 : -1) * a_numberGenerator.nextDouble() * RANDOM_STD_DEV;
-		
-	}
+    /**
+     * @param aConnectionGene
+     */
+    public ConnectionAllele(ConnectionGene aConnectionGene) {
+        super(aConnectionGene);
+        connectionGene = aConnectionGene;
+    }
 
-	/**
-	 * @return connection weight
-	 */
-	public double getWeight() {
-		return weight;
-	}
+    /**
+     * @see org.jgapcustomised.Allele#cloneAllele()
+     */
+    public Allele cloneAllele() {
+        ConnectionAllele allele = new ConnectionAllele(connectionGene);
+        allele.setWeight(weight);
+        return allele;
+    }
 
-	/**
-	 * @param aWeight new connection weight
-	 */
-	public void setWeight(double aWeight) {
-		weight = aWeight;
-	}
+    /**
+     * Set weight to random value from a Gaussian distribution determined by
+     * {@link #RANDOM_STD_DEV}
+     *
+     * @param a_numberGenerator
+     * @param onlyPerturbFromCurrentValue if true then the weight is perturbed
+     * from its current value.
+     */
+    public void setToRandomValue(Random a_numberGenerator, boolean onlyPerturbFromCurrentValue) {
+        if (onlyPerturbFromCurrentValue) {
+            weight += a_numberGenerator.nextGaussian() * RANDOM_STD_DEV;
+        } //weight += (a_numberGenerator.nextBoolean() ? 1 : -1) * a_numberGenerator.nextDouble() * RANDOM_STD_DEV;
+        else {
+            weight = a_numberGenerator.nextGaussian() * RANDOM_STD_DEV;
+        }
+        //weight = (a_numberGenerator.nextBoolean() ? 1 : -1) * a_numberGenerator.nextDouble() * RANDOM_STD_DEV;
 
-	/**
-	 * @return src neuron ID
-	 * @see ConnectionGene#getSrcNeuronId()
-	 */
-	public Long getSrcNeuronId() {
-		return connectionGene.getSrcNeuronId();
-	}
+    }
 
-	/**
-	 * @return dest neuron ID
-	 * @see ConnectionGene#getDestNeuronId()
-	 */
-	public Long getDestNeuronId() {
-		return connectionGene.getDestNeuronId();
-	}
+    /**
+     * @return connection weight
+     */
+    public double getWeight() {
+        return weight;
+    }
 
-	@Override
-	public boolean isEquivalent(Allele otherAllele) {
-		if (!(otherAllele instanceof ConnectionAllele))
-			return false;
-		ConnectionAllele other = (ConnectionAllele) otherAllele;
-		return getSrcNeuronId() == other.getSrcNeuronId() && getDestNeuronId() == other.getDestNeuronId() && weight == other.weight;
-	}
+    /**
+     * @param aWeight new connection weight
+     */
+    public void setWeight(double aWeight) {
+        weight = aWeight;
+    }
 
-	/**
-	 * Gets the weight value.
-	 */
-	@Override
-	public double getValue() {
-		return weight;
-	}
+    /**
+     * @return src neuron ID
+     * @see ConnectionGene#getSrcNeuronId()
+     */
+    public Long getSrcNeuronId() {
+        return connectionGene.getSrcNeuronId();
+    }
 
-	/**
-	 * Sets the weight value.
-	 */
-	@Override
-	public void setValue(double aValue) {
-		weight = aValue;
-	}
+    /**
+     * @return dest neuron ID
+     * @see ConnectionGene#getDestNeuronId()
+     */
+    public Long getDestNeuronId() {
+        return connectionGene.getDestNeuronId();
+    }
+
+    @Override
+    public boolean isEquivalent(Allele otherAllele) {
+        if (!(otherAllele instanceof ConnectionAllele)) {
+            return false;
+        }
+        ConnectionAllele other = (ConnectionAllele) otherAllele;
+        return getSrcNeuronId() == other.getSrcNeuronId() && getDestNeuronId() == other.getDestNeuronId() && weight == other.weight;
+    }
+
+    /**
+     * Gets the weight value.
+     */
+    @Override
+    public double getValue() {
+        return weight;
+    }
+
+    /**
+     * Sets the weight value.
+     */
+    @Override
+    public void setValue(double aValue) {
+        weight = aValue;
+    }
 }

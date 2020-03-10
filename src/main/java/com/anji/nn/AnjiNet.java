@@ -177,13 +177,13 @@ public class AnjiNet {
         if (getName() != null) {
             out.append(getName());
         }
-        out.append("\nNeuron count: " + allNeurons.size());
-        out.append("\nSynapse count: " + connCount);
-        out.append("\nTopology type: " + (isRecurrent() ? "Reccurent" : "Feed-forward"));
+        out.append("\nNeuron count: ").append(allNeurons.size());
+        out.append("\nSynapse count: ").append(connCount);
+        out.append("\nTopology type: ").append(isRecurrent() ? "Reccurent" : "Feed-forward");
 
         out.append("\n\nNeurons:\n\t\ttype\tfunc\tbias");
         for (int n = 0; n < allNeurons.size(); n++) {
-            out.append("\n\t" + n + "\t" + getType(allNeurons.get(n)) + "\t" + allNeurons.get(n).getFunc() + "\t" + allNeurons.get(n).getBias());
+            out.append("\n\t").append(n).append("\t").append(getType(allNeurons.get(n))).append("\t").append(allNeurons.get(n).getFunc()).append("\t").append(allNeurons.get(n).getBias());
         }
 
         out.append("\n\nConnections:");

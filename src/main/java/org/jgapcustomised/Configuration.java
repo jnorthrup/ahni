@@ -83,7 +83,7 @@ public class Configuration implements java.io.Serializable {
      */
     private NaturalSelector m_populationSelector = null;
 
-    private SpeciationParms m_speciationParms = new SpeciationParms();
+    private final SpeciationParms m_speciationParms = new SpeciationParms();
 
     protected int objectiveCount = 1;
 

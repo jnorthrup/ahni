@@ -300,6 +300,12 @@ public class NeatConfiguration extends Configuration implements Configurable {
         if (pruneOperator.getMutationRate() > 0.0) {
             addMutationOperator(pruneOperator);
         }
+        
+        // train the weights using backpropagation
+        BackpropagationOperator backpropOperator = props.singletonObjectProperty(BackpropagationOperator.class);
+        if (backpropOperator.getMutationRate() > 0.0) {
+            addMutationOperator(backpropOperator);
+        }
     }
 
     /**
