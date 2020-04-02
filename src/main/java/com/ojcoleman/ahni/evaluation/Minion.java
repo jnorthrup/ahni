@@ -1,7 +1,5 @@
 package com.ojcoleman.ahni.evaluation;
 
-import java.io.BufferedOutputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -10,30 +8,19 @@ import java.io.PrintStream;
 import java.io.Serializable;
 import java.io.StringReader;
 import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
 
 import org.apache.log4j.PropertyConfigurator;
-import org.jgapcustomised.BulkFitnessFunction;
 import org.jgapcustomised.Chromosome;
 
-import com.anji.integration.Activator;
 import com.anji.integration.ActivatorTranscriber;
-import com.anji.integration.Transcriber;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.ojcoleman.ahni.hyperneat.HyperNEATConfiguration;
 import com.ojcoleman.ahni.hyperneat.Properties;
-import com.ojcoleman.ahni.util.ArrayUtil;
 
 /**
  * The main class to start a "minion" worker in a cluster. See {@link com.ojcoleman.ahni.evaluation.BulkFitnessFunctionMT}.

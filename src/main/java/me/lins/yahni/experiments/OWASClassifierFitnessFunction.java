@@ -25,6 +25,7 @@ import com.anji.util.Properties;
 import com.ojcoleman.ahni.hyperneat.HyperNEATEvolver;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,7 +55,7 @@ public class OWASClassifierFitnessFunction extends BulkFitnessFunction implement
     
     private ActivatorTranscriber activatorFactory;
     private boolean endRun;
-    private Random random = new Random();
+    private final Random random = new Random();
     
     private List<List<double[]>> evalInputData = new ArrayList<>();
     private List<List<double[]>> evalOutputData = new ArrayList<>();
@@ -240,6 +241,69 @@ public class OWASClassifierFitnessFunction extends BulkFitnessFunction implement
                 LOGGER.warn("TranscriberException", ex);
             }
         });
+    }
+    
+    private static int max(double[] v) {
+        int i = 0;
+        for (int j = 1; j < v.length; j++) {
+            if (v[j] > v[j-1]) {
+                i = j;
+            } else if (v[j] == v[j-1]) {
+                i = -1;
+            }
+        }
+        return i;
+    }
+    
+    private static String compareResults(double[] result, double[] reference) {
+        int a = max(result);
+        int b = max(reference);
+        if (a < 0 && b < 0) {
+            return "NA";
+        } else if (a == b) {
+            return "1";
+        } else {
+            return "0";
+        }
+    }
+    
+    /**
+     * Evaluates the given chromosome against the evaluation data and stores
+     * the result in a CSV file.
+     * @param chrome 
+     */
+    public void evaluateReal(Chromosome chrome, PrintWriter out) {
+        try {
+            Activator activator = activatorFactory.newActivator(chrome);
+
+            for (int s = 0; s < evalInputData.size(); s++) {
+                var subjInput  = evalInputData.get(s);
+                var subjOutput = evalOutputData.get(s);
+                
+                for (var n = 0; n < subjInput.size(); n++) {
+                    double[] result = activator.next(subjInput.get(n));
+                    double[] reference = subjOutput.get(n);
+                    
+                    // We have class probabilities here but at last we need
+                    // a decision for one class. The class with highest probability
+                    // is the searched for class.
+                    String c = compareResults(result, reference);
+                    for(var d : reference) {
+                        out.print(d);
+                        out.print(", ");
+                    }
+                    for(var d : result) {
+                        out.print(d);
+                        out.print(", ");
+                    }
+                    out.println(c);
+                }
+            }
+            
+            out.flush();
+        } catch (TranscriberException ex) {
+            LOGGER.warn("TranscriberException", ex);
+        } 
     }
     
     private double aggSquaredDiff(double[] a, double[] b) {

@@ -41,6 +41,7 @@ import com.anji.run.Run;
 import com.anji.util.*;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
+import me.lins.yahni.experiments.OWASClassifierFitnessFunction;
 
 /**
  * Configures and performs an ANJI evolutionary run.
@@ -235,7 +236,7 @@ public class Evolver implements Configurable {
 
         //props.setProperty("output.dir", 
         //        props.getProperty("output.dir") + "/" + new Date().toString());
-        File dirFile = new File(props.getProperty("output.dir"));
+        File dirFile = new File(props.getProperty("output.dir") + "/eval");
         if (!dirFile.exists()) {
             dirFile.mkdirs();
         }
@@ -280,6 +281,14 @@ public class Evolver implements Configurable {
                 genStat.setSpecies(genotype.getSpecies());
                 System.out.println(genStat.toString());
                 
+                // Evaluate fittest against evaluation data
+                if (bulkFitnessFunc instanceof OWASClassifierFitnessFunction) {
+                    var owasFitFunc = (OWASClassifierFitnessFunction)bulkFitnessFunc;
+                    try (PrintWriter out = new PrintWriter(
+                            props.getProperty("output.dir") + "/eval/eval-gen" + generation + "-ID" + fittest.getId() + ".csv")) {
+                        owasFitFunc.evaluateReal(fittest, out);
+                    }
+                }
                 
                 // result data
                 // if (bestPerforming.getPerformanceValue() >= targetPerformance && generationOfFirstSolution == -1)
@@ -408,11 +417,11 @@ public class Evolver implements Configurable {
             for (int i = generation; i < numEvolutions; i++) {
                 bestPC[i] = lastPC;
             }
-
         }
 
         // run finish
-        config.getEventManager().fireGeneticEvent(new GeneticEvent(GeneticEvent.RUN_COMPLETED_EVENT, genotype));
+        config.getEventManager().fireGeneticEvent(
+                new GeneticEvent(GeneticEvent.RUN_COMPLETED_EVENT, genotype));
         logConclusion(generationOfFirstSolution, fittest);
         //Date runEndDate = Calendar.getInstance().getTime();
         //long durationMillis = runEndDate.getTime() - runStartDate.getTime();
