@@ -88,7 +88,7 @@ public class OWASClassifierFitnessFunction extends BulkFitnessFunction implement
                 trainingFiles.size() * 
                 properties.getFloatProperty("training.evalSplit", 0.1f)
         );
-        LOGGER.info("Chosing " + numEvalFiles + " as evaluation data.");
+        System.out.println("Chosing " + numEvalFiles + " files as evaluation data.");
         
         for (var i = 0; i < trainingFiles.size(); i++) {
             String trainingFile = trainingFiles.get(i);
@@ -114,6 +114,7 @@ public class OWASClassifierFitnessFunction extends BulkFitnessFunction implement
                 }
             } catch (IOException ex) {
                 LOGGER.warn("Error reading training data", ex);
+                System.out.println(ex.getLocalizedMessage());
             }
             
             if (i <= numEvalFiles) {
