@@ -89,6 +89,8 @@ public class Chromosome extends EvaluationData implements Comparable, Serializab
      * @param a_material Genetic material to be contained within this Chromosome
      * instance.
      * @param an_id unique ID of new chromosome
+     * @param objectiveCount
+     * @param behaviourCount
      */
     public Chromosome(ChromosomeMaterial a_material, Long an_id, int objectiveCount, int behaviourCount) {
         super(objectiveCount, behaviourCount);

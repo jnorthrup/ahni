@@ -45,6 +45,8 @@ import com.anji.nn.RecurrencyPolicy;
 import com.anji.nn.activationfunction.ActivationFunctionFactory;
 import com.anji.util.Configurable;
 import com.anji.util.Properties;
+import java.util.SortedSet;
+import org.jgapcustomised.Allele;
 
 /**
  * The purpose of this class is to construct a neural net object
@@ -110,7 +112,7 @@ public class AnjiNetTranscriber implements Transcriber<AnjiActivator>, Configura
         return new AnjiActivator(newAnjiNet(genotype), recurrentCycles);
     }
 
-    /**
+        /**
      * create new <code>AnjiNet</code> from <code>genotype</code>
      *
      * @param genotype chromosome to transcribe
@@ -121,11 +123,26 @@ public class AnjiNetTranscriber implements Transcriber<AnjiActivator>, Configura
         if (genotype.getAlleles().isEmpty()) {
             throw new IllegalArgumentException("Genotype has no alleles...");
         }
-
+        
+        return newAnjiNet(genotype.getAlleles(), genotype.getId().toString());
+    }
+    
+    /**
+     * create new <code>AnjiNet</code> from <code>genotype</code>
+     *
+     * @param alleles
+     * @param id
+     * @return phenotype
+     * @throws TranscriberException
+     */
+    public AnjiNet newAnjiNet(SortedSet<Allele> alleles, String id) 
+            throws TranscriberException 
+    {
         Map<Long, Neuron> allNeurons = new HashMap<>();
 
         // input neurons
-        SortedMap<Long, NeuronAllele> inNeuronAlleles = NeatChromosomeUtility.getNeuronMap(genotype.getAlleles(), NeuronType.INPUT);
+        SortedMap<Long, NeuronAllele> inNeuronAlleles = 
+                NeatChromosomeUtility.getNeuronMap(alleles, NeuronType.INPUT);
         if (inNeuronAlleles.isEmpty()) {
             throw new IllegalArgumentException("An AnjiNet must have at least one input neuron.");
         }
@@ -138,7 +155,8 @@ public class AnjiNetTranscriber implements Transcriber<AnjiActivator>, Configura
         });
 
         // output neurons
-        SortedMap<Long, NeuronAllele> outNeuronAlleles = NeatChromosomeUtility.getNeuronMap(genotype.getAlleles(), NeuronType.OUTPUT);
+        SortedMap<Long, NeuronAllele> outNeuronAlleles = 
+                NeatChromosomeUtility.getNeuronMap(alleles, NeuronType.OUTPUT);
         if (outNeuronAlleles.isEmpty()) {
             throw new IllegalArgumentException("An AnjiNet must have at least one output neuron.");
         }
@@ -151,7 +169,8 @@ public class AnjiNetTranscriber implements Transcriber<AnjiActivator>, Configura
         }
 
         // hidden neurons
-        SortedMap<Long, NeuronAllele> hiddenNeuronAlleles = NeatChromosomeUtility.getNeuronMap(genotype.getAlleles(), NeuronType.HIDDEN);
+        SortedMap<Long, NeuronAllele> hiddenNeuronAlleles = 
+                NeatChromosomeUtility.getNeuronMap(alleles, NeuronType.HIDDEN);
         for (NeuronAllele neuronAllele : hiddenNeuronAlleles.values()) {
             Neuron n = new Neuron(ActivationFunctionFactory.valueOf(neuronAllele.getActivationType()), neuronAllele.getBias());
             n.setId(neuronAllele.getInnovationId());
@@ -173,7 +192,8 @@ public class AnjiNetTranscriber implements Transcriber<AnjiActivator>, Configura
         // RecurrencyPolicy.BEST_GUESS - any connection where the source neuron is in the same or
         // later (i.e., nearer output layer) as the destination is a CacheNeuronConnection
         List<CacheNeuronConnection> recurrentConns = new ArrayList<>();
-        List<ConnectionAllele> remainingConnAlleles = NeatChromosomeUtility.getConnectionList(genotype.getAlleles());
+        List<ConnectionAllele> remainingConnAlleles = 
+                NeatChromosomeUtility.getConnectionList(alleles);
         Set<Long> currentNeuronInnovationIds = new HashSet<>(outNeuronAlleles.keySet());
         Set<Long> traversedNeuronInnovationIds = new HashSet<>(currentNeuronInnovationIds);
         Set<Long> nextNeuronInnovationIds = new HashSet<>();
@@ -220,17 +240,17 @@ public class AnjiNetTranscriber implements Transcriber<AnjiActivator>, Configura
         // considered "traversed" since they should be realized regardless of their connectivity to
         // the rest of the network
         if (!remainingConnAlleles.isEmpty()) {
-            logger.warn("not all connection genes handled: " + genotype.toString() + (genotype.getMaterial().pruned ? "  " : "  not") + " pruned");
+            logger.warn("not all connection genes handled: "); // + genotype.toString() + (genotype.getMaterial().pruned ? "  " : "  not") + " pruned");
         }
         traversedNeuronInnovationIds.addAll(inNeuronAlleles.keySet());
         if (traversedNeuronInnovationIds.size() != allNeurons.size()) {
-            logger.warn("did not traverse all neurons: " + genotype.toString() + (genotype.getMaterial().pruned ? "  " : "  not") + " pruned");
+            logger.warn("did not traverse all neurons: "); // + genotype.toString() + (genotype.getMaterial().pruned ? "  " : "  not") + " pruned");
         }
 
         // build network
         Collection<Neuron> allNeuronsCol = allNeurons.values();
-        String id = genotype.getId().toString();
-        return new AnjiNet(allNeuronsCol, inNeurons, outNeurons, recurrentConns, id);
+        return new AnjiNet(
+                allNeuronsCol, inNeurons, outNeurons, recurrentConns, id);
     }
 
     /**

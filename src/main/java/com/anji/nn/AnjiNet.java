@@ -59,13 +59,6 @@ public class AnjiNet {
     }
 
     /**
-     * for testing only
-     */
-    protected AnjiNet() {
-        // no-op
-    }
-
-    /**
      * @return number corresponding to cost of network activation in resources
      */
     public long cost() {
@@ -85,7 +78,7 @@ public class AnjiNet {
      * @param someRecurrentConns recurrent connections
      * @param aName
      */
-    protected void init(Collection<Neuron> someNeurons, List<Neuron> someInNeurons, List<Neuron> someOutNeurons, List<CacheNeuronConnection> someRecurrentConns, String aName) {
+    private void init(Collection<Neuron> someNeurons, List<Neuron> someInNeurons, List<Neuron> someOutNeurons, List<CacheNeuronConnection> someRecurrentConns, String aName) {
         allNeurons = new ArrayList<>(someNeurons);
 
         inNeurons = someInNeurons;
@@ -132,6 +125,10 @@ public class AnjiNet {
     public List<Neuron> getOutputNeurons(int fromIdx, int toIdx) {
         return outNeurons.subList(fromIdx, toIdx);
     }
+    
+    public List<Neuron> getOutputNeurons() {
+        return outNeurons;
+    }
 
     /**
      * @param fromIdx
@@ -159,6 +156,7 @@ public class AnjiNet {
     }
 
     /**
+     * @return 
      * @see java.lang.Object#toString()
      */
     @Override
@@ -199,7 +197,7 @@ public class AnjiNet {
                     int post = ni;
                     String preType = src != null ? getType(src) : "-";
                     String postType = getType(n);
-                    out.append("\n\t" + preType + ":" + pre + " > " + postType + ":" + post + "\t" + nc.getWeight());
+                    out.append("\n\t").append(preType).append(":").append(pre).append(" > ").append(postType).append(":").append(post).append("\t").append(nc.getWeight());
                 }
             }
         }

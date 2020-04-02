@@ -27,7 +27,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.IntStream;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.log4j.Logger;
@@ -50,9 +54,14 @@ public class OWASClassifierFitnessFunction extends BulkFitnessFunction implement
     
     private ActivatorTranscriber activatorFactory;
     private boolean endRun;
+    private Random random = new Random();
     
-    private final List<double[]> inputData = new ArrayList<>();
-    private final List<double[]> outputData = new ArrayList<>();
+    private List<List<double[]>> evalInputData = new ArrayList<>();
+    private List<List<double[]>> evalOutputData = new ArrayList<>();
+    private List<List<double[]>> inputData = new ArrayList<>();
+    private List<List<double[]>> outputData = new ArrayList<>();
+    private List<double[]> balancedInput = new ArrayList<>();
+    private List<double[]> balancedOutput = new ArrayList<>();
     
     public OWASClassifierFitnessFunction() {
     }
@@ -62,11 +71,30 @@ public class OWASClassifierFitnessFunction extends BulkFitnessFunction implement
         activatorFactory = (ActivatorTranscriber) properties.singletonObjectProperty(ActivatorTranscriber.class);
         
         // Load the training data
-        String[] trainingFiles = properties.getStringArrayProperty("training.file");
+        List<String> trainingFiles = 
+                Arrays.asList(properties.getStringArrayProperty("training.file"));
         String[] inputCols  = properties.getStringArrayProperty("training.inputColumns");
         String[] outputCols = properties.getStringArrayProperty("training.outputColumns");
         
-        for (var trainingFile : trainingFiles) {
+        long seed = properties.getLongProperty("random.seed", 0);
+        if (seed != 0) {
+            random.setSeed(seed);
+        }
+        
+        // Shuffle the training files
+        Collections.shuffle(trainingFiles);
+        int numEvalFiles = Math.round(
+                trainingFiles.size() * 
+                properties.getFloatProperty("training.evalSplit", 0.1f)
+        );
+        LOGGER.info("Chosing " + numEvalFiles + " as evaluation data.");
+        
+        for (var i = 0; i < trainingFiles.size(); i++) {
+            String trainingFile = trainingFiles.get(i);
+             
+            List<double[]> oneSubjInput  = new ArrayList<>();
+            List<double[]> oneSubjOutput = new ArrayList<>();
+            
             try {
                 Reader in = new FileReader(trainingFile);
                 Iterable<CSVRecord> records = CSVFormat.EXCEL.withHeader().parse(in);
@@ -75,19 +103,108 @@ public class OWASClassifierFitnessFunction extends BulkFitnessFunction implement
                     for (var n = 0; n < input.length; n++) {
                         input[n] = Double.parseDouble(record.get(inputCols[n]));
                     }
-                    inputData.add(input);
+                    oneSubjInput.add(input);
                     
                     var output = new double[outputCols.length];
                     for (var n = 0; n < output.length; n++) {
                         output[n] = Double.parseDouble(record.get(outputCols[n]));
                     }
-                    outputData.add(output);
+                    oneSubjOutput.add(output);
                 }
             } catch (IOException ex) {
                 LOGGER.warn("Error reading training data", ex);
             }
+            
+            if (i <= numEvalFiles) {
+                LOGGER.info("Eval file " + i + ": " + trainingFile);
+                System.out.println("Eval file " + i + ": " + trainingFile);
+                evalInputData.add(oneSubjInput);
+                evalOutputData.add(oneSubjOutput);
+            } else {
+                inputData.add(oneSubjInput);
+                outputData.add(oneSubjOutput);
+            }
+            
         }
+        
+        balanceData(inputData, outputData);
+        
         LOGGER.info("OWASClassifierFitnessFunction initialized.");
+    }
+    
+    private static void addTo(double[] a, double[] b) {
+        for (int n = 0; n < a.length; n++) {
+            a[n] += b[n];
+        }
+    }
+    
+    private static double balance(double[] classes) {
+        double diff = 0;
+        double sum = classes[0];
+        for (int i = 1; i < classes.length; i++) {
+            diff += Math.abs(classes[i] - classes[i - 1]);
+            sum += classes[i];
+        }
+        
+        return diff / sum;
+    }
+    
+    private void balanceData(List<List<double[]>> input, List<List<double[]>> output) {       
+        var classes = new double[output.get(0).get(0).length];
+        int minSubjSamples = input.get(0).size();
+        
+        // How many samples do we have for each subject?
+        for (var subj : input) {
+            minSubjSamples = Math.min(minSubjSamples, subj.size());
+        }
+        
+        // We can randomly sample minSubjSamples from each subject,
+        // we start with half of it and leave the rest for balancing
+        for (int s = 0; s < input.size(); s++) {
+            var subjInput  = input.get(s);
+            var subjOutput = output.get(s);
+            
+            for (int i = 0; i < minSubjSamples / 2; i++) {
+                int r = random.nextInt(subjInput.size());
+                var sampleInput  = subjInput.get(r);
+                var sampleOutput = subjOutput.get(r);
+                addTo(classes, sampleOutput);
+                balancedInput.add(sampleInput);
+                balancedOutput.add(sampleOutput);
+            }
+        }
+       
+        // The idea is to randomly sample data from each subject and check if the
+        // sample reduces the imbalance. If this is the case then add the sample
+        // to the data set.
+        
+        var balanceVTR = 0.01; // Minimal 1% relative error
+        var balance = balance(classes);
+        
+        while(balance > balanceVTR) {
+            for (int subj = 0; subj < input.size(); subj++) {
+                // Choose random sample
+                int r = random.nextInt(input.get(subj).size());
+                var sampleInput = input.get(subj).get(r);
+                var sampleOutput = output.get(subj).get(r);
+                
+                if (balancedInput.contains(sampleInput)) {
+                    continue;
+                }
+                
+                var newClasses = classes.clone();
+                addTo(newClasses, sampleOutput);
+                
+                var newBalance = balance(newClasses);
+                
+                if (newBalance < balance) {
+                    balancedInput.add(sampleInput);
+                    balancedOutput.add(sampleOutput);
+                    balance = newBalance;
+                    classes = newClasses;
+                }
+            }
+        }
     }
     
     /**
@@ -108,13 +225,13 @@ public class OWASClassifierFitnessFunction extends BulkFitnessFunction implement
                 
                 double avgerr = 0;
                 
-                for(var n = 0; n < inputData.size(); n++) {
-                    double[] result = activator.next(inputData.get(n));
-                    double[] reference = outputData.get(n);
+                for(var n = 0; n < balancedInput.size(); n++) {
+                    double[] result = activator.next(balancedInput.get(n));
+                    double[] reference = balancedOutput.get(n);
                     avgerr += aggSquaredDiff(result, reference);
                 }
                 
-                double fitness = 1 - avgerr / inputData.size();
+                double fitness = 1 - avgerr / balancedInput.size();
                 // TODO Which one is correct?
                 chrome.setFitnessValue(fitness);
                 chrome.setFitnessValue(fitness, 0);

@@ -119,7 +119,7 @@ public class ChromosomeMaterial implements Comparable, Serializable {
         // at each respective gene location (locus) to create the new Gene that
         // is to occupy that same locus in the new Chromosome.
         // -------------------------------------------------------------------
-        List<Allele> copyOfAlleles = new ArrayList<Allele>(m_alleles.size());
+        List<Allele> copyOfAlleles = new ArrayList<>(m_alleles.size());
 
         for (Allele orig : m_alleles) {
             copyOfAlleles.add(orig.cloneAllele());
@@ -159,8 +159,9 @@ public class ChromosomeMaterial implements Comparable, Serializable {
      *
      * @return A string representation of this Chromosome.
      */
+    @Override
     public String toString() {
-        StringBuffer representation = new StringBuffer();
+        StringBuilder representation = new StringBuilder();
         //representation.append("[ ");
 
         // Append the representations of each of the gene Alleles.

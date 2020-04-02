@@ -23,8 +23,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.text.DecimalFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.TreeMap;
 
@@ -51,7 +49,7 @@ import java.io.PrintWriter;
  */
 public class Evolver implements Configurable {
 
-    private static Logger logger = Logger.getLogger(Evolver.class);
+    private static final Logger logger = Logger.getLogger(Evolver.class);
 
     /**
      * properties key, # generations in run
