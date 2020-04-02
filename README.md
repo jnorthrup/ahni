@@ -10,7 +10,7 @@ YAHNI is based on AHNI which can be found at https://github.com/OliverColeman/ah
 A runnable JAR file can be built from the source files with:
 
 ```sh
-mvn compile package
+mvn compile package assembly:single
 ```
 
 Then to run an experiment:
