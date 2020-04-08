@@ -34,17 +34,12 @@ import com.ojcoleman.ahni.util.ArrayUtil;
  */
 public class AnjiActivator implements Activator {
 
-    private AnjiNet net;
-
+    private final AnjiNet net;
     private Pattern inputPattern = null;
-
     private int numCycles = 1;
-
-    private int outputDimension;
-
-    private double minResponseValue;
-
-    private double maxResponseValue;
+    private final int outputDimension;
+    private final double minResponseValue;
+    private final double maxResponseValue;
 
     /**
      * @param aNet ANN
@@ -76,10 +71,12 @@ public class AnjiActivator implements Activator {
         }
     }
 
+    @Override
     public double[] next() {
         return next((double[]) null);
     }
 
+    @Override
     public double[] next(double[] newInputValues) {
         assert !Double.isNaN(ArrayUtil.sum(newInputValues)) : "input array contains NaN: " + Arrays.toString(newInputValues);
 
@@ -112,6 +109,7 @@ public class AnjiActivator implements Activator {
         return result;
     }
 
+    @Override
     public double[][] nextSequence(double[][] newInputValues) {
         double[][] result = new double[newInputValues.length][];
         for (int i = 0; i < newInputValues.length; ++i) {
@@ -120,10 +118,12 @@ public class AnjiActivator implements Activator {
         return result;
     }
 
+    @Override
     public double[][] next(double[][] stimuli) {
         throw new IllegalArgumentException("AnjiActivator can only accept one dimensional input patterns");
     }
 
+    @Override
     public double[][][] nextSequence(double[][][] stimuli) {
         throw new IllegalArgumentException("AnjiActivator can only accept one dimensional input patterns");
     }

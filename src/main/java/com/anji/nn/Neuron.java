@@ -53,7 +53,7 @@ public class Neuron implements XmlPersistable {
      */
     private static class NeuronMetaData {
 
-        private Neuron neuron;
+        private final Neuron neuron;
 
         private double hintPosition;
 
@@ -285,10 +285,15 @@ public class Neuron implements XmlPersistable {
     public void setBias(double bias) {
         this.bias = bias;
     }
+    
+    public List<Connection> getIncomingConns() {
+        return this.incomingConns;
+    }
 
     /**
      * @return String representation of object
      */
+    @Override
     public String toString() {
         return Long.toString(id);
     }
@@ -299,6 +304,7 @@ public class Neuron implements XmlPersistable {
      *
      * @return String XML representation of object
      */
+    @Override
     public String toXml() {
         NeuronMetaData layout = new NeuronMetaData(this);
         return toXml(layout);
@@ -481,15 +487,6 @@ public class Neuron implements XmlPersistable {
 
         allMetaData.put(id, result);
         return result;
-    }
-
-    /**
-     * used by NeuronConnection.appendToXml() only
-     *
-     * @return Collection contains Connection objects
-     */
-    protected Collection<Connection> getIncomingConns() {
-        return incomingConns;
     }
 
     /**

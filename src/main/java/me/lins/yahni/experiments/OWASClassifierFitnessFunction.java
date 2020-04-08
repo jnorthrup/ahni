@@ -32,7 +32,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.IntStream;
+import me.lins.yahni.neat.TrainingData;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.log4j.Logger;
@@ -49,7 +49,10 @@ import org.jgapcustomised.Chromosome;
  * evaluate each of the Chromosomes given in an array and set their fitness
  * values prior to returning.
  */
-public class OWASClassifierFitnessFunction extends BulkFitnessFunction implements Configurable {
+public class OWASClassifierFitnessFunction 
+        extends BulkFitnessFunction 
+        implements Configurable, TrainingData 
+{
     
     private static final Logger LOGGER = Logger.getLogger(OWASClassifierFitnessFunction.class);
     
@@ -57,12 +60,12 @@ public class OWASClassifierFitnessFunction extends BulkFitnessFunction implement
     private boolean endRun;
     private final Random random = new Random();
     
-    private List<List<double[]>> evalInputData = new ArrayList<>();
-    private List<List<double[]>> evalOutputData = new ArrayList<>();
-    private List<List<double[]>> inputData = new ArrayList<>();
-    private List<List<double[]>> outputData = new ArrayList<>();
-    private List<double[]> balancedInput = new ArrayList<>();
-    private List<double[]> balancedOutput = new ArrayList<>();
+    private final List<List<double[]>> evalInputData = new ArrayList<>();
+    private final List<List<double[]>> evalOutputData = new ArrayList<>();
+    private final List<List<double[]>> inputData = new ArrayList<>();
+    private final List<List<double[]>> outputData = new ArrayList<>();
+    private final List<double[]> balancedInput = new ArrayList<>();
+    private final List<double[]> balancedOutput = new ArrayList<>();
     
     public OWASClassifierFitnessFunction() {
     }
@@ -331,6 +334,16 @@ public class OWASClassifierFitnessFunction extends BulkFitnessFunction implement
     @Override
     public void evolutionFinished(HyperNEATEvolver evolver) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<double[]> getInputData() {
+        return balancedInput;
+    }
+
+    @Override
+    public List<double[]> getOutputData() {
+        return balancedOutput;
     }
 
 }
