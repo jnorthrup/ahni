@@ -37,7 +37,7 @@ public class AnjiNet {
      */
     public final static String XML_TAG = "network";
 
-    private ArrayList<Neuron> allNeurons;
+    private List<Neuron> allNeurons;
 
     private List<Neuron> inNeurons;
 
@@ -87,6 +87,10 @@ public class AnjiNet {
         name = aName;
     }
 
+    public List<Neuron> getAllNeurons() {
+        return allNeurons;
+    }
+    
     /**
      * @param idx
      * @return input neuron at position <code>idx</code>
@@ -138,6 +142,10 @@ public class AnjiNet {
      */
     public List<Neuron> getInputNeurons(int fromIdx, int toIdx) {
         return inNeurons.subList(fromIdx, toIdx);
+    }
+    
+    public List<Neuron> getInputNeurons() {
+        return inNeurons;
     }
 
     /**

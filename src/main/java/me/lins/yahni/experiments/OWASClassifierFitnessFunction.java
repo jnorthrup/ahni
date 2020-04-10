@@ -86,7 +86,7 @@ public class OWASClassifierFitnessFunction
         }
         
         // Shuffle the training files
-        Collections.shuffle(trainingFiles);
+        Collections.shuffle(trainingFiles, random);
         int numEvalFiles = Math.round(
                 trainingFiles.size() * 
                 properties.getFloatProperty("training.evalSplit", 0.1f)

@@ -23,6 +23,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Abstract class for mutation operators. Handles iteration over population and
@@ -75,12 +77,18 @@ public abstract class MutationOperator {
      * Material in this <code>List</code> should be modified directly.
      * @throws InvalidConfigurationException
      */
-    public void mutate(final Configuration config, final List<ChromosomeMaterial> offspring) throws InvalidConfigurationException {
-        for (ChromosomeMaterial material : offspring) {
+    public void mutate(final Configuration config, final List<ChromosomeMaterial> offspring) 
+            throws InvalidConfigurationException 
+    {
+        offspring.parallelStream().forEach(material -> {
             if (material.shouldMutate()) {
-                mutate(config, material);
+                try {
+                    mutate(config, material);
+                } catch (InvalidConfigurationException ex) {
+                    Logger.getLogger(MutationOperator.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-        }
+        });
     }
 
     /**

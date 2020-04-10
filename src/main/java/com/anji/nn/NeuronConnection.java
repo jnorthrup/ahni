@@ -70,6 +70,13 @@ public class NeuronConnection implements Connection {
     public void setWeight(double f) {
         weight = f;
     }
+    
+    public void applyΔW(double Δw) {
+        //System.out.println(toString());
+        //System.out.println("old weight = " + weight);
+        this.weight += Δw;
+        //System.out.println("new weight = " + weight);
+    }
 
     /**
      * @return double
@@ -80,6 +87,7 @@ public class NeuronConnection implements Connection {
     }
 
     /**
+     * @return 
      * @see Object#toString()
      */
     @Override

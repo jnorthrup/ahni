@@ -193,6 +193,8 @@ public class Neuron implements XmlPersistable {
     protected double value;
 
     private double bias = 0;
+    
+    private double sum = 0; // sum of all input values as of last getValue() call
 
     private boolean dirty; // indicates value has not been updated for the current
 
@@ -207,6 +209,7 @@ public class Neuron implements XmlPersistable {
      * Create neuron with <code>aFunc</code> activation function.
      *
      * @param aFunc
+     * @param bias
      * @throws IllegalArgumentException
      */
     public Neuron(ActivationFunction aFunc, double bias) throws IllegalArgumentException {
@@ -252,7 +255,7 @@ public class Neuron implements XmlPersistable {
                 }
                 value = func2.apply(input, bias);
             } else {
-                double sum = bias;
+                this.sum = bias;
                 for (int i = 0; i < incomingConns.size(); i++) {
                     sum += incomingConns.get(i).read();
                 }
@@ -262,6 +265,10 @@ public class Neuron implements XmlPersistable {
         }
 
         return value;
+    }
+    
+    public double getNetInput() {
+        return this.sum;
     }
 
     /**
