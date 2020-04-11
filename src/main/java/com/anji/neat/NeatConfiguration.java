@@ -302,9 +302,11 @@ public class NeatConfiguration extends Configuration implements Configurable {
         }
         
         // train the weights using backpropagation
-        BackpropagationOperator backpropOperator = props.singletonObjectProperty(BackpropagationOperator.class);
-        if (backpropOperator.getMutationRate() > 0.0) {
-            addMutationOperator(backpropOperator);
+        if (props.getBooleanProperty("training.backpropagation.enabled", false)) {
+            BackpropagationOperator backpropOperator = props.singletonObjectProperty(BackpropagationOperator.class);
+            if (backpropOperator.getMutationRate() > 0.0) {
+                addMutationOperator(backpropOperator);
+            }
         }
     }
 
@@ -314,9 +316,9 @@ public class NeatConfiguration extends Configuration implements Configurable {
      *
      * @param newProps configuration parameters; newProps[SURVIVAL_RATE_KEY]
      * should be < 0.50f
-	 * @t
-     * hrows InvalidConfigurationException
+     * @throws org.jgapcustomised.InvalidConfigurationException
      */
+    @Override
     public void init(Properties newProps) throws InvalidConfigurationException {
         props = newProps;
 

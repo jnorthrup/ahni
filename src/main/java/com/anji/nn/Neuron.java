@@ -194,6 +194,8 @@ public class Neuron implements XmlPersistable {
 
     private double bias = 0;
     
+    private double errorSignal = 0; // used for backpropagation
+    
     private double sum = 0; // sum of all input values as of last getValue() call
 
     private boolean dirty; // indicates value has not been updated for the current
@@ -230,6 +232,18 @@ public class Neuron implements XmlPersistable {
      */
     public void addIncomingConnection(Connection c) {
         incomingConns.add(c);
+        if (c instanceof NeuronConnection) {
+            var nconn = (NeuronConnection)c;
+            nconn.setOutgoingNode(this);
+        }
+    }
+    
+    public void setErrorSignal(double errorSignal) {
+        this.errorSignal = errorSignal;
+    }
+    
+    public double getErrorSignal() {
+        return this.errorSignal;
     }
 
     /**

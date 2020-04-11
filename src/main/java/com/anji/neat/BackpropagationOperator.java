@@ -26,10 +26,8 @@ import com.anji.nn.Neuron;
 import com.anji.nn.NeuronConnection;
 import com.anji.nn.activationfunction.DifferentiableFunction;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
@@ -94,12 +92,12 @@ public class BackpropagationOperator extends MutationOperator {
             // for every connection and apply it afterwards
             Map<NeuronConnection,Double> ΔW = new HashMap<>();
             Map<Neuron,Set<NeuronConnection>> followUpNodes = new HashMap<>();
+ 
+            //var result0 = activator.next(data.getInputData().get(0));
             
             for (int n = 0; n < data.getInputData().size(); n++) {
                 var inputData  = data.getInputData().get(n);
                 var outputData = data.getOutputData().get(n);
-                
-                activator.next(inputData);
                 
                 // Queue of neurons that are about to be visited
                 Queue<Pair<Neuron,Double>> backPropQueue = new ArrayDeque<>();
@@ -129,25 +127,27 @@ public class BackpropagationOperator extends MutationOperator {
                         double δ;
                         if (net.getOutputNeurons().contains(neuron)) {
                             δ = dφ * (neuron.getValue() - target);
+                            neuron.setErrorSignal(δ);
                         } else {
                             double sum = 0;
 
-                            var iconns = neuron.getIncomingConns();
+                            var iconns = followUpNodes.get(neuron);
                             for (Connection iconn : iconns) {
                                 NeuronConnection nconn = (NeuronConnection) iconn;
                                 double w = nconn.getWeight();
-                                sum += nconn.getIncomingNode().getValue() * w;
+                                sum += nconn.getOutgoingNode().getErrorSignal() * w;
                             }
 
                             δ = dφ * sum;
+                            neuron.setErrorSignal(δ);
                         }
                         
                         for (var conn : neuron.getIncomingConns()) {
                             NeuronConnection nconn = (NeuronConnection)conn;
-                            double a = 0.1; // Learning rate 
+                            double a = 0.01; // Learning rate 
                             double Δw = -a * δ * nconn.getIncomingNode().getValue();
                             if (!ΔW.containsKey(nconn)) {
-                                ΔW.put(nconn, 0.0);
+                                ΔW.put(nconn, 0.0); 
                             }
                             ΔW.put(nconn, ΔW.get(nconn) + Δw);
                         }
@@ -158,7 +158,7 @@ public class BackpropagationOperator extends MutationOperator {
                         NeuronConnection nconn = (NeuronConnection) conn;
                         Neuron neu = nconn.getIncomingNode();
                         
-                        addOutConn(followUpNodes, neuron, nconn);
+                        addOutConn(followUpNodes, neu, nconn);
                         
                         if (!backPropVisited.contains(neu) && !net.getInputNeurons().contains(neu)) {
                             Pair<Neuron,Double> pair = new Pair<>(neu, 0.0);
@@ -166,21 +166,25 @@ public class BackpropagationOperator extends MutationOperator {
                         }
                     }
                 }
-                
-                // Batch learning completed, apply ΔW changes to connections
-                if (ΔW.size() > 0) {
-                    for (var neuron : net.getAllNeurons()) {
-                        for (var conn : neuron.getIncomingConns()) {
-                            if (conn instanceof NeuronConnection) {
-                                var nconn = (NeuronConnection)conn;
-                                if (ΔW.containsKey(nconn)) {
-                                    nconn.applyΔW(ΔW.get(nconn));
-                                }
+
+            }
+
+            // Batch learning completed, apply ΔW changes to connections
+            if (ΔW.size() > 0) {
+                for (var neuron : net.getAllNeurons()) {
+                    for (var conn : neuron.getIncomingConns()) {
+                        if (conn instanceof NeuronConnection) {
+                            var nconn = (NeuronConnection) conn;
+                            if (ΔW.containsKey(nconn)) {
+                                nconn.applyΔW(ΔW.get(nconn));
                             }
                         }
                     }
                 }
             }
+                
+           // var result1 = activator.next(data.getInputData().get(0));
+           // System.out.println();
         } catch(TranscriberException ex) {
             throw new InvalidConfigurationException(ex.toString());
         }

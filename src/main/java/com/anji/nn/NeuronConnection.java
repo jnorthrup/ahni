@@ -40,6 +40,7 @@ public class NeuronConnection implements Connection {
     private long id = hashCode();
 
     private Neuron incomingNode = null;
+    private Neuron outgoingNode = null;
 
     private double weight = 0;
 
@@ -129,6 +130,14 @@ public class NeuronConnection implements Connection {
      */
     public Neuron getIncomingNode() {
         return incomingNode;
+    }
+    
+    public Neuron getOutgoingNode() {
+        return outgoingNode;
+    }
+    
+    public void setOutgoingNode(Neuron node) {
+        this.outgoingNode = node;
     }
 
     /**
