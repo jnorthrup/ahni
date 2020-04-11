@@ -454,6 +454,11 @@ public class Genotype implements Serializable {
             for (ReproductionOperator operator : m_activeConfiguration.getReproductionOperators()) {
                 operator.reproduce(m_activeConfiguration, m_species, offspring);
             }
+            
+            // TODO
+            if (offspring.size() == 0) {
+                offspring.add(bestPerforming.getMaterial());
+            }
 
             // Execute Mutation Operators.
             // -------------------------------------

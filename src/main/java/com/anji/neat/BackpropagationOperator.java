@@ -26,6 +26,7 @@ import com.anji.nn.Neuron;
 import com.anji.nn.NeuronConnection;
 import com.anji.nn.activationfunction.DifferentiableFunction;
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -93,7 +94,12 @@ public class BackpropagationOperator extends MutationOperator {
             Map<NeuronConnection,Double> ΔW = new HashMap<>();
             Map<Neuron,Set<NeuronConnection>> followUpNodes = new HashMap<>();
  
-            //var result0 = activator.next(data.getInputData().get(0));
+            System.out.println("Vor Lernen:");
+            for (int n = 0; n < 4; n++) {
+                System.out.println("ist = " + 
+                        Arrays.toString(activator.next(data.getInputData().get(n)))+ "\tsoll = " +
+                        Arrays.toString(data.getOutputData().get(n)));
+            }
             
             for (int n = 0; n < data.getInputData().size(); n++) {
                 var inputData  = data.getInputData().get(n);
@@ -182,9 +188,17 @@ public class BackpropagationOperator extends MutationOperator {
                     }
                 }
             }
+            
+            // FIXME: Changes must be applied to genotype not phenotyp (i.e. AnjiNet)
+            // ConnectionAlele is probably the right place
+            // See WeightMutationOperator on how to find right Allel
                 
-           // var result1 = activator.next(data.getInputData().get(0));
-           // System.out.println();
+            System.out.println("Nach Lernen:");
+            for (int n = 0; n < 4; n++) {
+                System.out.println("ist = " + 
+                        Arrays.toString(activator.next(data.getInputData().get(n)))+ "\tsoll = " +
+                        Arrays.toString(data.getOutputData().get(n)));
+            }
         } catch(TranscriberException ex) {
             throw new InvalidConfigurationException(ex.toString());
         }

@@ -35,7 +35,7 @@ public class ConnectionAllele extends Allele {
 
     private static final DecimalFormat nf = new DecimalFormat(" 0.0000;-0.0000");
 
-    private ConnectionGene connectionGene;
+    private final ConnectionGene connectionGene;
 
     /**
      * default connection weight
@@ -61,6 +61,7 @@ public class ConnectionAllele extends Allele {
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString() {
         return "C-" + connectionGene.toString() + " [" + nf.format(weight) + "]";
     }
@@ -76,6 +77,7 @@ public class ConnectionAllele extends Allele {
     /**
      * @see org.jgapcustomised.Allele#cloneAllele()
      */
+    @Override
     public Allele cloneAllele() {
         ConnectionAllele allele = new ConnectionAllele(connectionGene);
         allele.setWeight(weight);
@@ -90,6 +92,7 @@ public class ConnectionAllele extends Allele {
      * @param onlyPerturbFromCurrentValue if true then the weight is perturbed
      * from its current value.
      */
+    @Override
     public void setToRandomValue(Random a_numberGenerator, boolean onlyPerturbFromCurrentValue) {
         if (onlyPerturbFromCurrentValue) {
             weight += a_numberGenerator.nextGaussian() * RANDOM_STD_DEV;
@@ -98,7 +101,6 @@ public class ConnectionAllele extends Allele {
             weight = a_numberGenerator.nextGaussian() * RANDOM_STD_DEV;
         }
         //weight = (a_numberGenerator.nextBoolean() ? 1 : -1) * a_numberGenerator.nextDouble() * RANDOM_STD_DEV;
-
     }
 
     /**
@@ -142,6 +144,7 @@ public class ConnectionAllele extends Allele {
 
     /**
      * Gets the weight value.
+     * @return 
      */
     @Override
     public double getValue() {
@@ -150,6 +153,7 @@ public class ConnectionAllele extends Allele {
 
     /**
      * Sets the weight value.
+     * @param aValue
      */
     @Override
     public void setValue(double aValue) {

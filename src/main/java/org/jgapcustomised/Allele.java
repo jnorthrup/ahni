@@ -111,17 +111,21 @@ public abstract class Allele implements Comparable, Serializable {
     }
 
     /**
+     * @return 
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode() {
         return gene.hashCode();
     }
 
     /**
+     * @return 
      * @see Object#toString()
      */
+    @Override
     public String toString() {
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
         result.append(gene.toString());
         return result.toString();
     }
