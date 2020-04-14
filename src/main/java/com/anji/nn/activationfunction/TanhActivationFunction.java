@@ -21,57 +21,65 @@ package com.anji.nn.activationfunction;
 
 /**
  * Hyperbolic tangent.
- * 
+ *
  * @author Philip Tucker
  */
-public class TanhActivationFunction implements ActivationFunction {
+public class TanhActivationFunction implements ActivationFunction, DifferentiableFunction {
 
-	/**
-	 * identifying string
-	 */
-	public final static String NAME = "tanh";
+    /**
+     * identifying string
+     */
+    public final static String NAME = "tanh";
 
-	/**
-	 * @see Object#toString()
-	 */
-	public String toString() {
-		return NAME;
-	}
+    /**
+     * @see Object#toString()
+     */
+    public String toString() {
+        return NAME;
+    }
 
-	/**
-	 * This class should only be accessd via ActivationFunctionFactory.
-	 */
-	TanhActivationFunction() {
-		// no-op
-	}
+    /**
+     * This class should only be accessd via ActivationFunctionFactory.
+     */
+    TanhActivationFunction() {
+        // no-op
+    }
 
-	/**
-	 * Hyperbolic tangent.
-	 * 
-	 * @see com.anji.nn.activationfunction.ActivationFunction#apply(double)
-	 */
-	public double apply(double input) {
-		return (-1 + (2 / (1 + (double) Math.exp(-2 * (input)))));
-	}
+    /**
+     * Hyperbolic tangent.
+     *
+     * @param x
+     * @see com.anji.nn.activationfunction.ActivationFunction#apply(double)
+     */
+    @Override
+    public double apply(double x) {
+        return -1 + (2 / (1 + (double) Math.exp(-2 * (x))));
+    }
+    
+    @Override
+    public double applyDiff(double x) {
+        return 0.5 * Math.log((1 + x) / (1 - x));
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
-	 */
-	public double getMaxValue() {
-		return 1;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
+     */
+    public double getMaxValue() {
+        return 1;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
-	 */
-	public double getMinValue() {
-		return -1;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
+     */
+    public double getMinValue() {
+        return -1;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#cost()
-	 */
-	public long cost() {
-		return 385;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#cost()
+     */
+    public long cost() {
+        return 385;
+    }
+
 }

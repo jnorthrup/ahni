@@ -19,6 +19,7 @@
  */
 package org.jgapcustomised;
 
+import com.anji.neat.ConnectionAllele;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,6 +29,8 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import com.thoughtworks.xstream.XStream;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * This is the guts of the original Chromosome object, pulled out so the genes
@@ -151,6 +154,13 @@ public class ChromosomeMaterial implements Comparable, Serializable {
      */
     public SortedSet<Allele> getAlleles() {
         return m_alleles;
+    }
+    
+    public Set<ConnectionAllele> getConnectionAlleles() {
+        return m_alleles.stream()
+                .filter(allele -> allele instanceof ConnectionAllele)
+                .map(allele -> (ConnectionAllele)allele)
+                .collect(Collectors.toSet());
     }
 
     /**

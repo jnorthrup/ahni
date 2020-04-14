@@ -52,7 +52,8 @@ public class SigmoidActivationFunction implements ActivationFunction, Differenti
     
     @Override
     public double applyDiff(double input) {
-        return 1 - apply(input);
+        double fn = apply(input);
+        return fn * (1 - fn);
     }
 
     /**

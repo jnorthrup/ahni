@@ -84,7 +84,8 @@ public class NeuronConnection implements Connection {
      */
     @Override
     public double read() {
-        return weight * incomingNode.getValue();
+        double value = incomingNode.getValue();
+        return weight * value;
     }
 
     /**
@@ -121,7 +122,7 @@ public class NeuronConnection implements Connection {
      *
      * @return long ID
      */
-    protected long getId() {
+    public long getId() {
         return id;
     }
 

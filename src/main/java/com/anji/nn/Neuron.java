@@ -270,8 +270,9 @@ public class Neuron implements XmlPersistable {
                 value = func2.apply(input, bias);
             } else {
                 this.sum = bias;
-                for (int i = 0; i < incomingConns.size(); i++) {
-                    sum += incomingConns.get(i).read();
+                for (var conn : incomingConns) {
+                    double r = conn.read();
+                    sum += r;
                 }
                 value = func.apply(sum);
             }
@@ -303,7 +304,7 @@ public class Neuron implements XmlPersistable {
     /**
      * @param bias the bias to set
      */
-    public void setBias(double bias) {
+    protected void setBias(double bias) {
         this.bias = bias;
     }
     

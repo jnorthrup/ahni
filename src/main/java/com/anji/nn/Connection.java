@@ -21,28 +21,28 @@ package com.anji.nn;
 
 /**
  * Abstract connection to carry data into neurons.
- * 
+ *
  * @author Philip Tucker
  */
 public interface Connection {
 
-	/**
-	 * base XML tag
-	 */
-	public final static String XML_TAG = "connection";
+    /**
+     * base XML tag
+     */
+    public final static String XML_TAG = "connection";
 
-	/**
-	 * @return double value carried on this connection from incoming neuron
-	 */
-	public double read();
+    /**
+     * @return double value carried on this connection from incoming neuron
+     */
+    public double read();
 
-	/**
-	 * @return String representation of object
-	 */
-	public String toXml();
+    /**
+     * @return String representation of object
+     */
+    public String toXml();
 
-	/**
-	 * @return number corresponding to cost of activation in resources
-	 */
-	public long cost();
+    /**
+     * @return number corresponding to cost of activation in resources
+     */
+    public long cost();
 }

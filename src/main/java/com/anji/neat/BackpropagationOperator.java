@@ -32,6 +32,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.SortedSet;
 import me.lins.yahni.neat.TrainingData;
 import org.apache.commons.math3.util.Pair;
 import org.jgapcustomised.Allele;
@@ -46,8 +48,14 @@ import org.jgapcustomised.MutationOperator;
  */
 public class BackpropagationOperator extends MutationOperator {
 
+    private double learningRate = 0.01;
+    
     public BackpropagationOperator() {
         super(1.0); // always
+    }
+    
+    public void setLearningRate(double a) {
+        learningRate = a;
     }
     
     private Set<NeuronConnection> findOutConns(
@@ -94,16 +102,17 @@ public class BackpropagationOperator extends MutationOperator {
             Map<NeuronConnection,Double> ΔW = new HashMap<>();
             Map<Neuron,Set<NeuronConnection>> followUpNodes = new HashMap<>();
  
-            System.out.println("Vor Lernen:");
+        /*    System.out.println("Vor Lernen:");
             for (int n = 0; n < 4; n++) {
                 System.out.println("ist = " + 
                         Arrays.toString(activator.next(data.getInputData().get(n)))+ "\tsoll = " +
                         Arrays.toString(data.getOutputData().get(n)));
-            }
+            }*/
             
             for (int n = 0; n < data.getInputData().size(); n++) {
                 var inputData  = data.getInputData().get(n);
                 var outputData = data.getOutputData().get(n);
+                activator.next(inputData);
                 
                 // Queue of neurons that are about to be visited
                 Queue<Pair<Neuron,Double>> backPropQueue = new ArrayDeque<>();
@@ -126,8 +135,6 @@ public class BackpropagationOperator extends MutationOperator {
                     backPropVisited.add(neuron);
                     
                     if (φ instanceof DifferentiableFunction) {
-                        long id = neuron.getId(); // Is this the innovation id?
-
                         double dφ = ((DifferentiableFunction) φ)
                                 .applyDiff(neuron.getNetInput());
                         double δ;
@@ -137,6 +144,8 @@ public class BackpropagationOperator extends MutationOperator {
                         } else {
                             double sum = 0;
 
+                            // Get all connections of the next layer that are
+                            // connected to this neuron
                             var iconns = followUpNodes.get(neuron);
                             for (Connection iconn : iconns) {
                                 NeuronConnection nconn = (NeuronConnection) iconn;
@@ -150,8 +159,9 @@ public class BackpropagationOperator extends MutationOperator {
                         
                         for (var conn : neuron.getIncomingConns()) {
                             NeuronConnection nconn = (NeuronConnection)conn;
-                            double a = 0.01; // Learning rate 
-                            double Δw = -a * δ * nconn.getIncomingNode().getValue();
+                            // TODO und weight? und bias?
+                            double Δw = -learningRate * δ 
+                                    * nconn.getIncomingNode().getValue();
                             if (!ΔW.containsKey(nconn)) {
                                 ΔW.put(nconn, 0.0); 
                             }
@@ -174,31 +184,29 @@ public class BackpropagationOperator extends MutationOperator {
                 }
 
             }
+            
+            SortedMap<Long,ConnectionAllele> alleles = NeatChromosomeUtility
+                    .getConnectionMap(chromeMat.getAlleles());
 
             // Batch learning completed, apply ΔW changes to connections
+            // TODO We could avoid ΔW and apply the changes directly to the
+            // genotype as this only re-read in the next generation
             if (ΔW.size() > 0) {
-                for (var neuron : net.getAllNeurons()) {
+                net.getAllNeurons().forEach((neuron) -> {
                     for (var conn : neuron.getIncomingConns()) {
                         if (conn instanceof NeuronConnection) {
-                            var nconn = (NeuronConnection) conn;
+                            NeuronConnection nconn = (NeuronConnection)conn;
+                            ConnectionAllele call = alleles.get(nconn.getId());
                             if (ΔW.containsKey(nconn)) {
-                                nconn.applyΔW(ΔW.get(nconn));
-                            }
+                                double Δw = ΔW.get(nconn);
+                                call.setWeight(call.getWeight() + Δw);
+                                nconn.applyΔW(Δw); // For debugging
+                            } 
                         }
                     }
-                }
+                });
             }
-            
-            // FIXME: Changes must be applied to genotype not phenotyp (i.e. AnjiNet)
-            // ConnectionAlele is probably the right place
-            // See WeightMutationOperator on how to find right Allel
                 
-            System.out.println("Nach Lernen:");
-            for (int n = 0; n < 4; n++) {
-                System.out.println("ist = " + 
-                        Arrays.toString(activator.next(data.getInputData().get(n)))+ "\tsoll = " +
-                        Arrays.toString(data.getOutputData().get(n)));
-            }
         } catch(TranscriberException ex) {
             throw new InvalidConfigurationException(ex.toString());
         }

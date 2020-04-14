@@ -335,11 +335,12 @@ public class NeatChromosomeUtility {
         List<ConnectionAllele> result = new ArrayList<>();
         for (Allele allele : alleles) {
             if (allele instanceof ConnectionAllele) {
+                ConnectionAllele callele = (ConnectionAllele) allele;
                 // sanity check
-                if (result.contains(allele)) {
+                if (result.contains(callele)) {
                     throw new IllegalArgumentException("chromosome contains duplicate connection gene: " + allele.toString());
                 }
-                result.add((ConnectionAllele) allele);
+                result.add(callele);
             }
         }
         return result;

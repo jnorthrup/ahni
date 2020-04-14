@@ -23,7 +23,7 @@ package com.anji.nn.activationfunction;
  * @author Oliver Coleman
  * Edited by Christian Lins, 2020
  */
-public class RectifierActivationFunction implements ActivationFunction {
+public class RectifierActivationFunction implements ActivationFunction, DifferentiableFunction {
 
     /**
      * identifying string
@@ -52,8 +52,17 @@ public class RectifierActivationFunction implements ActivationFunction {
      * @see com.anji.nn.activationfunction.ActivationFunction#apply(double)
      */
     @Override
-    public double apply(double input) {
-        return Math.max(0, input);
+    public double apply(double x) {
+        return Math.max(0, x);
+    }
+    
+    @Override
+    public double applyDiff(double x) {
+        if (x < 0) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 
     /**
@@ -79,4 +88,5 @@ public class RectifierActivationFunction implements ActivationFunction {
     public long cost() {
         return 42;
     }
+
 }

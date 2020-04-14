@@ -30,8 +30,8 @@ public class XORFitnessFunction
 
     private ActivatorTranscriber activatorFactory;
     private boolean endRun;
-    private List<double[]> input = new ArrayList<>();
-    private List<double[]> output = new ArrayList<>();
+    private final List<double[]> input = new ArrayList<>();
+    private final List<double[]> output = new ArrayList<>();
 
     private double aggSquaredDiff(double[] a, double[] b) {
         assert a.length == b.length;
