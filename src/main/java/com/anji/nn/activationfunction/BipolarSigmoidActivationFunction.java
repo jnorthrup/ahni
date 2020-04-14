@@ -20,60 +20,69 @@
 package com.anji.nn.activationfunction;
 
 /**
- * Modified classic sigmoid. Copied from <a href="http://www.jooneworld.com/">JOONE</a> <code>SigmoidLayer</code>.
- * 
+ * Modified classic sigmoid. Copied from
+ * <a href="http://www.jooneworld.com/">JOONE</a> <code>SigmoidLayer</code>.
+ *
  * @author Philip Tucker
  */
-public class BipolarSigmoidActivationFunction implements ActivationFunction {
+public class BipolarSigmoidActivationFunction 
+        implements ActivationFunction 
+{
 
-	private final static double SLOPE = 2;
+    private final static double SLOPE = 2;
 
-	/**
-	 * identifying string
-	 */
-	public final static String NAME = "sigmoid-bipolar";
+    /**
+     * identifying string
+     */
+    public final static String NAME = "sigmoid-bipolar";
 
-	/**
-	 * @see Object#toString()
-	 */
-	public String toString() {
-		return NAME;
-	}
+    /**
+     * @see Object#toString()
+     */
+    public String toString() {
+        return NAME;
+    }
 
-	/**
-	 * This class should only be accessd via ActivationFunctionFactory.
-	 */
-	BipolarSigmoidActivationFunction() {
-		// no-op
-	}
+    /**
+     * This class should only be accessd via ActivationFunctionFactory.
+     */
+    BipolarSigmoidActivationFunction() {
+        // no-op
+    }
 
-	/**
-	 * Modified classic sigmoid.
-	 * 
-	 * @see com.anji.nn.activationfunction.ActivationFunction#apply(double)
-	 */
-	public double apply(double input) {
-		return 2.0 / (1.0 + Math.exp(-(input * SLOPE))) - 1.0;
-	}
+    /**
+     * Modified classic sigmoid.
+     *
+     * @see com.anji.nn.activationfunction.ActivationFunction#apply(double)
+     */
+    @Override
+    public double apply(double input) {
+        return 2.0 / (1.0 + Math.exp(-(input * SLOPE))) - 1.0;
+    }
+    
+    public double applyDiff(double x) {
+        // As given by Wolfram Alpha
+        return (2.0 * Math.exp(-SLOPE * x) * SLOPE)/ Math.pow(1 + Math.exp(-SLOPE*x), 2);
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
-	 */
-	public double getMaxValue() {
-		return 1;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
+     */
+    public double getMaxValue() {
+        return 1;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
-	 */
-	public double getMinValue() {
-		return -1;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
+     */
+    public double getMinValue() {
+        return -1;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#cost()
-	 */
-	public long cost() {
-		return 497;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#cost()
+     */
+    public long cost() {
+        return 497;
+    }
 }

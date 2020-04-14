@@ -21,57 +21,68 @@ package com.anji.nn.activationfunction;
 
 /**
  * Linear activation function.
- * 
+ *
  * @author Philip Tucker
  */
-public class LinearActivationFunction implements ActivationFunction {
+public class LinearActivationFunction 
+        implements ActivationFunction, DifferentiableFunction 
+{
 
-	/**
-	 * identifying string
-	 */
-	public final static String NAME = "linear";
+    /**
+     * identifying string
+     */
+    public final static String NAME = "linear";
 
-	/**
-	 * @see Object#toString()
-	 */
-	public String toString() {
-		return NAME;
-	}
+    /**
+     * @see Object#toString()
+     */
+    public String toString() {
+        return NAME;
+    }
 
-	/**
-	 * This class should only be accessd via ActivationFunctionFactory.
-	 */
-	LinearActivationFunction() {
-		// no-op
-	}
+    /**
+     * This class should only be accessd via ActivationFunctionFactory.
+     */
+    LinearActivationFunction() {
+        // no-op
+    }
 
-	/**
-	 * Return <code>input</code> with no transformation.
-	 * 
-	 * @see com.anji.nn.activationfunction.ActivationFunction#apply(double)
-	 */
-	public double apply(double input) {
-		return input;
-	}
+    /**
+     * Return <code>input</code> with no transformation.
+     *
+     * @see com.anji.nn.activationfunction.ActivationFunction#apply(double)
+     */
+    @Override
+    public double apply(double input) {
+        return input;
+    }
+    
+    @Override
+    public double applyDiff(double input) {
+        return 1;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
-	 */
-	public double getMaxValue() {
-		return Float.MAX_VALUE;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
+     */
+    @Override
+    public double getMaxValue() {
+        return Float.MAX_VALUE;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
-	 */
-	public double getMinValue() {
-		return -Float.MAX_VALUE;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
+     */
+    @Override
+    public double getMinValue() {
+        return -Float.MAX_VALUE;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#cost()
-	 */
-	public long cost() {
-		return 42;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#cost()
+     */
+    public long cost() {
+        return 42;
+    }
+
 }

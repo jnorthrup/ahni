@@ -32,8 +32,10 @@ public class TanhActivationFunction implements ActivationFunction, Differentiabl
     public final static String NAME = "tanh";
 
     /**
+     * @return 
      * @see Object#toString()
      */
+    @Override
     public String toString() {
         return NAME;
     }

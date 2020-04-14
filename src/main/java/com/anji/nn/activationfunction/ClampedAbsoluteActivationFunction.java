@@ -20,57 +20,77 @@ package com.anji.nn.activationfunction;
 
 /**
  * Absolute activation function.
- * 
+ *
  * @author Oliver Coleman
  */
-public class ClampedAbsoluteActivationFunction implements ActivationFunction {
+public class ClampedAbsoluteActivationFunction 
+        implements ActivationFunction, DifferentiableFunction
+{
 
-	/**
-	 * identifying string
-	 */
-	public final static String NAME = "clamped-absolute";
+    /**
+     * identifying string
+     */
+    public final static String NAME = "clamped-absolute";
 
-	/**
-	 * @see Object#toString()
-	 */
-	public String toString() {
-		return NAME;
-	}
+    /**
+     * @see Object#toString()
+     */
+    public String toString() {
+        return NAME;
+    }
 
-	/**
-	 * This class should only be accessd via ActivationFunctionFactory.
-	 */
-	ClampedAbsoluteActivationFunction() {
-		// no-op
-	}
+    /**
+     * This class should only be accessd via ActivationFunctionFactory.
+     */
+    ClampedAbsoluteActivationFunction() {
+        // no-op
+    }
 
-	/**
-	 * Return absolute value of <code>input</code>, clamped to range [0, 1].
-	 * 
-	 * @see com.anji.nn.activationfunction.ActivationFunction#apply(double)
-	 */
-	public double apply(double input) {
-		return Math.min(Math.abs(input), 1);
-	}
+    /**
+     * Return absolute value of <code>input</code>, clamped to range [0, 1].
+     *
+     * @see com.anji.nn.activationfunction.ActivationFunction#apply(double)
+     */
+    public double apply(double input) {
+        return Math.min(Math.abs(input), 1);
+    }
+    
+    @Override
+    public double applyDiff(double x) {
+        if (x < 0) {
+            if (x >= -1) {
+                return -1;
+            } else {
+                return 0;
+            }
+        } else {
+            // we ignore x == 0 here
+            if (x >= 1) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
-	 */
-	public double getMaxValue() {
-		return 1;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
+     */
+    public double getMaxValue() {
+        return 1;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
-	 */
-	public double getMinValue() {
-		return 0;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
+     */
+    public double getMinValue() {
+        return 0;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#cost()
-	 */
-	public long cost() {
-		return 42;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#cost()
+     */
+    public long cost() {
+        return 42;
+    }
 }
