@@ -99,7 +99,12 @@ public class WeightMutationOperator extends MutationOperator implements Configur
      * @param genesToRemove <code>Set</code> contains <code>Gene</code> objects
      */
     @Override
-    protected void mutate(Configuration jgapConfig, final ChromosomeMaterial target, Set<Allele> genesToAdd, Set<Allele> genesToRemove) {
+    protected void mutate(
+            Configuration jgapConfig, 
+            final ChromosomeMaterial target, 
+            Set<Allele> genesToAdd, 
+            Set<Allele> genesToRemove, int currentGen, int maxGen) 
+    {
         if ((jgapConfig instanceof NeatConfiguration) == false) {
             throw new AnjiRequiredException(NeatConfiguration.class.toString());
         }

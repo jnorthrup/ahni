@@ -186,7 +186,10 @@ public class RemoveConnectionMutationOperator extends MutationOperator implement
 	 * @see org.jgapcustomised.MutationOperator#mutate(org.jgapcustomised.Configuration,
 	 *      org.jgapcustomised.ChromosomeMaterial, java.util.Set, java.util.Set)
 	 */
-	protected void mutate(Configuration jgapConfig, final ChromosomeMaterial target, Set allelesToAdd, Set allelesToRemove) {
+	protected void mutate(Configuration jgapConfig, 
+                final ChromosomeMaterial target, Set allelesToAdd,
+                Set allelesToRemove, int currentGen, int maxGen) 
+        {
 		if ((jgapConfig instanceof NeatConfiguration) == false)
 			throw new AnjiRequiredException("com.anji.neat.NeatConfiguration");
 		NeatConfiguration config = (NeatConfiguration) jgapConfig;

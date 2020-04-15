@@ -97,7 +97,10 @@ public class SingleTopologicalMutationOperator extends MutationOperator implemen
      * org.jgapcustomised.MutationOperator#mutate(org.jgapcustomised.Configuration,
      * org.jgapcustomised.ChromosomeMaterial, java.util.Set, java.util.Set)
      */
-    protected void mutate(final Configuration jgapConfig, final ChromosomeMaterial target, Set<Allele> allelesToAdd, Set<Allele> allelesToRemove) throws InvalidConfigurationException {
+    protected void mutate(final Configuration jgapConfig, 
+            final ChromosomeMaterial target, Set<Allele> allelesToAdd, 
+            Set<Allele> allelesToRemove, int currentGen, int maxGen) throws InvalidConfigurationException 
+    {
         if ((jgapConfig instanceof NeatConfiguration) == false) {
             throw new AnjiRequiredException("com.anji.neat.NeatConfiguration");
         }

@@ -48,10 +48,15 @@ import org.jgapcustomised.MutationOperator;
  */
 public class BackpropagationOperator extends MutationOperator {
 
+    private boolean finalRun = false; // Run only at last
     private double learningRate = 0.01;
     
     public BackpropagationOperator() {
         super(1.0); // always
+    }
+    
+    public void setFinalRun(boolean finalRun) {
+        this.finalRun = finalRun;
     }
     
     public void setLearningRate(double a) {
@@ -84,9 +89,12 @@ public class BackpropagationOperator extends MutationOperator {
     
     @Override
     protected void mutate(Configuration config, ChromosomeMaterial chromeMat, 
-            Set<Allele> allelesToAdd, Set<Allele> allelesToRemove) 
+            Set<Allele> allelesToAdd, Set<Allele> allelesToRemove, int currentGen, int maxGen) 
                 throws InvalidConfigurationException 
     {
+        if (finalRun && maxGen - currentGen > 1)
+            return;
+        
         try {
             if (!(config.getBulkFitnessFunction() instanceof TrainingData))
                 return;

@@ -39,7 +39,7 @@ public class ActivationFunctionMutationOperator extends MutationOperator {
     
     @Override
     protected void mutate(Configuration config, ChromosomeMaterial target, 
-            Set<Allele> allelesToAdd, Set<Allele> allelesToRemove) 
+            Set<Allele> allelesToAdd, Set<Allele> allelesToRemove, int currentGen, int maxGen) 
             throws InvalidConfigurationException 
     {
         

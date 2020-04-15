@@ -61,7 +61,10 @@ public class AddNeuronAnywhereMutationOperator extends MutationOperatorMultiple 
         super(newMutationRate);
     }
 
-    protected void mutate(Configuration jgapConfig, final ChromosomeMaterial target, Set<Allele> allelesToAdd, Set<Allele> allelesToRemove) {
+    protected void mutate(Configuration jgapConfig, 
+            final ChromosomeMaterial target, 
+            Set<Allele> allelesToAdd, Set<Allele> allelesToRemove, int currentGen, int maxGen) 
+    {
         if ((jgapConfig instanceof NeatConfiguration) == false) {
             throw new AnjiRequiredException("com.anji.neat.NeatConfiguration");
         }

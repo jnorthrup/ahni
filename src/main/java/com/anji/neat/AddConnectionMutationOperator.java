@@ -21,7 +21,6 @@ package com.anji.neat;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import java.util.SortedMap;
 
@@ -113,7 +112,8 @@ public class AddConnectionMutationOperator extends MutationOperatorMultiple impl
      * org.jgapcustomised.ChromosomeMaterial, java.util.Set, java.util.Set)
      */
     @Override
-    protected void mutate(Configuration jgapConfig, final ChromosomeMaterial target, Set<Allele> allelesToAdd, Set<Allele> allelesToRemove) {
+    protected void mutate(Configuration jgapConfig, final ChromosomeMaterial target, 
+            Set<Allele> allelesToAdd, Set<Allele> allelesToRemove, int currentGen, int maxGen) {
         if ((jgapConfig instanceof NeatConfiguration) == false) {
             throw new AnjiRequiredException("com.anji.neat.NeatConfiguration");
         }

@@ -21,10 +21,8 @@
 package com.anji.neat;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 
 import org.jgapcustomised.Allele;
@@ -35,7 +33,6 @@ import org.jgapcustomised.MutationOperator;
 import com.anji.integration.AnjiRequiredException;
 import com.anji.util.Configurable;
 import com.anji.util.Properties;
-import com.ojcoleman.ahni.util.ArrayUtil;
 
 /**
  * Implements NEAT add node mutation inspired by
@@ -98,7 +95,9 @@ public class AddNeuronMutationOperator extends MutationOperatorMultiple implemen
      * org.jgapcustomised.MutationOperator#mutate(org.jgapcustomised.Configuration,
      * org.jgapcustomised.ChromosomeMaterial, java.util.Set, java.util.Set)
      */
-    protected void mutate(Configuration jgapConfig, final ChromosomeMaterial target, Set<Allele> allelesToAdd, Set<Allele> allelesToRemove) {
+    protected void mutate(Configuration jgapConfig, 
+            final ChromosomeMaterial target, 
+            Set<Allele> allelesToAdd, Set<Allele> allelesToRemove, int currentGen, int maxGen) {
         if ((jgapConfig instanceof NeatConfiguration) == false) {
             throw new AnjiRequiredException("com.anji.neat.NeatConfiguration");
         }

@@ -87,7 +87,8 @@ public class PruneMutationOperator extends MutationOperator implements Configura
      * org.jgapcustomised.MutationOperator#mutate(org.jgapcustomised.Configuration,
      * org.jgapcustomised.ChromosomeMaterial, java.util.Set, java.util.Set)
      */
-    protected void mutate(Configuration config, ChromosomeMaterial target, Set<Allele> genesToAdd, Set<Allele> genesToRemove) {
+    protected void mutate(Configuration config, ChromosomeMaterial target, 
+            Set<Allele> genesToAdd, Set<Allele> genesToRemove, int currentGen, int maxGen) {
         genesToRemove.addAll(getAllelesToRemove(target));
     }
 

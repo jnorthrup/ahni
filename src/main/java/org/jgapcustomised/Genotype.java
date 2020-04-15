@@ -53,7 +53,7 @@ import com.ojcoleman.ahni.util.ArrayUtil;
  */
 public class Genotype implements Serializable {
 
-    private static Logger logger = Logger.getLogger(Genotype.class);
+    private static final Logger logger = Logger.getLogger(Genotype.class);
 
     public static final String SPECIATION_STRATEGY_CLASS_KEY = "speciation.class";
 
@@ -67,11 +67,11 @@ public class Genotype implements Serializable {
     /**
      * Species that makeup this Genotype's population.
      */
-    protected List<Species> m_species = new ArrayList<Species>();
+    protected List<Species> m_species = new ArrayList<>();
     /**
      * Chromosomes that makeup thie Genotype's population.
      */
-    protected List<Chromosome> m_chromosomes = new ArrayList<Chromosome>();
+    protected List<Chromosome> m_chromosomes = new ArrayList<>();
 
     protected int generation;
 
@@ -87,10 +87,11 @@ public class Genotype implements Serializable {
     protected int maxSpeciesSize, minSpeciesSize;
 
     /**
-     * This constructor is used for random initial Genotypes. Note that the
-     * Configuration object must be in a valid state when this method is
-     * invoked, or a InvalidconfigurationException will be thrown.
+     * This constructor is used for random initial Genotypes.Note that the
+ Configuration object must be in a valid state when this method is
+ invoked, or a InvalidconfigurationException will be thrown.
      *
+     * @param props
      * @param a_activeConfiguration The current active Configuration object.
      * @param a_initialChromosomes <code>List</code> contains Chromosome
      * objects: The Chromosome population to be managed by this Genotype
@@ -287,7 +288,7 @@ public class Genotype implements Serializable {
      * <code>GeneticEvent.GENOTYPE_EVOLVED_EVENT</code> is fired after step 4.
      * @return 
      */
-    public synchronized Chromosome evolve() {
+    public synchronized Chromosome evolve(int numEvolutions) {
         try {
             m_activeConfiguration.lockSettings();
             BulkFitnessFunction bulkFunction = m_activeConfiguration.getBulkFitnessFunction();
@@ -346,9 +347,9 @@ public class Genotype implements Serializable {
             // Speciate population.
             m_specStrategy.speciate(m_chromosomes, m_species, this);
             // Update originalSize for each species.
-            for (Species species : m_species) {
+            m_species.forEach((species) -> {
                 species.originalSize = species.size();
-            }
+            });
 
             // Remove clones from population and collect some stats. We do this after speciation.
             minSpeciesSize = Integer.MAX_VALUE;
@@ -423,11 +424,9 @@ public class Genotype implements Serializable {
             }
             previousFittest = fittest;
 
-            // For each species calculate the average (shared) fitness value and then cull it down to contain only parent chromosomes.
-            Iterator<Species> speciesIter = m_species.iterator();
-            while (speciesIter.hasNext()) {
-                Species s = speciesIter.next();
-
+            // For each species calculate the average (shared) fitness value and 
+            // then cull it down to contain only parent chromosomes.
+            for (Species s : m_species) {
                 // Set the average species fitness using its full complement of individuals from this generation.
                 s.calculateAverageFitness();
 
@@ -456,21 +455,19 @@ public class Genotype implements Serializable {
             }
             
             // TODO
-            if (offspring.size() == 0) {
+            if (offspring.isEmpty()) {
                 offspring.add(bestPerforming.getMaterial());
             }
 
             // Execute Mutation Operators.
             // -------------------------------------
             for (MutationOperator operator : m_activeConfiguration.getMutationOperators()) {
-                operator.mutate(m_activeConfiguration, offspring);
+                operator.mutate(m_activeConfiguration, offspring, generation, numEvolutions);
             }
 
             // Cull population down to just elites (only elites survive to next gen)
             m_chromosomes.clear();
-            speciesIter = m_species.iterator();
-            while (speciesIter.hasNext()) {
-                Species s = speciesIter.next();
+            for (Species s : m_species) {
                 s.cullToElites(bestPerforming);
                 if (!s.isEmpty()) {
                     s.newGeneration(); // updates internal variables

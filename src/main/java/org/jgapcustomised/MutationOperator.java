@@ -64,7 +64,14 @@ public abstract class MutationOperator {
      * contains <code>Allele</code> objects
      * @throws InvalidConfigurationException
      */
-    protected abstract void mutate(final Configuration config, final ChromosomeMaterial target, Set<Allele> allelesToAdd, Set<Allele> allelesToRemove) throws InvalidConfigurationException;
+    protected abstract void mutate(
+            final Configuration config, 
+            final ChromosomeMaterial target, 
+            Set<Allele> allelesToAdd, 
+            Set<Allele> allelesToRemove,
+            int currentGeneration,
+            int maxGenerations
+    ) throws InvalidConfigurationException;
 
     /**
      * The {@link #mutate(Configuration, ChromosomeMaterial, Set, Set)} method
@@ -77,13 +84,13 @@ public abstract class MutationOperator {
      * Material in this <code>List</code> should be modified directly.
      * @throws InvalidConfigurationException
      */
-    public void mutate(final Configuration config, final List<ChromosomeMaterial> offspring) 
+    public void mutate(final Configuration config, final List<ChromosomeMaterial> offspring, int currentGen, int maxGen) 
             throws InvalidConfigurationException 
     {
         offspring.parallelStream().forEach(material -> {
             if (material.shouldMutate()) {
                 try {
-                    mutate(config, material);
+                    mutate(config, material, currentGen, maxGen);
                 } catch (InvalidConfigurationException ex) {
                     Logger.getLogger(MutationOperator.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -100,10 +107,10 @@ public abstract class MutationOperator {
      * @param material The individual to mutate.
      * @throws InvalidConfigurationException
      */
-    public void mutate(final Configuration config, final ChromosomeMaterial material) throws InvalidConfigurationException {
+    public void mutate(final Configuration config, final ChromosomeMaterial material, int currentGen, int maxGen) throws InvalidConfigurationException {
         Set<Allele> allelesToAdd = new HashSet<Allele>();
         Set<Allele> allelesToRemove = new HashSet<Allele>();
-        mutate(config, material, allelesToAdd, allelesToRemove);
+        mutate(config, material, allelesToAdd, allelesToRemove, currentGen, maxGen);
         updateMaterial(material, allelesToAdd, allelesToRemove);
     }
 

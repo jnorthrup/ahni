@@ -9,7 +9,6 @@ import java.util.Random;
 import org.apache.log4j.Logger;
 
 import com.anji.neat.NeatConfiguration;
-import com.ojcoleman.ahni.evaluation.BulkFitnessFunctionMT;
 import com.ojcoleman.ahni.hyperneat.Configurable;
 import com.ojcoleman.ahni.hyperneat.Properties;
 import com.ojcoleman.ahni.util.Range;

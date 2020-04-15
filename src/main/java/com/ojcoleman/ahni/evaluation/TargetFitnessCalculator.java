@@ -1,9 +1,6 @@
 package com.ojcoleman.ahni.evaluation;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,7 +13,6 @@ import org.apache.log4j.Logger;
 import com.anji.integration.*;
 import com.ojcoleman.ahni.hyperneat.Configurable;
 import com.ojcoleman.ahni.hyperneat.Properties;
-import com.ojcoleman.ahni.nn.BainNN;
 import com.ojcoleman.ahni.util.NiceWriter;
 
 /**

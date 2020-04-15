@@ -1,6 +1,5 @@
 package com.ojcoleman.ahni.evaluation.novelty;
 
-import java.util.Arrays;
 import java.util.Random;
 
 import org.apache.commons.math3.linear.ArrayRealVector;

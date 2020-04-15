@@ -4,11 +4,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.text.*;
-import java.util.Random;
 
 import org.apache.log4j.Logger;
 
-import com.anji.neat.Evolver;
 import com.anji.util.Misc;
 import com.anji.util.Properties;
 

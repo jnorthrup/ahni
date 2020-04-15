@@ -108,27 +108,24 @@ public abstract class ReproductionOperator {
             final List<ChromosomeMaterial> newOffspring = Collections.synchronizedList(new ArrayList<ChromosomeMaterial>(targetNewOffspringCount));
 
             // Reproduce from each species relative to its percentage of total fitness
-            Parallel.foreach(parentSpecies, 0, new Parallel.Operation<Species>() {
-                @Override
-                public void perform(Species species) {
-                    if (!species.isEmpty()) {
-                        double percentFitness = species.getAverageFitnessValue() / species.newProportionalSize;
-                        int numSpecieOffspring = (int) Math.round(species.newProportionalSize * targetNewOffspringCount) - species.getEliteCount();
-                        // Always create at least one offspring with the clone operator, or any operator if it has more than 50% of the slice.
-                        // (Otherwise there's no point hanging on to a species).
-                        if (numSpecieOffspring <= 0 && (getSlice() > 0.5 || getClass().equals(CloneReproductionOperator.class))) {
-                            numSpecieOffspring = 1;
-                        }
-
-                        if (numSpecieOffspring > 0)
-							try {
+            Parallel.foreach(parentSpecies, 0, (Species species) -> {
+                if (!species.isEmpty()) {
+                    double percentFitness = species.getAverageFitnessValue() / species.newProportionalSize;
+                    int numSpecieOffspring = (int) Math.round(species.newProportionalSize * targetNewOffspringCount) - species.getEliteCount();
+                    // Always create at least one offspring with the clone operator, or any operator if it has more than 50% of the slice.
+                    // (Otherwise there's no point hanging on to a species).
+                    if (numSpecieOffspring <= 0 && (getSlice() > 0.5 || getClass().equals(CloneReproductionOperator.class))) {
+                        numSpecieOffspring = 1;
+                    }
+                    
+                    if (numSpecieOffspring > 0) {
+                        try {
                             reproduce(config, species.getChromosomes(), numSpecieOffspring, newOffspring);
                         } catch (InvalidConfigurationException e) {
                             e.printStackTrace();
                         }
                     }
                 }
-
             });
 
             // Remove random offspring if we have too many.

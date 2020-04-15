@@ -264,8 +264,10 @@ public class NeatConfiguration extends Configuration implements Configurable {
         // We do this before add connection operator so a new connection won't have its weight set to a random value 
         // and then immediately perturbed by the weight mutation operator (effectively doubling the std dev). 
         WeightMutationOperator weightOperator = props.singletonObjectProperty(WeightMutationOperator.class);
-        if (!props.getBooleanProperty("training.backpropagation.enabled", false) &&
-                weightOperator.getMutationRate() > 0.0) {
+        if ((!props.getBooleanProperty("training.backpropagation.enabled", false) ||
+                (props.getBooleanProperty("training.backpropagation.enabled", false) && 
+                props.getBooleanProperty("training.backpropagation.finalrun", false)))
+                && weightOperator.getMutationRate() > 0.0) {
             addMutationOperator(weightOperator);
         }
 
@@ -309,6 +311,8 @@ public class NeatConfiguration extends Configuration implements Configurable {
             if (backpropOperator.getMutationRate() > 0.0) {
                 addMutationOperator(backpropOperator);
             }
+            
+            backpropOperator.setFinalRun(props.getBooleanProperty("training.backpropagation.finalrun", false));
         }
     }
 

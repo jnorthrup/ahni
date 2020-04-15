@@ -270,7 +270,7 @@ public class Evolver implements Configurable {
                 logger.info( "Generation " + generation + ": start" );
                 
                 // EVOLUTION
-                fittest = genotype.evolve();
+                fittest = genotype.evolve(numEvolutions);
                 
                 bestPerforming = genotype.getBestPerforming();
                 

@@ -58,7 +58,7 @@ public class OWASClassifierFitnessFunction
     
     private ActivatorTranscriber activatorFactory;
     private boolean endRun;
-    private final Random random = new Random();
+    private final Random random = new Random(0);
     
     private final List<List<double[]>> evalInputData = new ArrayList<>();
     private final List<List<double[]>> evalOutputData = new ArrayList<>();
