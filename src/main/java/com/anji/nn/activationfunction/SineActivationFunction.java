@@ -21,55 +21,68 @@ package com.anji.nn.activationfunction;
 
 /**
  * Sine activation function.
- * 
+ *
  * @author Philip Tucker
  */
-public class SineActivationFunction implements ActivationFunction {
+public class SineActivationFunction 
+        implements ActivationFunction, DifferentiableFunction
+{
 
-	/**
-	 * identifying string
-	 */
-	public final static String NAME = "sine";
+    /**
+     * identifying string
+     */
+    public final static String NAME = "sine";
 
-	/**
-	 * @see Object#toString()
-	 */
-	public String toString() {
-		return NAME;
-	}
+    /**
+     * @return 
+     * @see Object#toString()
+     */
+    @Override
+    public String toString() {
+        return NAME;
+    }
 
-	/**
-	 * This class should only be accessd via ActivationFunctionFactory.
-	 */
-	SineActivationFunction() {
-		// no-op
-	}
+    /**
+     * This class should only be accessd via ActivationFunctionFactory.
+     */
+    SineActivationFunction() {
+        // no-op
+    }
 
-	/**
-	 * Returns sine(input).
-	 */
-	public double apply(double input) {
-		return Math.sin(input);
-	}
+    /**
+     * Returns sine(input).
+     */
+    @Override
+    public double apply(double input) {
+        return Math.sin(input);
+    }
+    
+    @Override
+    public double applyDiff(double x) {
+        return Math.cos(x);
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
-	 */
-	public double getMaxValue() {
-		return 1;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
+     */
+    @Override
+    public double getMaxValue() {
+        return 1;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
-	 */
-	public double getMinValue() {
-		return -1;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
+     */
+    @Override
+    public double getMinValue() {
+        return -1;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#cost()
-	 */
-	public long cost() {
-		return 42;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#cost()
+     */
+    @Override
+    public long cost() {
+        return 42;
+    }
 }

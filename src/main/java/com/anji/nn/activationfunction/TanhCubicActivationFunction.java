@@ -20,59 +20,75 @@
 package com.anji.nn.activationfunction;
 
 /**
- * Hyperbolic tangent modified to have a "well" around 0. This can be used for control neurons for which we would ilke
- * the neural netowkr to be able easily to rest at 0.
- * 
+ * Hyperbolic tangent modified to have a "well" around 0. This can be used for
+ * control neurons for which we would ilke the neural netowkr to be able easily
+ * to rest at 0.
+ *
  * @author Philip Tucker
  */
-public class TanhCubicActivationFunction implements ActivationFunction {
+public class TanhCubicActivationFunction 
+        implements ActivationFunction, DifferentiableFunction
+{
 
-	/**
-	 * identifying string
-	 */
-	public final static String NAME = "tanh-cubic";
+    /**
+     * identifying string
+     */
+    public final static String NAME = "tanh-cubic";
 
-	/**
-	 * @see Object#toString()
-	 */
-	public String toString() {
-		return NAME;
-	}
+    /**
+     * @return 
+     * @see Object#toString()
+     */
+    @Override
+    public String toString() {
+        return NAME;
+    }
 
-	/**
-	 * This class should only be accessd via ActivationFunctionFactory.
-	 */
-	TanhCubicActivationFunction() {
-		// no-op
-	}
+    /**
+     * This class should only be accessd via ActivationFunctionFactory.
+     */
+    TanhCubicActivationFunction() {
+        // no-op
+    }
 
-	/**
-	 * Hyperbolic tangent of cubic.
-	 * 
-	 * @see com.anji.nn.activationfunction.ActivationFunction#apply(double)
-	 */
-	public double apply(double input) {
-		return -1 + (2 / (1 + (double) Math.exp((double) Math.pow(-input, 3))));
-	}
+    /**
+     * Hyperbolic tangent of cubic.
+     *
+     * @param x
+     * @see com.anji.nn.activationfunction.ActivationFunction#apply(double)
+     */
+    @Override
+    public double apply(double x) {
+        return -1 + (2 / (1 + Math.exp(Math.pow(-x, 3))));
+    }
+    
+    @Override
+    public double applyDiff(double x) {
+        // As given by Wolfram Alpha
+        return (6 * Math.exp(-Math.pow(x, 3)) * Math.pow(x, 2)) /
+                Math.pow(1 + Math.exp(Math.pow(-x, 3)), 2);
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
-	 */
-	public double getMaxValue() {
-		return 1;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
+     */
+    @Override
+    public double getMaxValue() {
+        return 1;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
-	 */
-	public double getMinValue() {
-		return -1;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
+     */
+    @Override
+    public double getMinValue() {
+        return -1;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#cost()
-	 */
-	public long cost() {
-		return 1231;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#cost()
+     */
+    public long cost() {
+        return 1231;
+    }
 }

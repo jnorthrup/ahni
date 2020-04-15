@@ -5,7 +5,9 @@ package com.anji.nn.activationfunction;
  *
  * @author Oliver Coleman
  */
-public class RecipriocalActivationFunction implements ActivationFunction {
+public class RecipriocalActivationFunction 
+        implements ActivationFunction, DifferentiableFunction 
+{
 
     /**
      * identifying string
@@ -13,8 +15,10 @@ public class RecipriocalActivationFunction implements ActivationFunction {
     public final static String NAME = "reciprocal";
 
     /**
+     * @return 
      * @see Object#toString()
      */
+    @Override
     public String toString() {
         return NAME;
     }
@@ -29,6 +33,7 @@ public class RecipriocalActivationFunction implements ActivationFunction {
     /**
      * @see com.anji.nn.activationfunction.ActivationFunction#apply(double)
      */
+    @Override
     public double apply(double input) {
         double val = 1 / input;
         if (Double.isNaN(val)) {
@@ -41,10 +46,20 @@ public class RecipriocalActivationFunction implements ActivationFunction {
         }
         return val;
     }
+    
+    @Override
+    public double applyDiff(double x) {
+        double val = -1 / (x*x);
+        if (Double.isNaN(val)) {
+            return getMinValue();
+        }
+        return val;
+    }
 
     /**
      * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
      */
+    @Override
     public double getMaxValue() {
         return Double.MAX_VALUE * 0.1;
     }
@@ -52,6 +67,7 @@ public class RecipriocalActivationFunction implements ActivationFunction {
     /**
      * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
      */
+    @Override
     public double getMinValue() {
         return -getMaxValue();
     }
@@ -59,6 +75,7 @@ public class RecipriocalActivationFunction implements ActivationFunction {
     /**
      * @see com.anji.nn.activationfunction.ActivationFunction#cost()
      */
+    @Override
     public long cost() {
         return 75;
     }

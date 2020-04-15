@@ -24,7 +24,9 @@ package com.anji.nn.activationfunction;
  *
  * @author Philip Tucker
  */
-public class StepActivationFunction implements ActivationFunction {
+public class StepActivationFunction 
+        implements ActivationFunction, DifferentiableFunction
+{
 
     /**
      * identifying string
@@ -34,6 +36,7 @@ public class StepActivationFunction implements ActivationFunction {
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString() {
         return NAME;
     }
@@ -49,10 +52,16 @@ public class StepActivationFunction implements ActivationFunction {
      * @return 0 if <code>input</code>< 0, 1 otherwise @see com.an
      * ji.nn.activationfunction.ActivationFunction#apply(double)
      */
+    @Override
     public double apply(double input) {
         return (input <= 0) ? 0 : 1;
     }
 
+    @Override
+    public double applyDiff(double x) {
+        return 0;
+    }
+    
     /**
      * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
      */

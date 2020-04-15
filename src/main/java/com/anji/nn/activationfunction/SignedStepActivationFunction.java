@@ -21,56 +21,69 @@ package com.anji.nn.activationfunction;
 
 /**
  * Step activation function.
- * 
+ *
  * @author Philip Tucker
  */
-public class SignedStepActivationFunction implements ActivationFunction {
+public class SignedStepActivationFunction 
+        implements ActivationFunction, DifferentiableFunction
+{
 
-	/**
-	 * identifying string
-	 */
-	public final static String NAME = "signed-step";
+    /**
+     * identifying string
+     */
+    public final static String NAME = "signed-step";
 
-	/**
-	 * @see Object#toString()
-	 */
-	public String toString() {
-		return NAME;
-	}
+    /**
+     * @return 
+     * @see Object#toString()
+     */
+    @Override
+    public String toString() {
+        return NAME;
+    }
 
-	/**
-	 * This class should only be accessd via ActivationFunctionFactory.
-	 */
-	SignedStepActivationFunction() {
-		// no-op
-	}
+    /**
+     * This class should only be accessd via ActivationFunctionFactory.
+     */
+    SignedStepActivationFunction() {
+        // no-op
+    }
 
-	/**
-	 * @return -1 if <code>input</code>< 0, 1 otherwise
-	 * @see com.anji.nn.activationfunction.ActivationFunction#apply(double)
-	 */
-	public double apply(double input) {
-		return (input <= 0) ? -1 : 1;
-	}
+    /**
+     * @return -1 if <code>input</code>< 0, 1 otherwise @see com.an
+     * ji.nn.activationfunction.ActivationFunction#apply(double)
+     */
+    @Override
+    public double apply(double input) {
+        return (input <= 0) ? -1 : 1;
+    }
+    
+    @Override
+    public double applyDiff(double x) {
+        return 0;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
-	 */
-	public double getMaxValue() {
-		return 1;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
+     */
+    @Override
+    public double getMaxValue() {
+        return 1;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
-	 */
-	public double getMinValue() {
-		return -1;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
+     */
+    @Override
+    public double getMinValue() {
+        return -1;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#cost()
-	 */
-	public long cost() {
-		return 40;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#cost()
+     */
+    @Override
+    public long cost() {
+        return 40;
+    }
 }

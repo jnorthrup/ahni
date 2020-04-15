@@ -22,51 +22,69 @@ package com.anji.nn.activationfunction;
 /**
  * @author Philip Tucker
  */
-public class SignedClampedLinearActivationFunction implements ActivationFunction {
+public class SignedClampedLinearActivationFunction 
+        implements ActivationFunction, DifferentiableFunction
+{
 
-	/**
-	 * id string
-	 */
-	public final static String NAME = "signed-clamped-linear";
+    /**
+     * id string
+     */
+    public final static String NAME = "signed-clamped-linear";
 
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString() {
-		return NAME;
-	}
+    /**
+     * @return 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return NAME;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#apply(double)
-	 */
-	public double apply(double input) {
-		if (input <= -1.0d)
-			return -1;
-		else if (input >= 1.0f)
-			return 1;
-		else
-			return input;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#apply(double)
+     */
+    @Override
+    public double apply(double input) {
+        if (input <= -1.0) {
+            return -1;
+        } else if (input >= 1.0) {
+            return 1;
+        } else {
+            return input;
+        }
+    }
+    
+    @Override
+    public double applyDiff(double x) {
+        if (x <= 1.0 || x >= 1.0) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
-	 */
-	public double getMaxValue() {
-		return 1;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
+     */
+    @Override
+    public double getMaxValue() {
+        return 1;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
-	 */
-	public double getMinValue() {
-		return -1;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
+     */
+    @Override
+    public double getMinValue() {
+        return -1;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#cost()
-	 */
-	public long cost() {
-		return 42;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#cost()
+     */
+    @Override
+    public long cost() {
+        return 42;
+    }
 
 }

@@ -34,8 +34,10 @@ public class LinearActivationFunction
     public final static String NAME = "linear";
 
     /**
+     * @return 
      * @see Object#toString()
      */
+    @Override
     public String toString() {
         return NAME;
     }
@@ -81,6 +83,7 @@ public class LinearActivationFunction
     /**
      * @see com.anji.nn.activationfunction.ActivationFunction#cost()
      */
+    @Override
     public long cost() {
         return 42;
     }

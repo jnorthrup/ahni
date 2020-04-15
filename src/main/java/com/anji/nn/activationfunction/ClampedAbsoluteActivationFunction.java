@@ -51,6 +51,7 @@ public class ClampedAbsoluteActivationFunction
      *
      * @see com.anji.nn.activationfunction.ActivationFunction#apply(double)
      */
+    @Override
     public double apply(double input) {
         return Math.min(Math.abs(input), 1);
     }
@@ -76,6 +77,7 @@ public class ClampedAbsoluteActivationFunction
     /**
      * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
      */
+    @Override
     public double getMaxValue() {
         return 1;
     }

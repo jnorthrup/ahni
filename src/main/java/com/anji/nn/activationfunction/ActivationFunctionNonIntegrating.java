@@ -1,6 +1,7 @@
 package com.anji.nn.activationfunction;
 
 public interface ActivationFunctionNonIntegrating {
-	public double apply(double[] input, double bias);
+
+    public double apply(double[] input, double bias);
 
 }

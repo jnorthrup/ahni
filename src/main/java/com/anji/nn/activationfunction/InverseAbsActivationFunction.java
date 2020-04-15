@@ -21,59 +21,73 @@ package com.anji.nn.activationfunction;
 
 /**
  * Inverse absolute value.
- * 
+ *
  * @author Philip Tucker
  */
-public class InverseAbsActivationFunction implements ActivationFunction {
+public class InverseAbsActivationFunction 
+        implements ActivationFunction, DifferentiableFunction 
+{
 
-	private final static double SLOPE = 0.3f;
+    private final static double SLOPE = 0.3f;
 
-	/**
-	 * identifying string
-	 */
-	public final static String NAME = "inverse-abs";
+    /**
+     * identifying string
+     */
+    public final static String NAME = "inverse-abs";
 
-	/**
-	 * @see Object#toString()
-	 */
-	public String toString() {
-		return NAME;
-	}
+    /**
+     * @return 
+     * @see Object#toString()
+     */
+    @Override
+    public String toString() {
+        return NAME;
+    }
 
-	/**
-	 * This class should only be accessd via ActivationFunctionFactory.
-	 */
-	InverseAbsActivationFunction() {
-		// no-op
-	}
+    /**
+     * This class should only be accessd via ActivationFunctionFactory.
+     */
+    InverseAbsActivationFunction() {
+        // no-op
+    }
 
-	/**
-	 * Inverse absolute value.
-	 * 
-	 * @see com.anji.nn.activationfunction.ActivationFunction#apply(double)
-	 */
-	public double apply(double input) {
-		return 1 / (SLOPE * Math.abs(input) + 1);
-	}
+    /**
+     * Inverse absolute value.
+     *
+     * @see com.anji.nn.activationfunction.ActivationFunction#apply(double)
+     */
+    @Override
+    public double apply(double input) {
+        return 1 / (SLOPE * Math.abs(input) + 1);
+    }
+    
+    @Override
+    public double applyDiff(double x) {
+        // As given by Wolfram Alpha
+        return -(SLOPE * x) / (Math.abs(x) * Math.pow(1 + SLOPE * Math.abs(x), 2));
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
-	 */
-	public double getMaxValue() {
-		return 1;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
+     */
+    @Override
+    public double getMaxValue() {
+        return 1;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
-	 */
-	public double getMinValue() {
-		return 0;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
+     */
+    @Override
+    public double getMinValue() {
+        return 0;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#cost()
-	 */
-	public long cost() {
-		return 75;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#cost()
+     */
+    @Override
+    public long cost() {
+        return 75;
+    }
 }

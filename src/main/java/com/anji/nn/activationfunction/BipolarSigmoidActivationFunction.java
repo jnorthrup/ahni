@@ -37,8 +37,10 @@ public class BipolarSigmoidActivationFunction
     public final static String NAME = "sigmoid-bipolar";
 
     /**
+     * @return 
      * @see Object#toString()
      */
+    @Override
     public String toString() {
         return NAME;
     }

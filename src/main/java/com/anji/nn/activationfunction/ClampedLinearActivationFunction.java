@@ -22,7 +22,9 @@ package com.anji.nn.activationfunction;
 /**
  * @author Philip Tucker
  */
-public class ClampedLinearActivationFunction implements ActivationFunction {
+public class ClampedLinearActivationFunction 
+        implements ActivationFunction, DifferentiableFunction 
+{
 
     /**
      * unique ID string
@@ -51,10 +53,20 @@ public class ClampedLinearActivationFunction implements ActivationFunction {
             return input;
         }
     }
+    
+    @Override
+    public double applyDiff(double x) {
+        if (x <= 0 || x >= 1) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
 
     /**
      * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
      */
+    @Override
     public double getMaxValue() {
         return 1;
     }
@@ -62,6 +74,7 @@ public class ClampedLinearActivationFunction implements ActivationFunction {
     /**
      * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
      */
+    @Override
     public double getMinValue() {
         return 0;
     }

@@ -66,6 +66,7 @@ public class GaussianActivationFunction
     /**
      * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
      */
+    @Override
     public double getMaxValue() {
         return 1;
     }
@@ -73,6 +74,7 @@ public class GaussianActivationFunction
     /**
      * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
      */
+    @Override
     public double getMinValue() {
         return 0;
     }
@@ -80,6 +82,7 @@ public class GaussianActivationFunction
     /**
      * @see com.anji.nn.activationfunction.ActivationFunction#cost()
      */
+    @Override
     public long cost() {
         return 42;
     }

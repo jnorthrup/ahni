@@ -20,70 +20,93 @@
 package com.anji.nn.activationfunction;
 
 /**
- * Modified classic sigmoid. Submitted to NEAT group by zenguyuno@yahoo.com from EvSail ANN package.
- * 
+ * Modified classic sigmoid. Submitted to NEAT group by zenguyuno@yahoo.com from
+ * EvSail ANN package.
+ *
  * @author Philip Tucker
  */
-public class EvSailSigmoidActivationFunction implements ActivationFunction {
+public class EvSailSigmoidActivationFunction 
+        implements ActivationFunction, DifferentiableFunction
+{
 
-	private final static double SEP = 0.3f;
-	private final static double DENOMINATOR = 2 * SEP * SEP;
+    private final static double SEP = 0.3f;
+    private final static double DENOMINATOR = 2 * SEP * SEP;
 
-	/**
-	 * identifying string
-	 */
-	public final static String NAME = "evsail-sigmoid";
+    /**
+     * identifying string
+     */
+    public final static String NAME = "evsail-sigmoid";
 
-	/**
-	 * @see Object#toString()
-	 */
-	public String toString() {
-		return NAME;
-	}
+    /**
+     * @return 
+     * @see Object#toString()
+     */
+    @Override
+    public String toString() {
+        return NAME;
+    }
 
-	/**
-	 * This class should only be accessd via ActivationFunctionFactory.
-	 */
-	EvSailSigmoidActivationFunction() {
-		// no-op
-	}
+    /**
+     * This class should only be accessd via ActivationFunctionFactory.
+     */
+    EvSailSigmoidActivationFunction() {
+        // no-op
+    }
 
-	/**
-	 * Approximation of classic sigmoid.
-	 * 
-	 * @see com.anji.nn.activationfunction.ActivationFunction#apply(double)
-	 */
-	public double apply(double input) {
-		if (input <= -SEP)
-			return 0;
-		else if (input <= 0) {
-			double tmp = input + SEP;
-			return (tmp * tmp) / DENOMINATOR;
-		} else if (input < SEP) {
-			double tmp = input - SEP;
-			return 1 - ((tmp * tmp) / DENOMINATOR);
-		} else
-			return 1;
-	}
+    /**
+     * Approximation of classic sigmoid.
+     *
+     * @see com.anji.nn.activationfunction.ActivationFunction#apply(double)
+     */
+    @Override
+    public double apply(double input) {
+        if (input <= -SEP) {
+            return 0;
+        } else if (input <= 0) {
+            double tmp = input + SEP;
+            return (tmp * tmp) / DENOMINATOR;
+        } else if (input < SEP) {
+            double tmp = input - SEP;
+            return 1 - ((tmp * tmp) / DENOMINATOR);
+        } else {
+            return 1;
+        }
+    }
+    
+    @Override
+    public double applyDiff(double x) {
+        if (x <= -SEP) {
+            return 0;
+        } else if (x <= 0) {
+            return (2 * (SEP + x)) / DENOMINATOR;
+        } else if (x < SEP) {
+            return -(2 * (-SEP + x)) / DENOMINATOR;
+        } else {
+            return 0;
+        }
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
-	 */
-	public double getMaxValue() {
-		return 1;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#getMaxValue()
+     */
+    @Override
+    public double getMaxValue() {
+        return 1;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
-	 */
-	public double getMinValue() {
-		return 0;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#getMinValue()
+     */
+    @Override
+    public double getMinValue() {
+        return 0;
+    }
 
-	/**
-	 * @see com.anji.nn.activationfunction.ActivationFunction#cost()
-	 */
-	public long cost() {
-		return 166;
-	}
+    /**
+     * @see com.anji.nn.activationfunction.ActivationFunction#cost()
+     */
+    @Override
+    public long cost() {
+        return 166;
+    }
 }

@@ -32,6 +32,7 @@ public class SigmoidActivationFunction implements ActivationFunction, Differenti
     public final static String NAME = "sigmoid";
 
     /**
+     * @return 
      * @see Object#toString()
      */
     @Override
