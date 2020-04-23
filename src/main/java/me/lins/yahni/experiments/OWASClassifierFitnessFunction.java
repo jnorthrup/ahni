@@ -230,15 +230,18 @@ public class OWASClassifierFitnessFunction
             try {
                 Activator activator = activatorFactory.newActivator(chrome);
                 
-                double avgerr = 0;
+                //double avgerr = 0;
+                int correct = 0;
                 
                 for(var n = 0; n < balancedInput.size(); n++) {
                     double[] result = activator.next(balancedInput.get(n));
                     double[] reference = balancedOutput.get(n);
-                    avgerr += aggSquaredDiff(result, reference);
+                    //avgerr += aggSquaredDiff(result, reference);
+                    if (getIndexOfLargest(result) == getIndexOfLargest(reference))
+                        correct++;
                 }
                 
-                double fitness = 1 - avgerr / balancedInput.size();
+                double fitness = (double)correct / balancedInput.size(); //1 - avgerr / balancedInput.size();
                 // TODO Which one is correct?
                 chrome.setFitnessValue(fitness);
                 chrome.setFitnessValue(fitness, 0);
@@ -285,7 +288,11 @@ public class OWASClassifierFitnessFunction
     }
     
     public void evaluateTraining(Chromosome chrome, PrintWriter out) {
-        evaluateWithData(chrome, out, evalInputData, evalOutputData);
+        List<List<double[]>> _in = new ArrayList<>();
+        _in.add(balancedInput);
+        List<List<double[]>> _out = new ArrayList<>();
+        _out.add(balancedOutput);
+        evaluateWithData(chrome, out, _in, _out);
     }
     
     public void evaluateWithData(Chromosome chrome, PrintWriter out, 
