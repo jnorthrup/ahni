@@ -186,7 +186,9 @@ public class OWASClassifierFitnessFunction
         var balanceVTR = 0.01; // Minimal 1% relative error
         var balance = balance(classes);
         
+        System.out.println("Balancing training data...");
         while(balance > balanceVTR) {
+            System.out.println("Balance is " + balance);
             for (int subj = 0; subj < input.size(); subj++) {
                 // Choose random sample
                 int r = random.nextInt(input.get(subj).size());
@@ -247,21 +249,23 @@ public class OWASClassifierFitnessFunction
         });
     }
     
-    private static int max(double[] v) {
-        int i = 0;
-        for (int j = 1; j < v.length; j++) {
-            if (v[j] > v[j-1]) {
-                i = j;
-            } else if (v[j] == v[j-1]) {
-                i = -1;
+    public static int getIndexOfLargest(double[] array) {
+        if (array == null || array.length == 0) {
+            return -1; // null or empty
+        }
+        int largest = 0;
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] > array[largest]) {
+                largest = i;
             }
         }
-        return i;
+        return largest; // position of the first largest found
     }
+
     
     private static String compareResults(double[] result, double[] reference) {
-        int a = max(result);
-        int b = max(reference);
+        int a = getIndexOfLargest(result);
+        int b = getIndexOfLargest(reference);
         if (a < 0 && b < 0) {
             return "NA";
         } else if (a == b) {
@@ -277,6 +281,16 @@ public class OWASClassifierFitnessFunction
      * @param chrome 
      */
     public void evaluateReal(Chromosome chrome, PrintWriter out) {
+        evaluateWithData(chrome, out, evalInputData, evalOutputData);
+    }
+    
+    public void evaluateTraining(Chromosome chrome, PrintWriter out) {
+        evaluateWithData(chrome, out, evalInputData, evalOutputData);
+    }
+    
+    public void evaluateWithData(Chromosome chrome, PrintWriter out, 
+            List<List<double[]>> input, List<List<double[]>> output) 
+    {
         try {
             Activator activator = activatorFactory.newActivator(chrome);
 

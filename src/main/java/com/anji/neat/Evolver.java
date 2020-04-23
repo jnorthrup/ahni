@@ -285,8 +285,12 @@ public class Evolver implements Configurable {
                 if (bulkFitnessFunc instanceof OWASClassifierFitnessFunction) {
                     var owasFitFunc = (OWASClassifierFitnessFunction)bulkFitnessFunc;
                     try (PrintWriter out = new PrintWriter(
-                            props.getProperty("output.dir") + "/eval/eval-gen" + generation + "-ID" + fittest.getId() + ".csv")) {
+                            props.getProperty("output.dir") + "/eval/eval-valid-gen" + generation + "-ID" + fittest.getId() + ".csv")) {
                         owasFitFunc.evaluateReal(fittest, out);
+                    }
+                    try (PrintWriter out = new PrintWriter(
+                            props.getProperty("output.dir") + "/eval/eval-training-gen" + generation + "-ID" + fittest.getId() + ".csv")) {
+                        owasFitFunc.evaluateTraining(fittest, out);
                     }
                 }
                 
