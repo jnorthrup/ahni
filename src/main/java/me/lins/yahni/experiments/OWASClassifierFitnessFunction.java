@@ -59,6 +59,7 @@ public class OWASClassifierFitnessFunction
     private ActivatorTranscriber activatorFactory;
     private boolean endRun;
     private final Random random = new Random(0);
+    private boolean targetFitnessMAE = false;
     
     private final List<List<double[]>> evalInputData = new ArrayList<>();
     private final List<List<double[]>> evalOutputData = new ArrayList<>();
@@ -73,6 +74,8 @@ public class OWASClassifierFitnessFunction
     @Override
     public void init(Properties properties) {
         activatorFactory = (ActivatorTranscriber) properties.singletonObjectProperty(ActivatorTranscriber.class);
+        
+        targetFitnessMAE = properties.getBooleanProperty("owas-classifier-neat-lins.target.mae", targetFitnessMAE);
         
         // Load the training data
         List<String> trainingFiles = 
@@ -185,10 +188,11 @@ public class OWASClassifierFitnessFunction
         
         var balanceVTR = 0.01; // Minimal 1% relative error
         var balance = balance(classes);
+        var tries = 100000; // Sanity check
         
         System.out.println("Balancing training data...");
-        while(balance > balanceVTR) {
-            System.out.println("Balance is " + balance);
+        while(balance > balanceVTR && tries-- > 0) {
+            System.out.println("Balance relative variance is " + balance);
             for (int subj = 0; subj < input.size(); subj++) {
                 // Choose random sample
                 int r = random.nextInt(input.get(subj).size());
@@ -230,19 +234,23 @@ public class OWASClassifierFitnessFunction
             try {
                 Activator activator = activatorFactory.newActivator(chrome);
                 
-                //double avgerr = 0;
+                double avgerr = 0;
                 int correct = 0;
                 
                 for(var n = 0; n < balancedInput.size(); n++) {
                     double[] result = activator.next(balancedInput.get(n));
                     double[] reference = balancedOutput.get(n);
-                    //avgerr += aggSquaredDiff(result, reference);
+                    avgerr += aggSquaredDiff(result, reference);
                     if (getIndexOfLargest(result) == getIndexOfLargest(reference))
                         correct++;
                 }
                 
-                double fitness = (double)correct / balancedInput.size(); //1 - avgerr / balancedInput.size();
+                double fitness = (double)correct / balancedInput.size(); 
+                double fitness_mae = 1 - avgerr / balancedInput.size();
                 // TODO Which one is correct?
+                if (targetFitnessMAE) {
+                    fitness = fitness_mae;
+                }
                 chrome.setFitnessValue(fitness);
                 chrome.setFitnessValue(fitness, 0);
                 chrome.setPerformanceValue(fitness);
@@ -301,9 +309,9 @@ public class OWASClassifierFitnessFunction
         try {
             Activator activator = activatorFactory.newActivator(chrome);
 
-            for (int s = 0; s < evalInputData.size(); s++) {
-                var subjInput  = evalInputData.get(s);
-                var subjOutput = evalOutputData.get(s);
+            for (int s = 0; s < input.size(); s++) {
+                var subjInput  = input.get(s);
+                var subjOutput = output.get(s);
                 
                 for (var n = 0; n < subjInput.size(); n++) {
                     double[] result = activator.next(subjInput.get(n));
