@@ -44,6 +44,7 @@ public class Randomizer implements Configurable {
     @Override
     public synchronized void init(Properties props) {
         seed = props.getLongProperty(RANDOM_SEED_KEY, System.currentTimeMillis());
+        System.out.println("Random seed = " + seed);
         rand = new Random(seed);
     }
 

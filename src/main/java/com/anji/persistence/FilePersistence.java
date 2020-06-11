@@ -117,16 +117,11 @@ public class FilePersistence implements Persistence {
     }
 
     private void storeXml(XmlPersistable xp) throws IOException {
-        FileOutputStream out = null;
-
-        try {
-            out = new FileOutputStream(fullPath(xp.getXmlRootTag(), xp.getXmld()));
+        try (FileOutputStream out = new FileOutputStream(
+                fullPath(xp.getXmlRootTag(), xp.getXmld()))) 
+        {
             out.write(xp.toXml().getBytes());
             out.close();
-        } finally {
-            if (out != null) {
-                out.close();
-            }
         }
     }
 
@@ -139,7 +134,7 @@ public class FilePersistence implements Persistence {
      * @return String resulting path
      */
     protected String fullPath(String type, String key) {
-        StringBuffer result = new StringBuffer(baseDir.getAbsolutePath());
+        StringBuilder result = new StringBuilder(baseDir.getAbsolutePath());
         result.append(File.separatorChar).append(type);
 
         File collectionDir = new File(result.toString());
@@ -190,6 +185,7 @@ public class FilePersistence implements Persistence {
      * @see
      * com.anji.persistence.Persistence#store(org.jgapcustomised.Chromosome)
      */
+    @Override
     public void store(Chromosome c) throws Exception {
         storeXml(new XmlPersistableChromosome(c));
     }
@@ -198,6 +194,7 @@ public class FilePersistence implements Persistence {
      * @see
      * com.anji.persistence.Persistence#store(com.anji.integration.Activator)
      */
+    @Override
     public void store(Activator a) throws Exception {
         storeXml(a);
     }
@@ -205,6 +202,7 @@ public class FilePersistence implements Persistence {
     /**
      * @see com.anji.persistence.Persistence#store(com.anji.run.Run)
      */
+    @Override
     public void store(Run r) throws Exception {
         storeXml(new XmlPersistableRun(r));
     }
