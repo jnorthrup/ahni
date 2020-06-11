@@ -138,6 +138,7 @@ public class AnjiActivator implements Activator {
     /**
      * clear all memory in network, including neurons and recurrent connections
      */
+    @Override
     public void reset() {
         net.reset();
     }
@@ -145,6 +146,7 @@ public class AnjiActivator implements Activator {
     /**
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         return net.toString();
     }
@@ -152,6 +154,7 @@ public class AnjiActivator implements Activator {
     /**
      * @see com.anji.integration.Activator#toXml()
      */
+    @Override
     public String toXml() {
         return net.toXml();
     }
@@ -159,6 +162,7 @@ public class AnjiActivator implements Activator {
     /**
      * @see com.anji.integration.Activator#getName()
      */
+    @Override
     public String getName() {
         return net.getName();
     }

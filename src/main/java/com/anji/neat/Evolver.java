@@ -102,8 +102,6 @@ public class Evolver implements Configurable {
 
     private boolean loadGenotypeFromDB = false;
 
-    static final Runtime runtime = Runtime.getRuntime();
-
     private BulkFitnessFunction bulkFitnessFunc;
 
     private int logPerGenerations = 1;
@@ -363,8 +361,8 @@ public class Evolver implements Configurable {
                 if (generation % logPerGenerations == 0) {
                     double speciationCompatThreshold = genotype.getParameters().getSpeciationThreshold();
                     
-                    long memTotal = Math.round(runtime.totalMemory() / 1048576);
-                    long memFree = Math.round(runtime.freeMemory() / 1048576);
+                    long memTotal = Math.round(Runtime.getRuntime().totalMemory() / 1048576);
+                    long memFree = Math.round(Runtime.getRuntime().freeMemory() / 1048576);
                     long memUsed = memTotal - memFree;
                     
                     long duration = (System.currentTimeMillis() - start) / 1000;

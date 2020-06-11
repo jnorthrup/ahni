@@ -97,17 +97,21 @@ public class AnjiNetTranscriber implements Transcriber<AnjiActivator>, Configura
     }
 
     /**
+     * @param genotype
      * @see Transcriber#transcribe(Chromosome)
      */
+    @Override
     public AnjiActivator transcribe(Chromosome genotype) throws TranscriberException {
         return new AnjiActivator(newAnjiNet(genotype), recurrentCycles);
     }
 
     /**
+     * @param genotype
      * @see Transcriber#transcribe(Chromosome, Activator) Note: this method has
      * been added to conform with the Transcriber interface, but does not use
      * the substrate argument for performance gains.
      */
+    @Override
     public AnjiActivator transcribe(Chromosome genotype, AnjiActivator substrate) throws TranscriberException {
         return new AnjiActivator(newAnjiNet(genotype), recurrentCycles);
     }

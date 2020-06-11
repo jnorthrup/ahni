@@ -26,43 +26,50 @@ import com.anji.util.Configurable;
 import com.anji.util.Properties;
 
 /**
- * Factory interface to abstract construction of neural network objects. JOONE implementation is not currently
- * supported, but the guts of the code remain to be re-addressed later.
- * 
+ * Factory interface to abstract construction of neural network objects. JOONE
+ * implementation is not currently supported, but the guts of the code remain to
+ * be re-addressed later.
+ *
  * @author Philip Tucker
  */
 public class ActivatorTranscriber implements Configurable {
-	/**
-	 * The class (implementing {@link Transcriber}) that will be used to transcribe a network (implementing {@link Activator}) from a {@link org.jgapcustomised.Chromosome}.
-	 */
-	public final static String TRANSCRIBER_KEY = "ann.transcriber";
 
-	private Transcriber transcriber;
+    /**
+     * The class (implementing {@link Transcriber}) that will be used to
+     * transcribe a network (implementing {@link Activator}) from a
+     * {@link org.jgapcustomised.Chromosome}.
+     */
+    public final static String TRANSCRIBER_KEY = "ann.transcriber";
 
-	/**
-	 * See <a href=" {@docRoot} /params.htm" target="anji_params">Parameter Details </a> for specific property settings.
-	 * 
-	 * @param props configuration parameters
-	 * @throws TranscriberException
-	 */
-	public void init(Properties props) throws TranscriberException {
-		transcriber = (Transcriber) props.singletonObjectProperty(TRANSCRIBER_KEY);
-	}
+    private Transcriber transcriber;
 
-	/**
-	 * Constructs an {@link Activator} phenotype from a {@link org.jgapcustomised.Chromosome}.
-	 * @param ch The Chromosome from which the phenotype will be decoded.
-	 * @return Activator phenotype decoded from the Chromosome.
-	 * @throws TranscriberException
-	 */
-	public Activator newActivator(Chromosome ch) throws TranscriberException {
-		return transcriber.transcribe(ch);
-	}
+    /**
+     * See <a href=" {@docRoot} /params.htm" target="anji_params">Parameter
+     * Details </a> for specific property settings.
+     *
+     * @param props configuration parameters
+     * @throws TranscriberException
+     */
+    public void init(Properties props) throws TranscriberException {
+        transcriber = (Transcriber) props.singletonObjectProperty(TRANSCRIBER_KEY);
+    }
 
-	/**
-	 * @see com.anji.integration.Transcriber#getPhenotypeClass()
-	 */
-	public Class getPhenotypeClass() {
-		return transcriber.getPhenotypeClass();
-	}
+    /**
+     * Constructs an {@link Activator} phenotype from a
+     * {@link org.jgapcustomised.Chromosome}.
+     *
+     * @param ch The Chromosome from which the phenotype will be decoded.
+     * @return Activator phenotype decoded from the Chromosome.
+     * @throws TranscriberException
+     */
+    public Activator newActivator(Chromosome ch) throws TranscriberException {
+        return transcriber.transcribe(ch);
+    }
+
+    /**
+     * @see com.anji.integration.Transcriber#getPhenotypeClass()
+     */
+    public Class getPhenotypeClass() {
+        return transcriber.getPhenotypeClass();
+    }
 }

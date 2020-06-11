@@ -33,7 +33,6 @@ import org.jgapcustomised.MutationOperator;
 import com.anji.integration.AnjiRequiredException;
 import com.anji.util.Configurable;
 import com.anji.util.Properties;
-import com.ojcoleman.ahni.util.ArrayUtil;
 
 /**
  * Implements NEAT perturb connection weight mutation according to <a
@@ -87,8 +86,6 @@ public class WeightMutationOperator extends MutationOperator implements Configur
         super(DEFAULT_MUTATE_RATE);
     }
 
-    static boolean dbg = false;
-
     /**
      * Removes from <code>genesToAdd</code> and adds to
      * <code>genesToRemove</code> all connection genes that are modified.
@@ -115,11 +112,6 @@ public class WeightMutationOperator extends MutationOperator implements Configur
                 ? NeatChromosomeUtility.getConnectionList(target.getAlleles())
                 : new ArrayList(target.getAlleles());
         Collections.shuffle(alleles, config.getRandomGenerator());
-
-        if (!dbg) {
-            dbg = true;
-            System.out.println((config.biasViaInput() ? "" : "not ") + "bias via input");
-        }
 
         int numMutations = numMutations(config.getRandomGenerator(), alleles.size());
         Iterator<? extends Allele> iter = alleles.iterator();

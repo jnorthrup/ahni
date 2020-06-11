@@ -37,12 +37,13 @@ public class NeuronAllele extends Allele {
 
     private static final DecimalFormat nf = new DecimalFormat(" 0.0000;-0.0000");
 
-    private NeuronGene neuronGene;
+    private final NeuronGene neuronGene;
 
     private double bias = ConnectionAllele.DEFAULT_WEIGHT;
 
     /**
      * @param aNeuronGene
+     * @param bias
      */
     public NeuronAllele(NeuronGene aNeuronGene, double bias) {
         super(aNeuronGene);
@@ -54,6 +55,7 @@ public class NeuronAllele extends Allele {
     /**
      * @see org.jgapcustomised.Allele#cloneAllele()
      */
+    @Override
     public Allele cloneAllele() {
         NeuronAllele allele = new NeuronAllele(neuronGene, bias);
         return allele;
@@ -67,6 +69,7 @@ public class NeuronAllele extends Allele {
      * @param onlyPerturbFromCurrentValue if true then the bias is perturbed
      * from its current value.
      */
+    @Override
     public void setToRandomValue(Random a_numberGenerator, boolean onlyPerturbFromCurrentValue) {
         if (onlyPerturbFromCurrentValue) {
             bias += a_numberGenerator.nextGaussian() * ConnectionAllele.RANDOM_STD_DEV;
@@ -123,6 +126,7 @@ public class NeuronAllele extends Allele {
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString() {
         return "N-" + neuronGene.toString() + " [" + nf.format(bias) + "]";
     }
@@ -138,6 +142,7 @@ public class NeuronAllele extends Allele {
 
     /**
      * Gets the bias value.
+     * @return 
      */
     @Override
     public double getValue() {
@@ -146,6 +151,7 @@ public class NeuronAllele extends Allele {
 
     /**
      * Sets the bias value.
+     * @param aValue
      */
     @Override
     public void setValue(double aValue) {

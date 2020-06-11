@@ -83,7 +83,7 @@ public class OWASClassifierFitnessFunction
         String[] inputCols  = properties.getStringArrayProperty("training.inputColumns");
         String[] outputCols = properties.getStringArrayProperty("training.outputColumns");
         
-        long seed = properties.getLongProperty("random.seed", 0);
+        long seed = properties.getLongProperty("random.seed", System.currentTimeMillis());
         if (seed != 0) {
             random.setSeed(seed);
         }
