@@ -240,9 +240,11 @@ public class OWASClassifierFitnessFunction
                 for(var n = 0; n < balancedInput.size(); n++) {
                     double[] result = activator.next(balancedInput.get(n));
                     double[] reference = balancedOutput.get(n);
-                    avgerr += aggSquaredDiff(result, reference);
-                    if (getIndexOfLargest(result) == getIndexOfLargest(reference))
-                        correct++;
+                    avgerr += aggDiff(result, reference);
+                    if(Arrays.stream(result).sum() > 0) {
+                        if (getIndexOfLargest(result) == getIndexOfLargest(reference))
+                            correct++;
+                    }
                 }
                 
                 double fitness = (double)correct / balancedInput.size(); 
@@ -264,9 +266,13 @@ public class OWASClassifierFitnessFunction
         if (array == null || array.length == 0) {
             return -1; // null or empty
         }
-        int largest = 0;
-        for (int i = 1; i < array.length; i++) {
-            if (array[i] > array[largest]) {
+        int largest = -1;
+        for (int i = 0; i < array.length; i++) {
+            if (largest < 0) {
+                largest = i;
+            } else if (array[i] == array[largest]) {
+                return -2; // Array has two identical outputs, not possible with OWAS
+            } else if (array[i] > array[largest]) {
                 largest = i;
             }
         }
@@ -275,15 +281,18 @@ public class OWASClassifierFitnessFunction
 
     
     private static String compareResults(double[] result, double[] reference) {
-        int a = getIndexOfLargest(result);
-        int b = getIndexOfLargest(reference);
-        if (a < 0 && b < 0) {
-            return "NA";
-        } else if (a == b) {
-            return "1";
-        } else {
-            return "0";
+        if(Arrays.stream(result).sum() > 0) {
+            int a = getIndexOfLargest(result);
+            int b = getIndexOfLargest(reference);
+            if (a < 0 && b < 0) {
+                return "NA";
+            } else if (a == b) {
+                return "1";
+            } else {
+                return "0";
+            }
         }
+        return "NA";
     }
     
     /**
@@ -339,13 +348,13 @@ public class OWASClassifierFitnessFunction
         } 
     }
     
-    private double aggSquaredDiff(double[] a, double[] b) {
+    private double aggDiff(double[] a, double[] b) {
         assert a.length == b.length;
         
         double err = 0;
         for(var n = 0; n < a.length; n++) {
             double diff = a[n] - b[n];
-            err = err + Math.sqrt(diff * diff);
+            err += Math.abs(diff);
         }
         return err / a.length;
     }
