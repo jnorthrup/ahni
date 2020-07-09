@@ -270,7 +270,7 @@ public class OWASClassifierFitnessFunction
         for (int i = 0; i < array.length; i++) {
             if (largest < 0) {
                 largest = i;
-            } else if (array[i] == array[largest]) {
+            } else if ((array[i] == array[largest]) && (i + 1 == array.length)) {
                 return -2; // Array has two identical outputs, not possible with OWAS
             } else if (array[i] > array[largest]) {
                 largest = i;

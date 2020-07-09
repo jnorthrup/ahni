@@ -80,7 +80,7 @@ public class AddNeuronAnywhereMutationOperator extends MutationOperatorMultiple 
     }
 
     public void addNeuron(NeatConfiguration config, List<NeuronAllele> neurons, List<ConnectionAllele> connections, Set<Allele> allelesToAdd, Set<Allele> allelesToRemove) {
-        NeuronAllele newNeuronAllele = config.newNeuronAllele(NeuronType.HIDDEN);
+        NeuronAllele newNeuronAllele = config.newNeuronAllele(NeuronType.HIDDEN, null);
         allelesToAdd.add(newNeuronAllele);
 
         Random random = config.getRandomGenerator();

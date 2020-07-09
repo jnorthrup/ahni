@@ -499,24 +499,25 @@ public class NeatConfiguration extends Configuration implements Configurable {
      * @param type
      * @return NeuronAllele
      */
-    public NeuronAllele newNeuronAllele(NeuronType type) {
-        String funcType;
-        if (null == type) {
-            funcType = hiddenActivationType;
-        } else switch (type) {
-            case INPUT:
-                funcType = inputActivationType;
-                break;
-            case OUTPUT:
-                funcType = outputActivationType;
-                break;
-            default:
+    public NeuronAllele newNeuronAllele(NeuronType type, String funcType) {
+        if (funcType == null) {
+            if (null == type) {
                 funcType = hiddenActivationType;
-                break;
+            } else switch (type) {
+                case INPUT:
+                    funcType = inputActivationType;
+                    break;
+                case OUTPUT:
+                    funcType = outputActivationType;
+                    break;
+                default:
+                    funcType = hiddenActivationType;
+                    break;
+            }
         }
         return newNeuronAllele(type, nextInnovationId(), funcType, 0);
     }
-
+    
     /**
      * Factory method to construct new neuron allele which has replaced
      * connection <code>connectionId</code> according to NEAT add neuron
@@ -535,16 +536,20 @@ public class NeatConfiguration extends Configuration implements Configurable {
         }
         return newNeuronAllele(NeuronType.HIDDEN, id, hiddenActivationType, 0);
     }
+    
+    public String getRandomActivationFunction() {
+        double p = getRandomGenerator().nextDouble();
+        int index = 0;
+        while (p > hiddenActivationTypeRandomDistribution[index]) {
+            index++;
+        }
+        return hiddenActivationTypeRandomAllowed[index];
+    }
 
     // Provides special handling for funcType == "random"
     private NeuronAllele newNeuronAllele(NeuronType type, Long id, String funcType, double bias) {
         if (funcType.equals("random")) {
-            double p = getRandomGenerator().nextDouble();
-            int index = 0;
-            while (p > hiddenActivationTypeRandomDistribution[index]) {
-                index++;
-            }
-            funcType = hiddenActivationTypeRandomAllowed[index];
+            funcType = getRandomActivationFunction();
         }
 
         NeuronGene gene = new NeuronGene(type, id, funcType);

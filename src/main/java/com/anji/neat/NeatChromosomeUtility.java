@@ -124,12 +124,14 @@ public class NeatChromosomeUtility {
 
         // Input neurons.
         for (int i = 0; i < numInputs; ++i) {
-            inNeurons.add(config.newNeuronAllele(NeuronType.INPUT));
+            inNeurons.add(config.newNeuronAllele(NeuronType.INPUT, null));
         }
 
         // Output neurons.
+        String funcType = config.getRandomActivationFunction();
+        // FIXME make this configurable
         for (int j = 0; j < numOutputs; ++j) {
-            NeuronAllele outNeuron = config.newNeuronAllele(NeuronType.OUTPUT);
+            NeuronAllele outNeuron = config.newNeuronAllele(NeuronType.OUTPUT, funcType);
             //if (!config.biasViaInput()) {
             //	outNeuron.setToRandomValue(config.getRandomGenerator(), true);
             //}
@@ -149,7 +151,7 @@ public class NeatChromosomeUtility {
         // Hidden neurons.
         if (fullyConnected) {
             for (int k = 0; k < numHidden; ++k) {
-                NeuronAllele hidNeuron = config.newNeuronAllele(NeuronType.HIDDEN);
+                NeuronAllele hidNeuron = config.newNeuronAllele(NeuronType.HIDDEN, null);
                 //if (!config.biasViaInput()) {
                 //hidNeuron.setToRandomValue(config.getRandomGenerator(), true);
                 //}
