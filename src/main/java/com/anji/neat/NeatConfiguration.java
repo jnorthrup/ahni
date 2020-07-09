@@ -540,6 +540,9 @@ public class NeatConfiguration extends Configuration implements Configurable {
     public String getRandomActivationFunction() {
         double p = getRandomGenerator().nextDouble();
         int index = 0;
+        if (hiddenActivationTypeRandomDistribution == null)
+            return null;
+        
         while (p > hiddenActivationTypeRandomDistribution[index]) {
             index++;
         }
