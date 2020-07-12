@@ -23,6 +23,7 @@ import com.anji.integration.TranscriberException;
 import com.anji.util.Configurable;
 import com.anji.util.Properties;
 import com.ojcoleman.ahni.hyperneat.HyperNEATEvolver;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -31,7 +32,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
+import java.util.logging.Level;
 import me.lins.yahni.neat.TrainingData;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -192,7 +195,7 @@ public class OWASClassifierFitnessFunction
         
         System.out.println("Balancing training data...");
         while(balance > balanceVTR && tries-- > 0) {
-            System.out.println("Balance relative variance is " + balance);
+            //System.out.println("Balance relative variance is " + balance);
             for (int subj = 0; subj < input.size(); subj++) {
                 // Choose random sample
                 int r = random.nextInt(input.get(subj).size());
@@ -216,6 +219,47 @@ public class OWASClassifierFitnessFunction
                 }
             }
         }
+        
+        storeBalancedData();
+    }
+    
+    private void storeBalancedData() {
+        try {
+            try (PrintWriter out = new PrintWriter("trainingdata.csv")) {
+                // Write header
+                for(int i = 1; i <= balancedInput.get(0).length; i++) {
+                    out.print("Input");
+                    out.print(i);
+                    out.print(", ");
+                }
+                for(int i = 1; i <= balancedOutput.get(0).length; i++) {
+                    out.print("Output");
+                    out.print(i);
+                    if (i < balancedOutput.size()) {
+                        out.print(", ");
+                    }
+                }
+                out.println();
+                
+                // Write data
+                for (int j = 0; j < balancedInput.size(); j++) {
+                    // Write row
+                    for (int i = 0; i < balancedInput.get(j).length; i++) {
+                        out.printf(Locale.ENGLISH, "%f,", balancedInput.get(j)[i]);
+                    }
+                    for (int i = 0; i < balancedOutput.get(j).length; i++) {
+                        out.printf(Locale.ENGLISH, "%f", balancedOutput.get(j)[i]);
+                        if (i < balancedOutput.size()) {
+                            out.print(", ");
+                        }
+                    }
+                    out.println();
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            java.util.logging.Logger.getLogger(OWASClassifierFitnessFunction.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //System.exit(0);
     }
     
     /**
