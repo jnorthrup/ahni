@@ -7,3 +7,6 @@ antbin/
 .project
 ahni.jar
 hs_err*
+/nbproject/private/
+/build/
+/target/

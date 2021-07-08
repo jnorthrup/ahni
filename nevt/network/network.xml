@@ -1,0 +1,53 @@
+<network>
+<title>10577</title>
+<neuron id="0" type="input" hint-layer="1" hint-position="1.0" value="0.0" step-pending="false" activation="sigmoid" />
+<neuron id="1" type="input" hint-layer="1" hint-position="2.0" value="0.0" step-pending="false" activation="sigmoid" />
+<neuron id="2" type="input" hint-layer="1" hint-position="3.0" value="0.0" step-pending="false" activation="sigmoid" />
+<neuron id="5415" type="hidden" hint-layer="2" hint-position="1.0" value="0.0" step-pending="false" activation="sigmoid" />
+<neuron id="1030" type="hidden" hint-layer="3" hint-position="1.0" value="0.0" step-pending="false" activation="sigmoid" />
+<neuron id="594" type="hidden" hint-layer="3" hint-position="2.0" value="0.0" step-pending="false" activation="sigmoid" />
+<neuron id="1331" type="hidden" hint-layer="4" hint-position="1.0" value="0.0" step-pending="false" activation="sigmoid" />
+<neuron id="449" type="hidden" hint-layer="5" hint-position="1.0" value="0.0" step-pending="false" activation="sigmoid" />
+<neuron id="170" type="hidden" hint-layer="6" hint-position="1.0" value="0.0" step-pending="false" activation="sigmoid" />
+<neuron id="1033" type="hidden" hint-layer="7" hint-position="1.0" value="0.0" step-pending="false" activation="sigmoid" />
+<neuron id="9529" type="hidden" hint-layer="8" hint-position="1.0" value="0.0" step-pending="false" activation="sigmoid" />
+<neuron id="2376" type="hidden" hint-layer="9" hint-position="1.0" value="0.0" step-pending="false" activation="sigmoid" />
+<neuron id="446" type="hidden" hint-layer="10" hint-position="1.0" value="0.0" step-pending="false" activation="sigmoid" />
+<neuron id="176" type="hidden" hint-layer="11" hint-position="1.0" value="0.0" step-pending="false" activation="sigmoid" />
+<neuron id="3" type="output" hint-layer="12" hint-position="1.0" value="0.0" step-pending="false" activation="sigmoid" />
+<connection src-id="1" tgt-id="2376" weight="0.08538433836400572" recurrent="false" />
+<connection src-id="9529" tgt-id="2376" weight="-0.5388489757154279" recurrent="false" />
+<connection src-id="1" tgt-id="3" weight="0.8110121924766313" recurrent="false" />
+<connection src-id="2" tgt-id="3" weight="-1.75681844986529" recurrent="false" />
+<connection src-id="176" tgt-id="3" weight="-4.399265446898068" recurrent="false" />
+<connection src-id="594" tgt-id="3" weight="5.810384174517138" recurrent="false" />
+<connection src-id="449" tgt-id="3" weight="5.3926496538757425" recurrent="false" />
+<connection src-id="1033" tgt-id="3" weight="4.8815736617599566" recurrent="false" />
+<connection src-id="0" tgt-id="1030" weight="3.812935316632354" recurrent="false" />
+<connection src-id="5415" tgt-id="1030" weight="0.5290243121490605" recurrent="false" />
+<connection src-id="1" tgt-id="449" weight="-2.1352148217827094" recurrent="false" />
+<connection src-id="2" tgt-id="449" weight="-0.8308070629570259" recurrent="false" />
+<connection src-id="594" tgt-id="449" weight="3.3295803188773534" recurrent="false" />
+<connection src-id="1331" tgt-id="449" weight="-0.7178078889846802" recurrent="false" />
+<connection src-id="1033" tgt-id="9529" weight="1.0" recurrent="false" />
+<connection src-id="1030" tgt-id="1331" weight="-1.6885162575965271" recurrent="false" />
+<connection src-id="0" tgt-id="170" weight="-5.043179025807626" recurrent="false" />
+<connection src-id="1" tgt-id="170" weight="5.169610667488662" recurrent="false" />
+<connection src-id="449" tgt-id="170" weight="-1.061498557723581" recurrent="false" />
+<connection src-id="594" tgt-id="170" weight="-2.834399548465502" recurrent="false" />
+<connection src-id="170" tgt-id="1033" weight="-1.4021163225140743" recurrent="false" />
+<connection src-id="449" tgt-id="1033" weight="-1.5084410381179438" recurrent="false" />
+<connection src-id="2" tgt-id="5415" weight="-2.1254867779939968" recurrent="false" />
+<connection src-id="170" tgt-id="446" weight="0.010474835828175433" recurrent="false" />
+<connection src-id="2376" tgt-id="446" weight="3.542735111166307" recurrent="false" />
+<connection src-id="449" tgt-id="446" weight="3.609890187532618" recurrent="false" />
+<connection src-id="1033" tgt-id="446" weight="2.0408098934114762" recurrent="false" />
+<connection src-id="1" tgt-id="176" weight="-0.9001483808935499" recurrent="false" />
+<connection src-id="2" tgt-id="176" weight="-1.8654354714871082" recurrent="false" />
+<connection src-id="446" tgt-id="176" weight="-3.2945938211630663" recurrent="false" />
+<connection src-id="594" tgt-id="176" weight="-2.3892888705485325" recurrent="false" />
+<connection src-id="1331" tgt-id="176" weight="11.90884553625667" recurrent="false" />
+<connection src-id="1" tgt-id="594" weight="2.6022527629328085" recurrent="false" />
+<connection src-id="0" tgt-id="594" weight="-5.105180616885789" recurrent="false" />
+<connection src-id="5415" tgt-id="594" weight="-7.354200523495135" recurrent="false" />
+</network>

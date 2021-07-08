@@ -1,8 +1,8 @@
-# AHNI - Another HyperNEAT Implementation
+# YAHNI - Yet Another HyperNEAT Implementation
 
-AHNI implements the HyperNEAT neuroevolution algorithm, see http://eplex.cs.ucf.edu/hyperNEATpage/HyperNEAT.html.
+YAHNI implements the HyperNEAT neuroevolution algorithm, see http://eplex.cs.ucf.edu/hyperNEATpage/HyperNEAT.html.
 
-The latest version is available at, and issues should be posted at, https://github.com/OliverColeman/ahni.
+YAHNI is based on AHNI which can be found at https://github.com/OliverColeman/ahni.
 
 
 ## Building and Running
@@ -10,19 +10,19 @@ The latest version is available at, and issues should be posted at, https://gith
 A runnable JAR file can be built from the source files with:
 
 ```sh
-ant runjar
+mvn compile package assembly:single
 ```
 
 Then to run an experiment:
 
 ```sh
-java -jar ahni.jar <properties file containing parameters for experiment>
+mvn exec:java -Dexec.args="<properties file containing parameters for experiment>"
 ```
 
 For example:
 
 ```sh
-java -jar ahni.jar properties/or3.properties
+mvn exec:java -Dexec.args="properties/retina-problem-hyperneat.properties"
 ```
 
 See `properties/bain-test-pass-through-flip.properties` for an example properties file describing the function of each parameter and setting.
