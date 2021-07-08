@@ -9,4 +9,8 @@ ahni.jar
 hs_err*
 /nbproject/private/
 /build/
-/target/
+/target/.idea
+**/target
+*.iml
+.idea
+pom.xml.versionsBackup
