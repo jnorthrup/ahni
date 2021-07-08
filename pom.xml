@@ -67,18 +67,18 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
-            <version>2.13.0</version>
+            <version>2.14.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>2.13.0</version>
+            <version>2.14.1</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-1.2-api -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-1.2-api</artifactId>
-            <version>2.13.0</version>
+            <version>2.14.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -88,17 +88,17 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.9</version>
+            <version>3.12.0</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.6</version>
+            <version>2.10.0</version>
         </dependency>
         <dependency>
             <groupId>org.dyn4j</groupId>
             <artifactId>dyn4j</artifactId>
-            <version>3.4.0</version>
+            <version>4.2.0</version>
         </dependency>
         <dependency>
             <groupId>com.aparapi</groupId>
@@ -109,7 +109,7 @@
         <dependency>
             <groupId>org.jfree</groupId>
             <artifactId>jfreechart</artifactId>
-            <version>1.5.0</version>
+            <version>1.5.3</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
         <dependency>
@@ -121,13 +121,13 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
-            <version>1.7</version>
+            <version>1.8</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.beust/jcommander -->
         <dependency>
             <groupId>com.beust</groupId>
             <artifactId>jcommander</artifactId>
-            <version>1.78</version>
+            <version>1.81</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.kenai.nbpwr/org-jdesktop-swingx -->
         <dependency>
@@ -139,13 +139,13 @@
         <dependency>
             <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
-            <version>1.4.11.1</version>
+            <version>1.4.17</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/commons-primitives/commons-primitives -->
         <dependency>
             <groupId>commons-primitives</groupId>
             <artifactId>commons-primitives</artifactId>
-            <version>1.0</version>
+            <version>20041207.202534</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.jfree/jcommon -->
         <dependency>
