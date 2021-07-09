@@ -22,6 +22,9 @@ package com.anji.nn.activationfunction;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.anji.nn.activationfunction.ActivationFunction.*;
+import static com.anji.nn.activationfunction.ActivationFunction.NegatedLinearActivationFunction;
+
 /**
  * Factory to hide implementation details of creating activation functions and
  * ensure there is always only one of each.
@@ -30,7 +33,7 @@ import java.util.Map;
  */
 public class ActivationFunctionFactory {
 
-    private Map<String, ActivationFunction> activationFunctions = new HashMap<String, ActivationFunction>();
+    private static Map<String, ActivationFunction> activationFunctions = new HashMap<>();
 
     private static ActivationFunctionFactory instance = null;
 
@@ -38,37 +41,12 @@ public class ActivationFunctionFactory {
      * singleton; initialize map of activation functions
      */
     private ActivationFunctionFactory() {
-        super();
-        activationFunctions.put(ExponentialLinearFunction.NAME, new ExponentialLinearFunction());
-        activationFunctions.put(LinearActivationFunction.NAME, new LinearActivationFunction());
-        activationFunctions.put(NegatedLinearActivationFunction.NAME, new NegatedLinearActivationFunction());
-        activationFunctions.put(SigmoidActivationFunction.NAME, new SigmoidActivationFunction());
-        activationFunctions.put(BipolarSigmoidActivationFunction.NAME, new BipolarSigmoidActivationFunction());
-        activationFunctions.put(SteepSigmoidActivationFunction.NAME, new SteepSigmoidActivationFunction());
-        activationFunctions.put(TanhActivationFunction.NAME, new TanhActivationFunction());
-        activationFunctions.put(TanhCubicActivationFunction.NAME, new TanhCubicActivationFunction());
-        activationFunctions.put(EvSailSigmoidActivationFunction.NAME, new EvSailSigmoidActivationFunction());
-        activationFunctions.put(InverseAbsActivationFunction.NAME, new InverseAbsActivationFunction());
-        activationFunctions.put(StepActivationFunction.NAME, new StepActivationFunction());
-        activationFunctions.put(SignedStepActivationFunction.NAME, new SignedStepActivationFunction());
-        activationFunctions.put(ClampedLinearActivationFunction.NAME, new ClampedLinearActivationFunction());
-        activationFunctions.put(SignedClampedLinearActivationFunction.NAME, new SignedClampedLinearActivationFunction());
-        activationFunctions.put(GaussianActivationFunction.NAME, new GaussianActivationFunction());
-        activationFunctions.put(SineActivationFunction.NAME, new SineActivationFunction());
-        activationFunctions.put(CosineActivationFunction.NAME, new CosineActivationFunction());
-        activationFunctions.put(AbsoluteActivationFunction.NAME, new AbsoluteActivationFunction());
-        activationFunctions.put(RectifierActivationFunction.NAME, new RectifierActivationFunction());
-        activationFunctions.put(ClampedAbsoluteActivationFunction.NAME, new ClampedAbsoluteActivationFunction());
-        activationFunctions.put(ConvertToSignedActivationFunction.NAME, new ConvertToSignedActivationFunction());
-        activationFunctions.put(DivideActivationFunction.NAME, new DivideActivationFunction());
-        activationFunctions.put(LogicAndActivationFunction.NAME, new LogicAndActivationFunction());
-        activationFunctions.put(LogicOrActivationFunction.NAME, new LogicOrActivationFunction());
-        activationFunctions.put(LogicXORActivationFunction.NAME, new LogicXORActivationFunction());
-        activationFunctions.put(RecipriocalActivationFunction.NAME, new RecipriocalActivationFunction());
-        activationFunctions.put(MultiplyActivationFunction.NAME, new MultiplyActivationFunction());
-        activationFunctions.put(SqrtActivationFunction.NAME, new SqrtActivationFunction());
-        activationFunctions.put(SqrtAndLinearActivationFunction.NAME, new SqrtAndLinearActivationFunction());
-        activationFunctions.put(PowerActivationFunction.NAME, new PowerActivationFunction());
+
+        for (int i = 0; i < values().length; i++) {
+        ActivationFunction    value = values()[i];
+            activationFunctions.put (value.getName(),value);
+            activationFunctions .put(value.name(),value);
+        }
     }
 
     /**

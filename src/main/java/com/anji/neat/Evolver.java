@@ -88,7 +88,6 @@ public class Evolver implements Configurable {
     private Properties props = null;
 
     private Chromosome fittest = null;
-    private Chromosome bestPerforming = null;
 
     private Genotype genotype = null;
 
@@ -269,8 +268,8 @@ public class Evolver implements Configurable {
                 
                 // EVOLUTION
                 fittest = genotype.evolve(numEvolutions);
-                
-                bestPerforming = genotype.getBestPerforming();
+
+                Chromosome bestPerforming = genotype.getBestPerforming();
                 
                 GenerationStatistics genStat = evoStat.newGeneration();
                 genStat.setFittest(fittest.getId(), fittest.getFitnessValue());
@@ -550,7 +549,12 @@ public class Evolver implements Configurable {
     // return thresholdFitness;
     // }
     public void dispose() {
-        bulkFitnessFunc.dispose();
+        try {
+            bulkFitnessFunc.dispose();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        } finally {
+        }
     }
 
 }
